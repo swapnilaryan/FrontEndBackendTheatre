@@ -1,0 +1,178 @@
+<div ng-controller="MainCtrl">
+    <div class="col-md-12" id="main_view">
+        <div class="row">
+            <div class="container">
+                <div class="col-md-1" id="top-angle-left">
+                    <p><a ng-href=""><i class="fa fa-angle-left fa-3x "></i></a></p>
+                </div>
+                <div class="col-md-10">
+                    <!--<h1><img src="../images/Now_Showing.png"></h1>-->
+
+                    <div class="col-md-4" id="left_banner_now_showing"></div>
+                    <div class="col-md-4" id="now_showing_text">NOW SHOWING</div>
+                    <div class="col-md-4" id="right_banner_now_showing"></div>
+                </div>
+                <div class="col-md-1" id="top-angle-right">
+                    <p><i class="fa fa-angle-right fa-3x "></i></p>
+                </div>
+            </div>
+            <div class="container">
+                <!--<ul class="list-inline list_now_showing"-->
+                    <!--data-ng-model="with_cart"-->
+                    <!--ng-class="(with_cart==true)?'list_now_showing_with_cart':'list_now_showing_without_cart'" >-->
+                    <div class="col-md-1"></div>
+                    <div class="col-md-3">
+                        <img class="images" src="../images/img1.png">
+                        <div class="parent_now_showing">
+                            <div class="col-md-3">1:35 pm</div>
+                            <!--<div class="col-md-3">4:00 pm</div>-->
+                            <!--<div class="col-md-3">6:35 pm</div>-->
+                            <!--<div class="col-md-3">9:15 pm</div>-->
+                        </div>
+                    </div>
+            </div>
+            <!--<div class="container">-->
+                <!--<ul class="list-inline list_now_showing"-->
+                    <!--data-ng-model="with_cart"-->
+                    <!--ng-class="(with_cart==true)?'list_now_showing_with_cart':'list_now_showing_without_cart'" >-->
+                    <!--<li>-->
+                        <!--<div class="parent_now_showing">-->
+                            <!--<div class="all_timings">-->
+                                <!--<ul class="list-inline">-->
+                                    <!--<li><p>1:35 pm</p></li>-->
+                                    <!--<li><p>4:00 pm</p></li>-->
+                                    <!--<li><p>6:35 pm</p></li>-->
+                                    <!--<li><p>9:15 pm</p></li>-->
+                                <!--</ul>-->
+                            <!--</div>-->
+                            <!--<img class="images" src="../images/img1.png">-->
+                        <!--</div>-->
+                    <!--</li>-->
+                    <!--<li>-->
+                        <!--<div class="parent_now_showing" >-->
+                            <!--<div class=" all_timings">-->
+                                <!--<ul class="list-inline">-->
+                                    <!--<li><img src="../images/3d_text.png"></li>-->
+                                    <!--<li><p>4:00 pm</p></li>-->
+                                <!--</ul>-->
+                            <!--</div>-->
+                            <!--<div class=" all_timings">-->
+                                <!--<ul class="list-inline">-->
+                                    <!--<li><img src="../images/2d_text.png"></li>-->
+                                    <!--<li><p>4:00 pm</p></li>-->
+                                    <!--<li><p>6:35 pm</p></li>-->
+                                <!--</ul>-->
+                            <!--</div>-->
+                            <!--<img class="images" src="../images/img2.png">-->
+                        <!--</div>-->
+                    <!--</li>-->
+                    <!--<li>-->
+                        <!--<div  class="parent_now_showing"  ng-mouseenter="show_add_to_cart()" ng-mouseleave="hide_add_to_cart()">-->
+                            <!--<add-to-cart ng-show="add_to_cart"></add-to-cart>-->
+                            <!--<div class="all_timings">-->
+                                <!--<ul class="list-inline">-->
+                                    <!--<li><img src="../images/3d_text.png"></li>-->
+                                    <!--<li><p>1:05 pm</p></li>-->
+                                    <!--<li><p>3:55 pm</p></li>-->
+                                    <!--<li><p>6:40 pm</p></li>-->
+                                    <!--<li><p>9:20 pm</p></li>-->
+                                <!--</ul>-->
+                                <!--<ul class="list-inline">-->
+                                    <!--<li><img src="../images/2d_text.png"></li>-->
+                                    <!--<li><p>12:50 pm</p></li>-->
+                                    <!--<li><p>3:40 pm</p></li>-->
+                                    <!--<li><p>6:30 pm</p></li>-->
+                                    <!--<li><p>9:10 pm</p></li>-->
+                                <!--</ul>-->
+                            <!--</div>-->
+                            <!--<img class="images" src="../images/img3.png">-->
+                        <!--</div>-->
+                    <!--</li>-->
+                    <!--<li>-->
+                        <!--<div class="parent_now_showing">-->
+                            <!--<div class=" all_timings">-->
+                                <!--<ul class="list-inline">-->
+                                    <!--<li><p>1:35 pm</p></li>-->
+                                    <!--<li><p>4:00 pm</p></li>-->
+                                    <!--<li><p>6:35 pm</p></li>-->
+                                    <!--<li><p>9:15 pm</p></li>-->
+                                <!--</ul>-->
+                            <!--</div>-->
+                            <!--<img class="images" src="../images/img1.png">-->
+                        <!--</div>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</div>-->
+        </div>
+
+        <div class="row">
+            <div class="container coming-soon">
+                <div class="col-md-12">
+                    <div class="col-md-5" id="bottom-angle-left">
+                        <p><i class="fa fa-angle-left fa-3x "></i></p>
+                    </div>
+                    <div class="col-md-2">
+                        <h1 id="coming_soon_text">Coming Soon</h1>
+                    </div>
+                    <div class="col-md-5" id="bottom-angle-right">
+                        <p><i class="fa fa-angle-right fa-3x "></i></p>
+                    </div>
+                </div>
+            </div>
+            <div class="container coming-soon">
+                <ul class="list-inline" id="list_coming_soon">
+                    <li>
+                        <div class="parent">
+                            <div class="imagewrap">
+                                <div class="date_month">
+                                    <h1 class="coming_soon_date">16</h1>
+                                    <h1 class="coming_soon_month">June</h1>
+                                </div>
+                                <img class="coming_soon_circle" src="../images/circle.png">
+                            </div>
+                            <img class="coming_soon_images" src="../images/cs2.png">
+                        </div>
+                    </li>
+                    <li>
+                        <div class="parent">
+                            <div class="imagewrap">
+                                <div class="date_month">
+                                    <h1 class="coming_soon_date">23</h1>
+                                    <h1 class="coming_soon_month">September</h1>
+                                </div>
+                                <img class="coming_soon_circle" src="../images/circle.png">
+                            </div>
+                            <img class="coming_soon_images" src="../images/cs3.png">
+                        </div>
+                    </li>
+                    <li>
+                        <div class="parent">
+                            <div class="imagewrap">
+                                <div class="date_month">
+                                    <h1 class="coming_soon_date">21</h1>
+                                    <h1 class="coming_soon_month">June</h1>
+                                </div>
+                                <img class="coming_soon_circle" src="../images/circle.png">
+                            </div>
+                            <img class="coming_soon_images" src="../images/cs4.png">
+                        </div>
+                    </li>
+                    <li>
+                        <div class="parent">
+                            <div class="imagewrap">
+                                <div class="date_month">
+                                    <h1 class="coming_soon_date">14</h1>
+                                    <h1 class="coming_soon_month">April</h1>
+                                </div>
+                                <img class="coming_soon_circle" src="../images/circle.png">
+                            </div>
+                            <img class="coming_soon_images" src="../images/cs5.png">
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+

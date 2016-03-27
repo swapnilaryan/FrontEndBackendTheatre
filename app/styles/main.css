@@ -1,0 +1,288 @@
+@import "/bower_components/font-awesome/css/font-awesome.css";
+/* latin */
+@font-face {
+    font-family: 'Teko';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Teko Regular'), local('Teko-Regular'), url(https://fonts.gstatic.com/s/teko/v5/VMJW7okK7q4rP_CIopIrIg.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+/* latin */
+@font-face {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Open Sans'), local('OpenSans'), url(https://fonts.gstatic.com/s/opensans/v13/cJZKeOuBrn4kERxqtaUH3VtXRa8TVwTICgirnJhmVJw.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+.browsehappy {
+  margin: 0.2em 0;
+  background: #ccc;
+  color: #000;
+  padding: 0.2em 0;
+}
+
+body {
+  padding: 0;
+}
+
+/* Everything but the jumbotron gets side spacing for mobile first views */
+.header,
+.marketing,
+.footer {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Custom page header */
+.header {
+  border-bottom: 1px solid #e5e5e5;
+  margin-bottom: 0;
+}
+/* Make the masthead heading the same height as the navigation */
+.header h3 {
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 40px;
+  padding-bottom: 19px;
+}
+/*Main.html's Css*/
+#main_view{
+    background-color: #f0f2f4;
+}
+#right_banner_now_showing, #left_banner_now_showing{
+    text-align: -webkit-center;
+    margin-top: 10px;
+    height: 50px;
+    background-color: #2199cc;
+}
+#now_showing_text{
+    height: 50px;
+    margin-top: -13px;
+    color: #2199cc;
+    font-family: 'Teko', sans-serif;
+    font-size: 75px;
+    font-weight: 500;
+    text-align: -webkit-center;
+    text-transform: uppercase;
+}
+#coming_soon_text{
+    color: white;
+    font-family: 'Teko', sans-serif;
+    font-size: 40px;
+    font-weight: 500;
+    line-height: 15px;
+    text-transform: uppercase;
+}
+
+.images{
+    width: auto;
+    height: 440px;
+}
+.coming_soon_images{
+    width: 220px;
+    height: 320px;
+}
+.parent{
+    text-align: center;
+    position: relative;
+}
+.imagewrap {
+    display:inline;
+}
+.parent_now_showing>img:hover{
+    border: 9px solid #2199cc;
+    overflow: hidden;
+}
+
+.all_timings > ul > li > p{
+    background-color: rgba(34, 34, 34, 0.8);
+    color: white;
+    font-family: "Open Sans", sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 15px;
+}
+.all_timings{
+    position: relative;
+    top: 440px;
+}
+.align_add_to_cart{
+    position: relative;
+    top: 320px;
+}
+.date_month{
+    position: relative;
+    top: 90px;
+}
+.coming_soon_date{
+    color: white;
+    font-family: 'Teko', sans-serif;
+    font-family: 'Teko', sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 24px;
+    position:relative;
+    z-index: 10;
+}
+.coming_soon_month{
+    color: white;
+    font-family: "Open Sans", sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    position:relative;
+    z-index: 10;
+    margin-top: 0;
+}
+.coming_soon_circle{
+    margin-top: 20px;
+    margin-left: 70px;
+    position:absolute;
+}
+#top-angle-left{
+    text-align: -webkit-right;
+    padding-right: 0;
+}
+#top-angle-right{
+    text-align: -webkit-left;
+    padding-left: 0;
+}
+
+#top-angle-left > p, #top-angle-right > p{
+    margin-top: 10px;
+    width: 50px;
+    height: 50px;
+    background-color: #c7646d;
+    text-align: -webkit-center;
+}
+#bottom-angle-left > p{
+    float: right;
+}
+#bottom-angle-right > p{
+    float: left;
+}
+.fa-angle-left, .fa-angle-right{
+    color: white;
+    margin-top: 3px;
+}
+/*End Main.html Css*/
+/* Custom page footer */
+.footer {
+  padding-top: 19px;
+  color: #777;
+  border-top: 1px solid #e5e5e5;
+}
+.container{
+    width: auto;
+    padding: 0;
+    text-align: -webkit-center;
+}
+.container-narrow > hr {
+  margin: 30px 0;
+}
+.coming-soon{
+    background-color: #303234;
+}
+#list_coming_soon{
+    margin-top: -70px;
+}
+.list-inline{
+    margin-top: 10px;
+}
+.list_now_showing{
+    margin-top: -75px;
+}
+.list_now_showing_with_cart{
+    margin-top: -138px;
+    overflow: hidden;
+}
+.list_now_showing_without_cart{
+    margin-top: -75px;
+    overflow: hidden;
+}
+#bottom-list{
+    text-align: -webkit-center;
+    margin-top: -13px;
+}
+#bottom-list > ul > li > a{
+    color: #222;
+    font-family: "Open Sans", sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 15px;
+    text-transform: uppercase;
+}
+#right-menu, #right-menu-bottom {
+    text-align: -webkit-center;
+}
+#right-menu > li > a{
+    color: #222;
+    font-family: "Open Sans", sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 15px;
+}
+.cinestar_logo{
+    text-align: -webkit-center;
+}
+
+#top-list {
+    text-align: -webkit-center;
+}
+#top-list > li{
+    text-align: center;
+}
+#top-list > ul > li > a {
+    text-align: left;
+    color: #222;
+    font-family: OpenSans, serif;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 15px;
+    text-transform: uppercase;
+}
+/* Main marketing message and sign up button */
+.jumbotron {
+  text-align: center;
+  border-bottom: 1px solid #e5e5e5;
+}
+.jumbotron .btn {
+  font-size: 21px;
+  padding: 14px 24px;
+}
+
+/* Supporting marketing content */
+.marketing {
+  margin: 40px 0;
+}
+.marketing p + h4 {
+  margin-top: 28px;
+}
+.navbar {
+    position: relative;
+    min-height: 50px;
+    margin-bottom: 0;
+    border: 1px solid transparent;
+}
+/*!* Responsive: Portrait tablets and up *!*/
+/*@media screen and (min-width: 768px) {*/
+  /*.container {*/
+    /*max-width: 730px;*/
+  /*}*/
+
+  /*!* Remove the padding we set earlier *!*/
+  /*.header,*/
+  /*.marketing,*/
+  /*.footer {*/
+    /*padding-left: 0;*/
+    /*padding-right: 0;*/
+  /*}*/
+  /*!* Space out the masthead *!*/
+  /*.header {*/
+    /*margin-bottom: 30px;*/
+  /*}*/
+  /*!* Remove the bottom border on the jumbotron for visual effect *!*/
+  /*.jumbotron {*/
+    /*border-bottom: 0;*/
+  /*}*/
+/*}*/
