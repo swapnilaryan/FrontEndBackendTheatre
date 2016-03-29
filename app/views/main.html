@@ -1,4 +1,4 @@
-<div ng-controller="MainCtrl">
+<div class=row" ng-controller="MainCtrl">
     <div class="col-md-12" id="main_view">
         <div class="row">
             <div class="container">
@@ -32,76 +32,22 @@
                     <!--</div>-->
             <!--</div>-->
             <div class="container">
-                <ul class="list-inline list_now_showing"
-                    data-ng-model="with_cart"
-                    ng-class="(with_cart==true)?'list_now_showing_with_cart':'list_now_showing_without_cart'" >
-                    <li>
-                        <div class="parent_now_showing">
-                            <div class="all_timings">
-                                <ul class="list-inline">
-                                    <li><p>1:35 pm</p></li>
-                                    <li><p>4:00 pm</p></li>
-                                    <li><p>6:35 pm</p></li>
-                                    <li><p>9:15 pm</p></li>
-                                </ul>
-                            </div>
+                <!--class=\"align_add_to_cart\"-->
+                <div class="col-md-1"></div>
+                <div class="col-md-4 list_now_showing">
+                    <!--<div class="list_now_showing">-->
+                        <div class="wrap_all">
                             <img class="images" src="../images/img1.png">
-                        </div>
-                    </li>
-                    <li>
-                        <div class="parent_now_showing" >
-                            <div class=" all_timings">
-                                <ul class="list-inline">
-                                    <li><img src="../images/3d_text.png"></li>
-                                    <li><p>4:00 pm</p></li>
-                                </ul>
-                            </div>
-                            <div class=" all_timings">
-                                <ul class="list-inline">
-                                    <li><img src="../images/2d_text.png"></li>
-                                    <li><p>4:00 pm</p></li>
-                                    <li><p>6:35 pm</p></li>
-                                </ul>
-                            </div>
-                            <img class="images" src="../images/img2.png">
-                        </div>
-                    </li>
-                    <li>
-                        <div  class="parent_now_showing"  ng-mouseenter="show_add_to_cart()" ng-mouseleave="hide_add_to_cart()">
-                            <add-to-cart ng-show="add_to_cart"></add-to-cart>
                             <div class="all_timings">
-                                <ul class="list-inline">
-                                    <li><img src="../images/3d_text.png"></li>
-                                    <li><p>1:05 pm</p></li>
-                                    <li><p>3:55 pm</p></li>
-                                    <li><p>6:40 pm</p></li>
-                                    <li><p>9:20 pm</p></li>
-                                </ul>
-                                <ul class="list-inline">
-                                    <li><img src="../images/2d_text.png"></li>
-                                    <li><p>12:50 pm</p></li>
-                                    <li><p>3:40 pm</p></li>
-                                    <li><p>6:30 pm</p></li>
-                                    <li><p>9:10 pm</p></li>
-                                </ul>
+                                <p><span>1:35 pm</span>
+                                <span>4:00 pm</span>
+                                <span>6:35 pm</span>
+                                <span>9:15 pm</span></p>
                             </div>
-                            <img class="images" src="../images/img3.png">
+                            <!--<add-to-cart class="align_add_to_cart"></add-to-cart>-->
                         </div>
-                    </li>
-                    <li>
-                        <div class="parent_now_showing">
-                            <div class=" all_timings">
-                                <ul class="list-inline">
-                                    <li><p>1:35 pm</p></li>
-                                    <li><p>4:00 pm</p></li>
-                                    <li><p>6:35 pm</p></li>
-                                    <li><p>9:15 pm</p></li>
-                                </ul>
-                            </div>
-                            <img class="images" src="../images/img1.png">
-                        </div>
-                    </li>
-                </ul>
+                    <!--</div>-->
+                </div>
             </div>
         </div>
 
