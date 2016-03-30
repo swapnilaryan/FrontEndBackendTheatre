@@ -21,7 +21,9 @@
   color: #000;
   padding: 0.2em 0;
 }
-
+html, body {
+    overflow-x: hidden;
+}
 body {
   padding: 0;
 }
@@ -80,8 +82,8 @@ body {
     height: 440px;
 }
 .coming_soon_images{
-    width: 220px;
-    height: 320px;
+    /*width: 220px;*/
+    /*height: 320px;*/
 }
 .parent{
     text-align: center;
@@ -90,22 +92,33 @@ body {
 .imagewrap {
     display:inline;
 }
+#show_list{
+    width: 150%;
+    margin-left: -30%;
+}
 .list_now_showing{
     width: auto;
     text-align: -webkit-center;
+    margin-bottom: 10px;
+    /*margin-left: 10px;*/
+    /*margin-right: 10px;*/
+    padding: 0;
 }
-/*.wrap_all{*/
-    /*border: none;*/
-    /*float: left;*/
-/*}*/
-/*.wrap_all{*/
-    /*margin:10px;*/
-/*}*/
 .wrap_all{
-    height: auto;
+    padding: 5px;
+}
+.wrap_all > .show-cart {
+    display: none;
+    padding: 10px;
 }
 .wrap_all:hover{
-    border: 3px solid ;
+    padding: 0;
+    border: 5px solid;
+    border-color: #2199cc;
+}
+
+.wrap_all:hover > .show-cart{
+    display: block;
 }
 
 .all_timings{
@@ -115,21 +128,39 @@ body {
     font-size: 12px;
     font-weight: 700;
     line-height: 15px;
-    position: relative;
-    bottom: 70px;
 }
-/*.all_timings{*/
-    /*position: relative;*/
-    /*top: 440px;*/
-/*}*/
+.list-show-none,.list-show-2d,.list-show-3d{
+    width: 100%;
+    margin: 0;
+    position: absolute;
+}
+.list-show-none {
+    bottom: 13px;
+}
+.list-show-2d {
+    bottom: 13px;
+}
+.list-show-3d {
+    bottom: 43px;
+}
+.list-show-none>span,.list-show-2d>span,.list-show-3d>span{
+    background-color: rgba(34, 34, 34, 0.8);
+    margin-left: 3px;
+    margin-right: 3px;
+}
 .align_add_to_cart{
     position: absolute;
-    bottom: 0;
-    right: 53px;
+    bottom: 100px;
+    right: 22px;
 }
 .date_month{
     position: relative;
     top: 90px;
+}
+#coming-soon{
+    background-color: #303234;
+    width: 150%;
+    margin-left: -30%;
 }
 .coming_soon_date{
     color: white;
@@ -200,6 +231,8 @@ body {
 }
 #list_coming_soon{
     margin-top: -70px;
+    margin-bottom: 10px;
+    width: auto;
 }
 .list-inline{
     margin-top: 10px;

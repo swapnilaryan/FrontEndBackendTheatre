@@ -16,37 +16,27 @@
                     <p><i class="fa fa-angle-right fa-3x "></i></p>
                 </div>
             </div>
-            <!--<div class="container">-->
-                <!--&lt;!&ndash;<ul class="list-inline list_now_showing"&ndash;&gt;-->
-                    <!--&lt;!&ndash;data-ng-model="with_cart"&ndash;&gt;-->
-                    <!--&lt;!&ndash;ng-class="(with_cart==true)?'list_now_showing_with_cart':'list_now_showing_without_cart'" >&ndash;&gt;-->
-                    <!--<div class="col-md-1"></div>-->
-                    <!--<div class="col-md-3">-->
+            <div class="container" id="show_list">
+                <div class="col-md-6 list_now_showing" ng-repeat="mvs in movie_now_showing">
+                    <div class="wrap_all">
                         <!--<img class="images" src="../images/img1.png">-->
-                        <!--<div class="parent_now_showing">-->
-                            <!--<div class="col-md-3">1:35 pm</div>-->
-                            <!--&lt;!&ndash;<div class="col-md-3">4:00 pm</div>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<div class="col-md-3">6:35 pm</div>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<div class="col-md-3">9:15 pm</div>&ndash;&gt;-->
-                        <!--</div>-->
-                    <!--</div>-->
-            <!--</div>-->
-            <div class="container">
-                <!--class=\"align_add_to_cart\"-->
-                <div class="col-md-1"></div>
-                <div class="col-md-4 list_now_showing">
-                    <!--<div class="list_now_showing">-->
-                        <div class="wrap_all">
-                            <img class="images" src="../images/img1.png">
-                            <div class="all_timings">
-                                <p><span>1:35 pm</span>
-                                <span>4:00 pm</span>
-                                <span>6:35 pm</span>
-                                <span>9:15 pm</span></p>
+                        <img class="images" ng-src="{{mvs.image}}" >
+                        <div class="all_timings">
+                            <div class="list-show-none">
+                                <span ng-repeat="list_show in mvs.list_show_none">{{list_show}}</span>
                             </div>
-                            <!--<add-to-cart class="align_add_to_cart"></add-to-cart>-->
+                            <div class="list-show-3d">
+                                <span><img ng-src="{{mvs.list_show_3d_image}}"> </span>
+                                <span ng-repeat="list_show in mvs.list_show_3d">{{list_show}}</span>
+                            </div>
+                            <div class="list-show-2d">
+                                <!--<img ng-src="">-->
+                                <span><img ng-src="{{mvs.list_show_2d_image}}"></span>
+                                <span ng-repeat="list_show in mvs.list_show_2d">{{list_show}}</span>
+                            </div>
                         </div>
-                    <!--</div>-->
+                        <add-to-cart class="align_add_to_cart show-cart"></add-to-cart>
+                    </div>
                 </div>
             </div>
         </div>
@@ -65,58 +55,56 @@
                     </div>
                 </div>
             </div>
-            <div class="container coming-soon">
-                <ul class="list-inline" id="list_coming_soon">
-                    <li>
-                        <div class="parent">
-                            <div class="imagewrap">
-                                <div class="date_month">
-                                    <h1 class="coming_soon_date">16</h1>
-                                    <h1 class="coming_soon_month">June</h1>
-                                </div>
-                                <img class="coming_soon_circle" src="../images/circle.png">
+            <div class="container" id="coming-soon">
+                <div class="col-md-3" id="list_coming_soon" ng-repeat="mcs in movie_coming_soon">
+                    <div class="parent">
+                        <div class="imagewrap">
+                            <div class="date_month">
+                                <h1 class="coming_soon_date">{{mcs.date}}</h1>
+                                <h1 class="coming_soon_month">{{mcs.month}}</h1>
                             </div>
-                            <img class="coming_soon_images" src="../images/cs2.png">
+                            <img class="coming_soon_circle" src="../images/circle.png">
                         </div>
-                    </li>
-                    <li>
-                        <div class="parent">
-                            <div class="imagewrap">
-                                <div class="date_month">
-                                    <h1 class="coming_soon_date">23</h1>
-                                    <h1 class="coming_soon_month">September</h1>
-                                </div>
-                                <img class="coming_soon_circle" src="../images/circle.png">
-                            </div>
-                            <img class="coming_soon_images" src="../images/cs3.png">
-                        </div>
-                    </li>
-                    <li>
-                        <div class="parent">
-                            <div class="imagewrap">
-                                <div class="date_month">
-                                    <h1 class="coming_soon_date">21</h1>
-                                    <h1 class="coming_soon_month">June</h1>
-                                </div>
-                                <img class="coming_soon_circle" src="../images/circle.png">
-                            </div>
-                            <img class="coming_soon_images" src="../images/cs4.png">
-                        </div>
-                    </li>
-                    <li>
-                        <div class="parent">
-                            <div class="imagewrap">
-                                <div class="date_month">
-                                    <h1 class="coming_soon_date">14</h1>
-                                    <h1 class="coming_soon_month">April</h1>
-                                </div>
-                                <img class="coming_soon_circle" src="../images/circle.png">
-                            </div>
-                            <img class="coming_soon_images" src="../images/cs5.png">
-                        </div>
-                    </li>
+                        <img class="coming_soon_images" ng-src="{{mcs.image}}">
+                    </div>
+                    <!--<li>-->
+                        <!--<div class="parent">-->
+                            <!--<div class="imagewrap">-->
+                                <!--<div class="date_month">-->
+                                    <!--<h1 class="coming_soon_date">23</h1>-->
+                                    <!--<h1 class="coming_soon_month">September</h1>-->
+                                <!--</div>-->
+                                <!--<img class="coming_soon_circle" src="../images/circle.png">-->
+                            <!--</div>-->
+                            <!--<img class="coming_soon_images" src="../images/cs3.png">-->
+                        <!--</div>-->
+                    <!--</li>-->
+                    <!--<li>-->
+                        <!--<div class="parent">-->
+                            <!--<div class="imagewrap">-->
+                                <!--<div class="date_month">-->
+                                    <!--<h1 class="coming_soon_date">21</h1>-->
+                                    <!--<h1 class="coming_soon_month">June</h1>-->
+                                <!--</div>-->
+                                <!--<img class="coming_soon_circle" src="../images/circle.png">-->
+                            <!--</div>-->
+                            <!--<img class="coming_soon_images" src="../images/cs4.png">-->
+                        <!--</div>-->
+                    <!--</li>-->
+                    <!--<li>-->
+                        <!--<div class="parent">-->
+                            <!--<div class="imagewrap">-->
+                                <!--<div class="date_month">-->
+                                    <!--<h1 class="coming_soon_date">14</h1>-->
+                                    <!--<h1 class="coming_soon_month">April</h1>-->
+                                <!--</div>-->
+                                <!--<img class="coming_soon_circle" src="../images/circle.png">-->
+                            <!--</div>-->
+                            <!--<img class="coming_soon_images" src="../images/cs5.png">-->
+                        <!--</div>-->
+                    <!--</li>-->
 
-                </ul>
+                </div>
             </div>
         </div>
     </div>
