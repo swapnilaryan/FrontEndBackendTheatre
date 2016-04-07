@@ -93,15 +93,12 @@ body {
     display:inline;
 }
 #show_list{
-    width: 150%;
-    margin-left: -30%;
+    display: inline-block;
 }
 .list_now_showing{
     width: auto;
     text-align: -webkit-center;
     margin-bottom: 10px;
-    /*margin-left: 10px;*/
-    /*margin-right: 10px;*/
     padding: 0;
 }
 .wrap_all{
@@ -159,8 +156,7 @@ body {
 }
 #coming-soon{
     background-color: #303234;
-    width: 150%;
-    margin-left: -30%;
+    display: inline-block;
 }
 .coming_soon_date{
     color: white;
@@ -332,3 +328,18 @@ body {
     /*border-bottom: 0;*/
   /*}*/
 /*}*/
+#imaginary_container{
+    margin-top:20%; /* Don't copy this */
+}
+.stylish-input-group .input-group-addon{
+    background: white !important;
+}
+.stylish-input-group .form-control{
+    border-right:0;
+    box-shadow:0 0 0;
+    border-color:#ccc;
+}
+.stylish-input-group button{
+    border:0;
+    background:transparent;
+}

@@ -10,19 +10,9 @@
 angular.module('backendTheatreApp')
   .controller('MainCtrl', function ($scope) {
       $scope.images = '../images/add_to_cart_button.png';
-      $scope.add_to_cart = false;
-      $scope.with_cart = false;
-      $scope.show_add_to_cart = function(){
-          $scope.add_to_cart = true;
-          $scope.with_cart = true;
-      };
-      $scope.hide_add_to_cart = function(){
-          $scope.add_to_cart = false;
-          $scope.with_cart = false;
-      };
       $scope.movie_coming_soon = [
           {
-              'image':'../images/cs2png',
+              'image':'../images/cs2.png',
               'date': '16',
               'month': 'June'
           },
@@ -45,22 +35,22 @@ angular.module('backendTheatreApp')
               'image':'../images/cs2.png',
               'date': '16',
               'month': 'June'
-          },
-          {
-              'image':'../images/cs3.png',
-              'date': '16',
-              'month': 'June'
-          },
-          {
-              'image':'../images/cs3.png',
-              'date': '16',
-              'month': 'June'
-          },
-          {
-              'image':'../images/cs2.png',
-              'date': '16',
-              'month': 'June'
-          }
+          }//,
+          //{
+          //    'image':'../images/cs3.png',
+          //    'date': '16',
+          //    'month': 'June'
+          //},
+          //{
+          //    'image':'../images/cs3.png',
+          //    'date': '16',
+          //    'month': 'June'
+          //},
+          //{
+          //    'image':'../images/cs2.png',
+          //    'date': '16',
+          //    'month': 'June'
+          //}
       ];
       $scope.movie_now_showing=[
           {
@@ -82,17 +72,17 @@ angular.module('backendTheatreApp')
               'list_show_2d_image':'../images/2d_text.png'
           },
           {
-              'image':'../images/img1.png',
-              'list_show_none':['1:35 pm','4:00 pm','6:35 pm','9:15 pm']
-          },
-          {
-              'image':'../images/img1.png',
-              'list_show_none':['1:35 pm','4:00 pm','6:35 pm','9:15 pm']
-          },
-          {
-              'image':'../images/img1.png',
-              'list_show_none':['1:35 pm','4:00 pm','6:35 pm','9:15 pm']
-          }
+              'image': '../images/img1.png',
+              'list_show_none': ['1:35 pm', '4:00 pm', '6:35 pm', '9:15 pm']
+          }//,
+          //{
+          //    'image':'../images/img1.png',
+          //    'list_show_none':['1:35 pm','4:00 pm','6:35 pm','9:15 pm']
+          //},
+          //{
+          //    'image':'../images/img1.png',
+          //    'list_show_none':['1:35 pm','4:00 pm','6:35 pm','9:15 pm']
+          //}
       ];
       //$scope.list_show_none = ['1:35 pm','4:00 pm','6:35 pm','9:15 pm'];
       //$scope.list_now_showing = [
