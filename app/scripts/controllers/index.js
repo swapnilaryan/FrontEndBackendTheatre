@@ -8,9 +8,15 @@
  * Controller of the backendTheatreApp
  */
 angular.module('backendTheatreApp')
-  .controller('IndexCtrl', function ($scope) {
-      $scope.movie_to_search="";
-      $scope.search_movies = function (movie_to_search) {
-          console.log("Movie enterd",movie_to_search);
-      }
+  //.controller('IndexCtrl',function ($scope, $uibModalInstance) {
+  .controller('IndexCtrl' ,function ($scope,require,$location,$uibModalInstance,searchMovieText) {
+      $scope.close = function () {
+          $location.url('/about');
+          $uibModalInstance.close();
+      };
+      console.log(searchMovieText.get());
+      $scope.movieToSearch='';
+      $scope.searchMovies = function (movieToSearch) {
+          console.log('Movie entered',movieToSearch);
+      };
   });

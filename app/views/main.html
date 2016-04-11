@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div class="container" id="show_list">
-                <div class="col-md-3 container list_now_showing" ng-repeat="mvs in movie_now_showing">
+                <div class="col-md-3 container list_now_showing" ng-repeat="mvs in movieNowShowing">
                     <div class="wrap_all">
                         <img class="images" ng-src="{{mvs.image}}" >
                         <div class="all_timings">
@@ -55,7 +55,7 @@
                 </div>
             </div>
             <div class="container" id="coming-soon">
-                <div class="col-md-3" id="list_coming_soon" ng-repeat="mcs in movie_coming_soon">
+                <div class="col-md-3" id="list_coming_soon" ng-repeat="mcs in movieComingSoon">
                     <div class="parent">
                         <div class="imagewrap">
                             <div class="date_month">

@@ -10,7 +10,7 @@
 angular.module('backendTheatreApp')
   .controller('MainCtrl', function ($scope) {
       $scope.images = '../images/add_to_cart_button.png';
-      $scope.movie_coming_soon = [
+      $scope.movieComingSoon = [
           {
               'image':'../images/cs2.png',
               'date': '16',
@@ -52,7 +52,7 @@ angular.module('backendTheatreApp')
           //    'month': 'June'
           //}
       ];
-      $scope.movie_now_showing=[
+      $scope.movieNowShowing=[
           {
               'image':'../images/img1.png',
               'list_show_none':['1:35 pm','4:00 pm','6:35 pm','9:15 pm'],
