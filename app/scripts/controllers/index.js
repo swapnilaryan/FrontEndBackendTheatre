@@ -9,12 +9,12 @@
  */
 angular.module('backendTheatreApp')
   //.controller('IndexCtrl',function ($scope, $uibModalInstance) {
-  .controller('IndexCtrl' ,function ($scope,require,$location,$uibModalInstance,searchMovieText) {
+  .controller('IndexCtrl' ,function ($scope,$location,$uibModalInstance) {
       $scope.close = function () {
           $location.url('/about');
           $uibModalInstance.close();
       };
-      console.log(searchMovieText.get());
+      //console.log(searchMovieText.get());
       $scope.movieToSearch='';
       $scope.searchMovies = function (movieToSearch) {
           console.log('Movie entered',movieToSearch);

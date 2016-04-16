@@ -8,12 +8,12 @@
  * Controller of the backendTheatreApp
  */
 angular.module('backendTheatreApp')
-  .controller('SearchmodalCtrl', ['$scope','searchMovieText','$uibModal',function ($scope,searchMovieText,$uibModal) {
-      console.log(searchMovieText);
-      searchMovieText.set("Its hi now");
+  .controller('SearchmodalCtrl', ['$scope','$uibModal',function ($scope,$uibModal) {
+      //console.log(searchMovieText);
+      //searchMovieText.set("Its hi now");
       $scope.open = function (size) {
           console.log(size);
-          var modalInstance = $uibModal.open({
+          $uibModal.open({
               templateUrl: '/views/searchmodal.html',
               controller: 'IndexCtrl',
               size: size
