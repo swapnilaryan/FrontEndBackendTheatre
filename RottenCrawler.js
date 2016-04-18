@@ -9,7 +9,8 @@ var RottenCrawler = function(movieURL) {
     rc.movieURL = movieURL || "";
     rc.movieResponse = {
         "movieInfo": [],
-        "movieCredits": []
+        "movieCredits": [],
+        "omdbData": []
     };
     console.log(movieURL,rc.apiKey);
     return rc;
@@ -30,9 +31,15 @@ RottenCrawler.prototype.theMovieDB = function() {
             return rp('http://api.themoviedb.org/3/movie/'+rc.response+'?api_key='+rc.apiKey)
             .then(function(res){
                 rc.movieResponse["movieInfo"].push(JSON.parse(res));
+                var imdb_id = JSON.parse(res).imdb_id;
+                //console.log(JSON.parse(res).imdb_id);
                 return rp('http://api.themoviedb.org/3/movie/'+rc.response+'/credits?api_key='+rc.apiKey)
                     .then(function(r){
                         rc.movieResponse["movieCredits"].push(JSON.parse(r));
+                        return rp("http://www.omdbapi.com/?i="+imdb_id+"&plot=full&r=json&tomatoes=true")
+                            .then(function(r){
+                                rc.movieResponse["omdbData"].push(JSON.parse(r));
+                            });
                     });
             });
         })
