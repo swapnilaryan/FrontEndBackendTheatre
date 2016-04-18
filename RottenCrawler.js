@@ -5,12 +5,41 @@ var rp = require('request-promise'),
 
 var RottenCrawler = function(movieURL) {
     var rc = this;
-
+    rc.apiKey = "2c9306d42037dfb0de0fc3f153819054";
     rc.movieURL = movieURL || "";
-    console.log(movieURL);
+    rc.movieResponse = {
+        "movieInfo": [],
+        "movieCredits": []
+    };
+    console.log(movieURL,rc.apiKey);
     return rc;
 };
-
+RottenCrawler.prototype.omdbAPI = function() {
+    var rc = this;
+    return "";
+};
+RottenCrawler.prototype.theMovieDB = function() {
+    var rc = this;
+    var date = new Date();
+    var year = date.getFullYear();
+    console.log(year);
+    return rp('http://api.themoviedb.org/3/search/movie?api_key='+rc.apiKey+"&query="+rc.movieURL+"&year="+year)
+        .then(function(response){
+            rc.response = JSON.parse(response).results[0].id;
+            //get Details via id in movie apiary
+            return rp('http://api.themoviedb.org/3/movie/'+rc.response+'?api_key='+rc.apiKey)
+            .then(function(res){
+                rc.movieResponse["movieInfo"].push(JSON.parse(res));
+                return rp('http://api.themoviedb.org/3/movie/'+rc.response+'/credits?api_key='+rc.apiKey)
+                    .then(function(r){
+                        rc.movieResponse["movieCredits"].push(JSON.parse(r));
+                    });
+            });
+        })
+        .catch(function(err){
+            console.log(err);
+        });
+};
 RottenCrawler.prototype.getMovieInfo = function() {
     var rc = this;
 

@@ -1,1 +1,95 @@
-<p>This is the movieDetails view.</p>
+<div class="row" data-ng-cloak>
+    <div class="container">
+        <div class="col-md-8" data-ng-model="movieTomato" ng-cloak>
+            <!--<p>Hello {{movieTomato}}</p>-->
+            <div class="container">
+                <div class="col-md-4">
+                    <p>Hello143678</p>
+                    <img ng-src={{movieTomato1.Poster}} class="mdImage">
+                </div>
+                <div class="col-md-8" data-ng-model="movieApiary">
+                    <h1>{{movieApiary.title}}</h1>
+                    <div class="col-md-4 scorePanel">
+                        <h3>Tomatometer</h3>
+                    </div>
+                    <div class="col-md-4 scorePanel" id="marginRight">
+                        <h3>Critics</h3>
+
+                    </div>
+                    <div class="col-md-4 scorePanel">
+                        <h3>Audience Score</h3>
+
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="col-md-4">
+                    <p>Showtimes</p>
+                </div>
+                <div class="col-md-8">
+                    <div class="movieDes">{{movieTomato.movieDes}}</div>
+                    <div class="col-md-4 movieTopic">
+                        <div>Rating:</div>
+                    </div>
+                    <div class="col-md-6 movieDetails">
+                        <div>{{movieTomato1.Rated}}</div>
+                    </div>
+
+                    <div class="col-md-4 movieTopic">
+                        <div>Genre:</div>
+                    </div>
+                    <div class="col-md-6 movieDetails">
+                        <div>{{movieTomato1.Genre}}</div>
+                    </div>
+
+                    <div class="col-md-4 movieTopic">
+                        <div>Directed By:</div>
+                    </div>
+                    <div class="col-md-6 movieDetails">
+                        <div>{{movieTomato1.Director}}</div>
+                    </div>
+
+                    <div class="col-md-4 movieTopic">
+                        <div>Written By:</div>
+                    </div>
+                    <div class="col-md-6 movieDetails">
+                        <div>{{movieTomato1.Writer}}</div>
+                    </div>
+
+                    <div class="col-md-4 movieTopic">
+                        <div>In Theatres:</div>
+                    </div>
+                    <div class="col-md-6 movieDetails">
+                        <div>{{movieTomato1.Released}}</div>
+                    </div>
+
+                    <div class="col-md-4 movieTopic">
+                        <div>Box Office:</div>
+                    </div>
+                    <div class="col-md-6 movieDetails">
+                        <div>{{movieTomato1.BoxOffice}}</div>
+                    </div>
+
+                    <div class="col-md-4 movieTopic">
+                        <div>Run Time:</div>
+                    </div>
+                    <div class="col-md-6 movieDetails">
+                        <div>{{movieTomato1.Runtime}}</div>
+                    </div>
+
+                    <div class="col-md-5 movieTopic">
+                        <div>{{movieTomato1.Production}}:</div>
+                    </div>
+                    <div class="col-md-3 movieDetails">
+                        <div><a ng-href={{movieTomato1.Website}}>Official Site</a> </div>
+                    </div>
+                </div>
+        </div>
+        <div class="col-md-4" data-ng-model="theMovieDbId" ng-cloak>
+            <p>how r u{{theMovieDbId}}</p>
+        </div>
+    </div>
+    <div class="container">
+
+    </div>
+</div>

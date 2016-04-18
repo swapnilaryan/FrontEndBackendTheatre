@@ -32,6 +32,16 @@ angular
         controller: 'AboutCtrl',
         controllerAs: 'about'
       })
+      .when('/moviedetails', {
+          templateUrl: 'views/moviedetails.html',
+          controller: 'MoviedetailsCtrl',
+          controllerAS: 'moviedetails',
+          resolve: {
+              theMovieDbInfo: function (movieApiaryInfo) {
+                  return movieApiaryInfo.getSearchDetails();
+              }
+          }
+      })
       .otherwise({
         redirectTo: '/'
       });
