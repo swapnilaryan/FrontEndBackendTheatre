@@ -2,7 +2,6 @@ var rp = require('request-promise'),
     cheerio = require('cheerio');
 
 
-
 var RottenCrawler = function(movieURL) {
     var rc = this;
     rc.apiKey = "2c9306d42037dfb0de0fc3f153819054";
@@ -14,10 +13,6 @@ var RottenCrawler = function(movieURL) {
     };
     console.log(movieURL,rc.apiKey);
     return rc;
-};
-RottenCrawler.prototype.omdbAPI = function() {
-    var rc = this;
-    return "";
 };
 RottenCrawler.prototype.theMovieDB = function() {
     var rc = this;
@@ -49,7 +44,7 @@ RottenCrawler.prototype.theMovieDB = function() {
 };
 RottenCrawler.prototype.getMovieInfo = function() {
     var rc = this;
-
+    rc.crawlTomato = {};
     return rp('http://www.rottentomatoes.com' + rc.movieURL)
         .then(function(response) {
             var $ = cheerio.load(response);

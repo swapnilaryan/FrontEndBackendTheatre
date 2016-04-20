@@ -23,12 +23,12 @@ angular.module('backendTheatreApp')
       movieApiaryInfo.getMovieById(theMovieDbInfo.results[0].id)
             .then(function (data) {
                 $scope.theMovieDbId = data;
-                console.log("[[[[[[[[[",$scope.theMovieDbId);
+                //console.log("[[[[[[[[[",$scope.theMovieDbId);
               // Fetch omdb results for the movie
               movieApiaryInfo.getTomatoResult1($scope.theMovieDbId.imdb_id)
                 .then( function (data){
                     $scope.movieTomato1 = data;
-                    console.log("111111111Rotten tomato Results",$scope.movieTomato1);
+                    //console.log("111111111Rotten tomato Results",$scope.movieTomato1);
                     var titleTomato = $scope.movieTomato1.tomatoURL;
                     if(titleTomato!=null) {
                         titleTomato = titleTomato.replace("http://www.rottentomatoes.com/m/", "");
