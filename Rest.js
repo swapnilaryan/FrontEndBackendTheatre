@@ -4,12 +4,16 @@
 var mysql = require("mysql");
 var reqPro = require('request-promise');
 var RottenCrawler = require("./RottenCrawler.js");
+var async = require("async");
+var apiKey = "2c9306d42037dfb0de0fc3f153819054";
 var fs = require('fs'),
     request = require('request');
 var conn="";
 function REST_ROUTER(router,connection,md5) {
     var self = this;
     conn = connection;
+    var rc = new RottenCrawler("For Connection");
+    var con = rc.getConnection(conn);
     self.handleRoutes(router,connection,md5);
 }
 
@@ -23,7 +27,7 @@ var download = function(uri, filename, callback){
         request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
     });
 };
-var cronJob = cron.job("*/3600 * * * * *", function(){
+var cronJob = cron.job("00 06 01 * * *", function(){
     // perform operation e.g. GET request http.get() etc.
     request('http://localhost:3000/api/upcoming',function(response){
             console.log("Started");
@@ -50,7 +54,6 @@ cronJob.start();
 console.log("Hi");
 REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
     router.get("/upcoming",function(req,res) {
-        var async = require("async");
         var items = [1];
         var totPage = [];
         var ret = [];
@@ -165,7 +168,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
         });
     });
 
-    router.get("/movie",function(req,res){
+    router.get("/movie/now_playing",function(req,res){
         var query = "SELECT * FROM ??";
         var table = ["upcomingmovies"];
         query = mysql.format(query,table);
@@ -192,13 +195,191 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
                 res.json(rc);
             });
     });
-    router.get("/theMovieDB/:movie_name", function (req,res) {
+    router.get("/rotten_tomatoes/:movie_name", function (req,res) {
         var rc = new RottenCrawler(req.params.movie_name);
-        rc.theMovieDB()
-            .then(function() {
-                res.json(rc.movieResponse);
-            });
+        var tomatoURL = "";
+        var imdb_id = "";
+        var crawlTomatoData = "";
+        async.series([
+            function(callback){
+                rc.theMovieDB()
+                    .then(function() {
+                        //console.log(rc.movieResponse["movieInfo"][0].imdb_id);
+                        imdb_id = rc.movieResponse["movieInfo"][0].imdb_id;
+                        tomatoURL = rc.movieResponse["omdbData"][0].tomatoURL;
+                        tomatoURL = tomatoURL.replace("http://www.rottentomatoes.com","");
+                        //console.log("Done",tomatoURL);
+                        callback();
+                    });
+            },
+            function(callback){
+                console.log("Will write later");
+                var rc = new RottenCrawler(tomatoURL);
+                rc.getMovieInfo()
+                    .then(function() {
+                        crawlTomatoData = rc.crawlTomato;
+                        console.log(rc);
+                        callback();
+                    });
+            }
+        ],function(err){
+            if(err){
+                res.json({"Error" : true, "Message" : "Error Details:- "+err});
+            }
+            else{
+                res.json({"Error" : false, "Message" : "Success"});
+            }
+        });
     });
+    router.get("/the_movie_db/:movie_name", function (req,res){
+        /*Using Async WaterFall Model to collect Data for the year 2016*/
+        var date = new Date();
+        var year = date.getFullYear();
+        var searchElementID = '';
+        var url = 'http://api.themoviedb.org/3/search/movie?api_key='+apiKey+"&query="+req.params.movie_name+"&year="+year;
+        var re = {};
+        async.waterfall([
+            //1stly Search Movies via apiary/search/movie
+           function(callback) {
+                reqPro(url).then(function(response){
+                    var ret = JSON.parse(response).results;
+                    //console.log(re.response[0].poster_path);
+                    if(ret[0].poster_path!=null){
+                        download('http://image.tmdb.org/t/p/w500'+ret[0].poster_path
+                            , './app/images/nowShowing'+ret[0].poster_path, function(){
+                                console.log('saved image');
+                            });
+                    }
+                    callback(null, ret[0].id);
+                });
+            },
+            function(id, callback) {
+                // id now equals 2nd parameter from previous callback
+                //2ndly get movie details as per id(set by apiary)
+                var url2 = 'http://api.themoviedb.org/3/movie/'+id+'?api_key='+apiKey;
+                reqPro(url2).then(function(response){
+                    re.movieDetails = JSON.parse(response);
+                    //console.log(JSON.parse(response));
+                    callback(null, re.movieDetails.imdb_id,id);
+                });
+            },
+            function(imdb_id, id,callback) {
+                //3rdly call OMDB API for extra results
+                searchElementID = id;
+                var url3 = "http://www.omdbapi.com/?i="+imdb_id+"&plot=full&r=json&tomatoes=true";
+                reqPro(url3).then(function(response){
+                    re.omdbData = JSON.parse(response);
+                    callback(null,id);
+                });
+            },
+            //lastly call the casts and crews
+            function(id,callback){
+                var url4 = 'http://api.themoviedb.org/3/movie/'+id+'/credits?api_key='+apiKey;
+                reqPro(url4).then(function(response){
+                    re.credits = JSON.parse(response);
+                    //console.log(";;;;;",re.credits.cast.length);
+                    var times2iterate = [];
+                    for(var i=0;i<re.credits.cast.length;i++){
+                        times2iterate.push(i);
+                    }
+                    //save cast images to credits
+                    async.eachSeries(times2iterate, function(i, callback) {
+                        if(re.credits.cast[i].profile_path != null){
+                            download('http://image.tmdb.org/t/p/w500'+re.credits.cast[i].profile_path
+                                , './app/images/credits'+re.credits.cast[i].profile_path, function(){
+                                    console.log('saved image',i);
+                                });
+                        }
+                        callback();
+                    },
+                        function(err){
+                            // if any of the file processing produced an error, err would equal that error
+                            if( err ) {
+                                // One of the iterations produced an error.
+                                // All processing will now stop.
+                                res.json({"Error":true, "Message":err});
+                                console.log('A file failed to process',err);
+                            } else {
+                                console.log('All files have been processed successfully');
+                                //res.json(ret);
+                            }
+                        });
+                    callback(null,re);
+                });
+            },
+            //Now we are ready to save them to database
+            function(toBeSaved,callback){
+                //for(var k = 0;k<toBeSaved.credits.cast.length;k++){
+                //    console.log("---",k,";;;;;",JSON.stringify(toBeSaved.credits.cast[k]));
+                //}
+                /*Adding to Database*/
+                var query = "INSERT INTO movieinfo " +
+                    "(infoMovieID, " +
+                    "infoImdbID, " +
+                    "infoMovieName," +
+                    "infoMovieInTheatres, " +
+                    "infoMovieRuntime, " +
+                    "infoMovieRated, " +
+                    "infoMovieDirectedBy, " +
+                    "infoMovieWrittenBy, "+
+                    "infoMovieGenre, " +
+                    "infoMovieImdbRating, " +
+                    "infoMovieProduction, " +
+                    "infoMovieWebsite, " +
+                    "infoMovieDescription, " +
+                    "infoMoviePosterPath, " +
+                    "infoMovieCasts) VALUES " +
+                    "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                var table = [
+                    toBeSaved.movieDetails.id,
+                    toBeSaved.movieDetails.imdb_id,
+                    toBeSaved.omdbData.Title,
+                    toBeSaved.omdbData.Released,
+                    toBeSaved.omdbData.Runtime,
+                    toBeSaved.omdbData.Rated,
+                    toBeSaved.omdbData.Director,
+                    toBeSaved.omdbData.Writer,
+                    toBeSaved.omdbData.Genre,
+                    toBeSaved.omdbData.imdbRating,
+                    toBeSaved.omdbData.Production,
+                    toBeSaved.omdbData.Website,
+                    toBeSaved.omdbData.Plot,
+                    "./app/images/nowShowing"+toBeSaved.movieDetails.poster_path,
+                    JSON.stringify(toBeSaved.credits.cast)
+                ];
+                query = mysql.format(query,table);
+                //console.log(query);
+                conn.query(query,function(err,rows){
+                    if(err) {
+                        console.log("Error",err);
+                    } else {
+                        console.log("Success",rows);
+                    }
+                });
+                /*End adding*/
+                callback(null,toBeSaved);
+            }
+        ], function (err, result) {
+            // result now equals 'done'
+            if(err){
+                res.json({"Error":true, "Message":err});
+            }else{
+                var query = 'SELECT * FROM ?? WHERE infoMovieID = ?';
+                var table = ["movieinfo",searchElementID];
+                query = mysql.format(query,table);
+                //console.log(query);
+                conn.query(query,function(err,rows){
+                    if(err) {
+                        console.log("Error",err);
+                    } else {
+                        console.log("Success",rows);
+                        res.json(rows);
+                    }
+                });
+            }
+        });
+        /*End Waterfall*/
+    } );
 };
 
 module.exports = REST_ROUTER;

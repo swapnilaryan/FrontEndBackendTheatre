@@ -3,3 +3,5 @@ node_modules/
 bower_components/
 #dist/
 app/images/upcoming/
+app/images/credits/
+app/images/nowShowing/

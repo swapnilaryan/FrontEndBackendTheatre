@@ -1,7 +1,9 @@
 var rp = require('request-promise'),
     cheerio = require('cheerio');
+var mysql = require("mysql");
+var imdb_id = "";
 
-
+var connection = "";
 var RottenCrawler = function(movieURL) {
     var rc = this;
     rc.apiKey = "2c9306d42037dfb0de0fc3f153819054";
@@ -14,26 +16,33 @@ var RottenCrawler = function(movieURL) {
     console.log(movieURL,rc.apiKey);
     return rc;
 };
+
+RottenCrawler.prototype.getConnection = function(conn){
+    connection = conn;
+    return connection;
+};
 RottenCrawler.prototype.theMovieDB = function() {
     var rc = this;
     var date = new Date();
     var year = date.getFullYear();
-    console.log(year);
+    //console.log(year);
     return rp('http://api.themoviedb.org/3/search/movie?api_key='+rc.apiKey+"&query="+rc.movieURL+"&year="+year)
         .then(function(response){
             rc.response = JSON.parse(response).results[0].id;
+            //console.log(rc);
             //get Details via id in movie apiary
             return rp('http://api.themoviedb.org/3/movie/'+rc.response+'?api_key='+rc.apiKey)
             .then(function(res){
                 rc.movieResponse["movieInfo"].push(JSON.parse(res));
-                var imdb_id = JSON.parse(res).imdb_id;
-                //console.log(JSON.parse(res).imdb_id);
+                imdb_id = JSON.parse(res).imdb_id;
+                //console.log("--",JSON.parse(res).imdb_id);
                 return rp('http://api.themoviedb.org/3/movie/'+rc.response+'/credits?api_key='+rc.apiKey)
                     .then(function(r){
                         rc.movieResponse["movieCredits"].push(JSON.parse(r));
                         return rp("http://www.omdbapi.com/?i="+imdb_id+"&plot=full&r=json&tomatoes=true")
                             .then(function(r){
                                 rc.movieResponse["omdbData"].push(JSON.parse(r));
+                                console.log(rc["movieResponse"],rc["movieCredits"],rc["omdbData"]);
                             });
                     });
             });
@@ -47,14 +56,16 @@ RottenCrawler.prototype.getMovieInfo = function() {
     rc.crawlTomato = {};
     return rp('http://www.rottentomatoes.com' + rc.movieURL)
         .then(function(response) {
+            console.log(rc.movieURL);
             var $ = cheerio.load(response);
 
             var ratingRegex = /(\d+)?(.)?\d+\/\d+$/;
 
-            rc.movieTitle = $('#movie-title').clone().find('span').remove().end().text().trim();
-            rc.releaseYear = parseInt(/\d+/.exec($('#movie-title').text())[0]);
+            rc.crawlTomato["movieTitle"] = (rc.movieTitle = $('#movie-title').clone().find('span').remove().end().text().trim());
 
-            rc.allCritics = {
+            rc.crawlTomato["releaseYear"] = (rc.releaseYear = parseInt(/\d+/.exec($('#movie-title').text())[0]));
+
+            rc.crawlTomato["allCritics"] = (rc.allCritics = {
                 freshness: $('#all-critics-numbers .meter-tomato').hasClass('fresh') ? 'fresh' : 'rotten',
                 tomatometer: parseInt($('#all-critics-numbers .meter-value span').text()),
                 averageRating: $('#all-critics-numbers #scoreStats > div:first-of-type').text().trim().match(ratingRegex)[0].trim(),
@@ -62,10 +73,11 @@ RottenCrawler.prototype.getMovieInfo = function() {
                 freshCount: parseInt(/\d+$/.exec($('#all-critics-numbers #scoreStats > div:nth-of-type(3)').text().trim())[0]),
                 rottenCount: parseInt(/\d+$/.exec($('#all-critics-numbers #scoreStats > div:nth-of-type(4)').text().trim())[0]),
                 criticsConsensus: $('#all-critics-numbers .critic_consensus').clone().find('span').remove().end().text().trim()
-            };
+            });
 
             if ($('#top-critics-numbers .meter-value').length)
-            rc.topCritics = {
+
+            rc.crawlTomato["topCritics"] = (rc.topCritics = {
                 freshness: $('#top-critics-numbers .meter-tomato').hasClass('fresh') ? 'fresh' : 'rotten',
                 tomatometer: parseInt($('#top-critics-numbers .meter-value span').text()),
                 averageRating: $('#top-critics-numbers #scoreStats > div:first-of-type').text().trim().match(ratingRegex)[0].trim(),
@@ -73,21 +85,43 @@ RottenCrawler.prototype.getMovieInfo = function() {
                 freshCount: parseInt(/\d+$/.exec($('#top-critics-numbers #scoreStats > div:nth-of-type(3)').text().trim())[0]),
                 rottenCount: parseInt(/\d+$/.exec($('#top-critics-numbers #scoreStats > div:nth-of-type(4)').text().trim())[0]),
                 criticsConsensus: $('#top-critics-numbers .critic_consensus').clone().find('span').remove().end().text().trim()
-            };
+            });
 
-            rc.audienceScore = {
+            rc.crawlTomato["audienceScore"] = (rc.audienceScore = {
                 tomatometer: /\d+/.exec($('.audience-score .meter-value span').text())[0],
                 averageRating: $('.audience-info > div:first-of-type').text().trim().match(ratingRegex)[0].trim(),
                 ratingCount: parseInt(/((\d+)?(\,)?)*\d+$/.exec($('.audience-info > div:last-of-type').text().trim())[0].replace(',', ''))
-            };
+            });
 
-            rc.movieDes = $('#movieSynopsis').text().trim();
-            rc.genre = $('.movie_info .content_body table.info td:contains("Genre")').next('td').text().trim().split(', ');
-            rc.boxOffice = $('.movie_info .content_body table.info td:contains("Box Office")').next('td').text().trim() || "unknown";
+            rc.crawlTomato["movieDes"] = (rc.movieDes = $('#movieSynopsis').text().trim());
 
+            rc.crawlTomato["genre"] = (rc.genre = $('.movie_info .content_body table.info td:contains("Genre")').next('td').text().trim().split(', '));
+
+            rc.crawlTomato["boxOffice"] = (rc.boxOffice = $('.movie_info .content_body table.info td:contains("Box Office")').next('td').text().trim() || "unknown");
+        })
+        .then(function(){
+            //console.log(rc.crawlTomato,imdb_id);
+            /*Here We will add the tomato data to the database*/
+            var query = "INSERT INTO ?? (??, ??, ??, ??, ??, ??, ??) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            var table = [   "movietomatoes",
+                "mtImdbID", "mtMovieTitle","mtAllCritics","mtTopCritics",
+                "mtAudienceScore","mtMovieDescription","mtGenre",
+                imdb_id,rc.crawlTomato["movieTitle"],JSON.stringify(rc.crawlTomato["allCritics"]),
+                JSON.stringify(rc.crawlTomato["topCritics"]),JSON.stringify(rc.crawlTomato["audienceScore"]),
+                rc.crawlTomato["movieDes"],JSON.stringify(rc.crawlTomato["genre"])];
+            query = mysql.format(query,table);
+            connection.query(query,function(err,rows){
+                if(err) {
+                    console.log("Error executing MySQL query", err);
+                } else {
+                   console.log("Success", "Data Inserted",rows);
+                }
+            });
+            /*End Adding tomato data to the database*/
+            console.log("After everything");
         })
         .catch(function(err) {
-          //console.log("err");
+          //console.log("err");s
             console.log(err);
         });
 };
