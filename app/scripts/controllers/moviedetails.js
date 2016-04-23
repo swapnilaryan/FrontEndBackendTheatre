@@ -8,7 +8,7 @@
  * Controller of the backendTheatreApp
  */
 angular.module('backendTheatreApp')
-  .controller('MoviedetailsCtrl', function ($route,$location,searchMovieText,apiKey,
+  .controller('MoviedetailsCtrl', function ($sce, $route,$uibModal,$location,searchMovieText,apiKey,
                                             $q,$scope,movieTomatoDetails,movieInfoDetails) {
       console.log(movieTomatoDetails);
       console.log(movieInfoDetails);
@@ -120,4 +120,13 @@ angular.module('backendTheatreApp')
           }
         };
       /*End Displaying casts*/
+      /*Trailers*/
+
+      $scope.displayTomatoData.trailer = "https://www.youtube.com/embed?listType=search&amp;list="+$scope.displayTomatoData.movieTitle+"+Trailer";
+      $scope.trustSrc = function(src) {
+          console.log(src);
+          return $sce.trustAsResourceUrl("https://www.youtube.com/embed?listType=search&amp;list="+src+"+Trailer");
+      };
+      $sce.trustAsResourceUrl($scope.displayTomatoData.trailer);
+      /*End Trailers*/
   });

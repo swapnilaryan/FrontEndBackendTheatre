@@ -1,0 +1,19 @@
+<div ng-controller="MoviedetailsCtrl">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Search Your Movies Here</h4>
+    </div>
+    <div class="modal-body">
+        <div class="input-group stylish-input-group">
+            <input type="text" class="form-control" ng-model="movieToSearch" placeholder="Type a movie name" >
+            <span class="input-group-addon" ng-click="searchMovies(movieToSearch)">
+                <button>
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </span>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" ng-click="close()">Close</button>
+    </div> <!-- modal-footer -->
+</div>

@@ -146,3 +146,14 @@ a.criticsLinkTextBold{
     outline: none;
     background-color: #8ec9d8;
 }
+.modalClose{
+    color: white;
+}
+.moveCrossRight{
+    text-align: right;
+}
+.lightGray{
+    color: #EEEEEE;
+    font-size: 25px;
+    cursor: pointer;
+}
