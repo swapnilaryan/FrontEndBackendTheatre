@@ -446,10 +446,12 @@ angular.module('backendTheatreApp')
       $scope.totalCasts = JSON.parse($scope.displayMovieDetails.infoMovieCasts);
       //Alter their profile path with ../images/credits/:profilePath
       for(var i=0;i<$scope.totalCasts.length;i++){
-          if($scope.totalCasts[i].profile_path==null)
-              $scope.totalCasts[i].profile_path = "images/credits/image_not_found.jpg"
-          else
+          if($scope.totalCasts[i].profile_path==null) {
+              $scope.totalCasts[i].profile_path = "../images/credits/image_not_found.jpg";
+          }
+          else {
               $scope.totalCasts[i].profile_path = "../images/credits"+$scope.totalCasts[i].profile_path;
+          }
       }
       $scope.show6CastsFunction = function show6CastsFunction() {
           $scope.show6Casts = {};
