@@ -21,18 +21,29 @@ angular.module('backendTheatreApp')
       };
       return smt;
   })
-  .factory('movieTomato', function ($q,$http,apiKey,searchMovieText) {
+  .factory('movieDetails', function ($q,$http,apiKey,searchMovieText) {
       return {
           getTomatoResult: function () {
               var deferred = $q.defer();
               var movieFormat = searchMovieText.get();
-              $http.get("" + apiKey.apiUrlFn() + "rt/" + movieFormat)
+              // + movieFormat)
+              $http.get("" + apiKey.apiUrlFn() + "db/rottenTomatoes/zootopia")
                   .success(function (data) {
                       //console.log("------", data);
                       deferred.resolve(data);
                   }).error(function (data) {
                       //console.log("????", data);
                       deferred.reject(data);
+              });
+              return deferred.promise;
+          },
+          getMovieInfo: function () {
+              var deferred = $q.defer();
+              $http.get("" + apiKey.apiUrlFn() + "/db/movieinfo/zootopia")
+                  .success(function (data) {
+                      deferred.resolve(data);
+                  }).error(function (data){
+                  deferred.reject(data);
               });
               return deferred.promise;
           }

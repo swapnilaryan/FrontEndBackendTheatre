@@ -310,8 +310,27 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
             //Now we are ready to save them to database
             function(toBeSaved,callback){
                 //for(var k = 0;k<toBeSaved.credits.cast.length;k++){
-                //    console.log("---",k,";;;;;",JSON.stringify(toBeSaved.credits.cast[k]));
+                //    console.log("---",toBeSaved.omdbData);
                 //}
+                /*Beautifying our data*/
+
+                toBeSaved.movieDetails.id = (toBeSaved.movieDetails.id)?toBeSaved.movieDetails.id:"N/A";
+                toBeSaved.movieDetails.imdb_id = (toBeSaved.movieDetails.imdb_id)?toBeSaved.movieDetails.imdb_id:"N/A";
+                toBeSaved.omdbData.Title = (toBeSaved.omdbData.Title)?toBeSaved.omdbData.Title:"N/A";
+                toBeSaved.omdbData.Released = (toBeSaved.omdbData.Released)?toBeSaved.omdbData.Released:"N/A";
+                toBeSaved.omdbData.Runtime = (toBeSaved.omdbData.Runtime)?toBeSaved.omdbData.Runtime:"N/A";
+                toBeSaved.omdbData.Rated = (toBeSaved.omdbData.Rated)?toBeSaved.omdbData.Rated:"N/A";
+                toBeSaved.omdbData.Writer = (toBeSaved.omdbData.Writer)?toBeSaved.omdbData.Writer:"N/A";
+                toBeSaved.omdbData.Genre = (toBeSaved.omdbData.Genre)?toBeSaved.omdbData.Genre:"N/A";
+                toBeSaved.omdbData.imdbRating = (toBeSaved.omdbData.imdbRating)?toBeSaved.omdbData.imdbRating:"N/A";
+                toBeSaved.omdbData.Production = (toBeSaved.omdbData.Production)?toBeSaved.omdbData.Production:"N/A";
+                toBeSaved.omdbData.Production = (toBeSaved.omdbData.Production)?toBeSaved.omdbData.Production:"N/A";
+                toBeSaved.omdbData.Website = (toBeSaved.omdbData.Website)?toBeSaved.omdbData.Website:"N/A";
+                toBeSaved.omdbData.Plot = (toBeSaved.omdbData.Plot)?toBeSaved.omdbData.Plot:"N/A";
+                toBeSaved.movieDetails.poster_path = (toBeSaved.movieDetails.poster_path)?toBeSaved.movieDetails.poster_path:"N/A";
+                toBeSaved.omdbData.BoxOffice = (toBeSaved.omdbData.BoxOffice)?toBeSaved.omdbData.BoxOffice:"N/A";
+
+                /*End Beautifying data*/
                 /*Adding to Database*/
                 var query = "INSERT INTO movieinfo " +
                     "(infoMovieID, " +
@@ -328,8 +347,9 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
                     "infoMovieWebsite, " +
                     "infoMovieDescription, " +
                     "infoMoviePosterPath, " +
-                    "infoMovieCasts) VALUES " +
-                    "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    "infoMovieCasts, "+
+                    "infoMovieBoxOffice) VALUES " +
+                    "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 var table = [
                     toBeSaved.movieDetails.id,
                     toBeSaved.movieDetails.imdb_id,
@@ -345,7 +365,8 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
                     toBeSaved.omdbData.Website,
                     toBeSaved.omdbData.Plot,
                     "./app/images/nowShowing"+toBeSaved.movieDetails.poster_path,
-                    JSON.stringify(toBeSaved.credits.cast)
+                    JSON.stringify(toBeSaved.credits.cast),
+                    toBeSaved.omdbData.BoxOffice
                 ];
                 query = mysql.format(query,table);
                 //console.log(query);
@@ -380,6 +401,41 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
         });
         /*End Waterfall*/
     } );
+    /*Fetch from our database*/
+    // 1. Get all from movietomatoes
+    router.get("/db/rottenTomatoes/:movie_name", function (req,res) {
+        var query = 'SELECT * FROM ?? WHERE mtImdbID = ?';
+        var table = ["movietomatoes","tt2948356"];
+        query = mysql.format(query,table);
+        //console.log(query);
+        conn.query(query,function(err,rows){
+            if(err) {
+                console.log("Error",err);
+                res.json( {"Error":rows} );
+            } else {
+                console.log("Success",rows);
+                res.json(rows[0]);
+            }
+        });
+    });
+
+    //2. Get all from movieinfo
+    router.get("/db/movieinfo/:movie_name", function (req,res) {
+        var query = 'SELECT * FROM ?? WHERE infoImdbID = ?';
+        var table = ["movieinfo","tt2948356"];
+        query = mysql.format(query,table);
+        //console.log(query);
+        conn.query(query,function(err,rows){
+            if(err) {
+                console.log("Error",err);
+                res.json( {"Error":rows} );
+            } else {
+                console.log("Success",rows);
+                res.json(rows[0]);
+            }
+        });
+    });
+
 };
 
 module.exports = REST_ROUTER;

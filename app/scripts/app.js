@@ -18,10 +18,21 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'ui.router'
   ])
   .config(function ($routeProvider) {
-    $routeProvider
+      // For any unmatched url, redirect to /
+      //$urlRouterProvider.otherwise("/");
+      //$stateProvider
+      //    .state('main',{
+      //        url: "/",
+      //        templateUrl: "views/main.html",
+      //        controller: 'MainCtrl',
+      //        controllerAs: 'main'
+      //    });
+
+      $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
         controller: 'MainCtrl',
@@ -37,8 +48,11 @@ angular
           controller: 'MoviedetailsCtrl',
           controllerAS: 'moviedetails',
           resolve: {
-              theMovieDbInfo: function (movieApiaryInfo) {
-                  return movieApiaryInfo.getSearchDetails();
+              movieTomatoDetails: function (movieDetails) {
+                  return movieDetails.getTomatoResult();
+              },
+              movieInfoDetails: function (movieDetails) {
+                  return movieDetails.getMovieInfo();
               }
           }
       })
