@@ -2,6 +2,7 @@
 node_modules/
 bower_components/
 #dist/
+/config.json
 app/images/upcoming/
 app/images/credits/
 app/images/nowShowing/
