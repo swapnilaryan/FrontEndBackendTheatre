@@ -24,13 +24,18 @@ connection.connect(function(err) {
         console.error('error connecting: ' + err.stack);
         return;
     }
-
     console.log('connected as id ' + connection.threadId);
 });
 // configure app to use bodyParser()
 // this will let us get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+// handle CORS
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    next();
+});
+// End handling CORS
 
 var port = process.env.PORT || 8080;        // set our port
 
