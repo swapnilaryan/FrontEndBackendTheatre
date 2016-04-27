@@ -124,7 +124,8 @@ angular.module('backendTheatreApp')
       /*End Displaying casts*/
       /*Trailers*/
 
-      $scope.displayTomatoData.trailer = "https://www.youtube.com/embed?listType=search&amp;list="+$scope.displayTomatoData.movieTitle+"+Trailer";
+      //$scope.displayTomatoData.trailer = "https://www.youtube.com/embed?listType=search&amp;list="+$scope.displayTomatoData.movieTitle+"+Trailer";
+      $scope.displayTomatoData.trailer = "https://www.youtube.com/results?search_query="+$scope.displayTomatoData.movieTitle+"+trailer";
       $scope.trustSrc = function(src) {
           console.log(src);
           return $sce.trustAsResourceUrl("https://www.youtube.com/embed?listType=search&amp;list="+src+"+Trailer");

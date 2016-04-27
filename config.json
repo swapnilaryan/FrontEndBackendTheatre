@@ -1,0 +1,10 @@
+{
+  "mysql" : {
+      "host" : "localhost",
+      "user" : "root",
+      "password" : "",
+      "port" : 3307,
+      "database" : "movie_theatre",
+      "debug" : "false"
+  }
+}

@@ -4,7 +4,7 @@
 var express = require("express");
 var mysql   = require("mysql");
 var bodyParser  = require("body-parser");
-//var md5 = require('MD5');
+var fs = require('fs');
 var rest = require("./REST.js");
 var app  = express();
 
@@ -12,15 +12,19 @@ function REST(){
     var self = this;
     self.connectMysql();
 }
+// Read the configuration file
+var mysqlConfig = JSON.parse(fs.readFileSync('config.json', 'utf8'));
+//console.log(mysqlConfig.mysql);
+// End Reading configuration files
 REST.prototype.connectMysql = function() {
     var self = this;
-    var pool      =    mysql.createPool({
-        host     : 'localhost',
-        user     : 'Cinestar_dbuser ',
-        password : 'dbuserpw123',
-        port     : 3306,
-        database : 'movie_theatre',
-        debug    :  false
+    var pool = mysql.createPool({
+        host     : mysqlConfig.mysql.host,
+        user     : mysqlConfig.mysql.user,
+        password : mysqlConfig.mysql.password,
+        port     : mysqlConfig.mysql.port,
+        database : mysqlConfig.mysql.database,
+        debug    : mysqlConfig.mysql.debug
     });
     pool.getConnection(function(err,connection){
         if(err) {
