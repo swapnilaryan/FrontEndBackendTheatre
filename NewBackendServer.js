@@ -19,13 +19,20 @@ var connection = mysql.createConnection({ // Mysql Connection
     port     : mysqlConfig.mysql.port,
     database : mysqlConfig.mysql.database
 });
-console.log("Mysql is connected",connection);
+connection.connect(function(err) {
+    if (err) {
+        console.error('error connecting: ' + err.stack);
+        return;
+    }
+
+    console.log('connected as id ' + connection.threadId);
+});
 // configure app to use bodyParser()
 // this will let us get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-var port = process.env.PORT || 8000;        // set our port
+var port = process.env.PORT || 8080;        // set our port
 
 // ROUTES FOR OUR API
 // =============================================================================
