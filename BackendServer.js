@@ -5,7 +5,7 @@ var express = require("express");
 var mysql   = require("mysql");
 var bodyParser  = require("body-parser");
 var fs = require('fs');
-var rest = require("./REST.js");
+var rest = require("./Rest.js");
 var app  = express();
 
 function REST(){
