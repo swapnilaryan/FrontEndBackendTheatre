@@ -20,7 +20,7 @@ angular.module('backendTheatreApp')
                   apiUrl = "http://localhost:3000/api/";
               }
               else {
-                  apiUrl = "wrong api URL See apiKeyJs";
+                  apiUrl = "http://cinestar.affpc.com:8000/api/";
               }
               return apiUrl;
           }
