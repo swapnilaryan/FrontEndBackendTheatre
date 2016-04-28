@@ -38,7 +38,7 @@ app.use(function(req, res, next) {
 });
 // End handling CORS
 
-var port = process.env.PORT || 8080;        // set our port
+var port = process.env.PORT || mysqlConfig.sitePort;        // set our port
 
 // ROUTES FOR OUR API
 // =============================================================================
@@ -59,3 +59,18 @@ app.use('/api', router);
 // =============================================================================
 app.listen(port);
 console.log('Magic happens on port ' + port);
+
+// ROUTES FOR OUR API
+// =============================================================================
+
+router.get('/db/movieinfo/:movie_name',function(req,res){
+    connection.query("SELECT * from movieinfo where infoImdbID = ?",[req.params.movie_name],function(err, rows, fields){
+        console.log("Something happening");
+        if(rows.length != 0){
+            console.log(rows.length);
+            res.json(rows);
+        }else{
+            res.json({ Error: 'An error occured' });
+        }
+    });
+});

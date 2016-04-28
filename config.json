@@ -6,5 +6,6 @@
       "port" : 3307,
       "database" : "movie_theatre",
       "debug" : "false"
-  }
+  },
+  "sitePort": 8000
 }
