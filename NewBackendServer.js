@@ -63,14 +63,33 @@ console.log('Magic happens on port ' + port);
 // ROUTES FOR OUR API
 // =============================================================================
 
+// ======= These are the ones which will be used by actual application =========
+// 1. Get all from movieinfo
 router.get('/db/movieinfo/:movie_name',function(req,res){
-    connection.query("SELECT * from movieinfo where infoImdbID = ?",[req.params.movie_name],function(err, rows, fields){
+    //connection.query("SELECT * from movieinfo where infoImdbID = ?",[req.params.movie_name],function(err, rows, fields){
+    connection.query("SELECT * from movieinfo where infoImdbID = ?",["tt2948356"],function(err, rows, fields){
         console.log("Something happening");
         if(rows.length != 0){
             console.log(rows.length);
-            res.json(rows);
+            res.json(rows[0]);
         }else{
             res.json({ Error: 'An error occured' });
         }
     });
 });
+// 2. Get all from movietomatoes
+router.get("/db/rottenTomatoes/:movie_name", function (req,res) {
+    var query = 'SELECT * FROM ?? WHERE mtImdbID = ?';
+    var table = ["movietomatoes","tt2948356"];
+    query = mysql.format(query,table);
+    //console.log(query);
+    connection.query(query,function(err,rows){
+        if(rows.length != 0){
+            console.log(rows.length);
+            res.json(rows[0]);
+        }else{
+            res.json({ Error: 'An error occured' });
+        }
+    });
+});
+// ============= End of writing API's to be used by our database ===============

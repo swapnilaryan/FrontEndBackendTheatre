@@ -17,7 +17,7 @@ angular.module('backendTheatreApp')
           apiUrlFn: function(){
               if($location.host()=='localhost')
               {
-                  apiUrl = "http://localhost:3000/api/";
+                  apiUrl = "http://localhost:8000/api/";
               }
               else {
                   apiUrl = "http://cinestar.affpc.com:8080/api/";

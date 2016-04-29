@@ -12,10 +12,10 @@ angular.module('backendTheatreApp')
                                             $q,$scope,movieTomatoDetails,movieInfoDetails) {
       console.log(movieTomatoDetails);
       console.log(movieInfoDetails);
-      $http.get('http://cinestar.affpc.com:8080/api/')
-          .then(function(response) {
-              console.log(response);
-          });
+      //$http.get('http://cinestar.affpc.com:8080/api/')
+      //    .then(function(response) {
+      //        console.log(response);
+      //    });
       $scope.displayTomatoData = {};
       $scope.displayTomatoData.imdbID = movieTomatoDetails.mtImdbID;
       $scope.displayTomatoData.movieDescription = movieTomatoDetails.mtMovieDescription;
