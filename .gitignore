@@ -6,4 +6,4 @@ bower_components/
 app/images/upcoming/
 app/images/credits/
 app/images/nowShowing/
-dist/images/
+#dist/images/

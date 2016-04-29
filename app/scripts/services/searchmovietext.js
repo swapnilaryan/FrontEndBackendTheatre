@@ -25,7 +25,7 @@ angular.module('backendTheatreApp')
       return {
           getTomatoResult: function () {
               var deferred = $q.defer();
-              var movieFormat = searchMovieText.get();
+              //var movieFormat = searchMovieText.get();
               console.log("api is ",apiKey.apiUrlFn());
               $http.get("" + apiKey.apiUrlFn() + "db/rottenTomatoes/zootopia")
                   .success(function (data) {
