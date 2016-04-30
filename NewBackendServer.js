@@ -109,7 +109,13 @@ router.get("/db/rottenTomatoes/:movie_name", function (req,res) {
 });
 // ============= End of writing API's to be used by our database ===============
 
-
+var download = function(uri, filename, callback){
+    request.head(uri, function(err, res, body){
+        //console.log('content-type:', res.headers['content-type']);
+        //console.log('content-length:', res.headers['content-length']);
+        request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
+    });
+};
 // ================================= Online API=================================
 // 1. fetch upcoming movies
 router.get("/upcoming",function(req,res) {
