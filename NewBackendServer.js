@@ -6,12 +6,16 @@ var app        = express();                 // define our app using express
 var bodyParser = require('body-parser');
 var mysql      = require('mysql');
 var fs         = require('fs');
+var RottenCrawler = require("./RottenCrawler.js");
+var async = require("async");
+var reqPro = require('request-promise');
+var apiKey = "2c9306d42037dfb0de0fc3f153819054";
+var request = require('request');
 
 // Read the configuration file
 var mysqlConfig = JSON.parse(fs.readFileSync('config.json', 'utf8'));
 //console.log(mysqlConfig.mysql);
 // End Reading configuration files
-
 var connection = mysql.createConnection({ // Mysql Connection
     host     : mysqlConfig.mysql.host,
     user     : mysqlConfig.mysql.user,
@@ -19,12 +23,23 @@ var connection = mysql.createConnection({ // Mysql Connection
     port     : mysqlConfig.mysql.port,
     database : mysqlConfig.mysql.database
 });
-connection.connect(function(err) {
-    if (err) {
-        console.error('error connecting: ' + err.stack);
-        return;
+function handleDisconnect(){
+    connection.connect(function(err) {
+        if (err) {
+            console.error('error connecting: ' + err.stack);
+            setTimeout(handleDisconnect, 2000);
+            //return;
+        }
+        console.log('connected as id ' + connection.threadId);
+    });
+}
+connection.on('error', function(err) {
+    console.log('db error', err);
+    if(err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
+        handleDisconnect();                         // lost due to either server restart, or a
+    } else {                                      // connnection idle timeout (the wait_timeout
+        throw err;                                  // server variable configures this)
     }
-    console.log('connected as id ' + connection.threadId);
 });
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -93,3 +108,122 @@ router.get("/db/rottenTomatoes/:movie_name", function (req,res) {
     });
 });
 // ============= End of writing API's to be used by our database ===============
+
+
+// ================================= Online API=================================
+// 1. fetch upcoming movies
+router.get("/upcoming",function(req,res) {
+    var items = [1];
+    var totPage = [];
+    var ret = [];
+    async.eachSeries(items, function(item, callback){
+        var url = "http://api.themoviedb.org/3/movie/upcoming?api_key=2c9306d42037dfb0de0fc3f153819054&page=" + item + "&language=en";
+        reqPro(url).then(function(response){
+            for(var i =1;i<=JSON.parse(response).total_pages;i++){
+                totPage.push(i);
+            }
+            console.log("total pages fetched is",totPage);
+            callback();
+        });
+    },function (err){
+        if(err){
+            console.log("Some Error happened at url fetching. Do manually");
+        }
+        else{
+            console.log("All Upcoming Movies Fetched");
+            async.eachSeries(totPage, function(item, callback) {
+
+                // Perform operation on file here.
+                var url = "http://api.themoviedb.org/3/movie/upcoming?api_key=2c9306d42037dfb0de0fc3f153819054&page=" + item + "&language=en";
+                console.log('Processing page ' + url);
+                reqPro(url).then(function(response){
+                    var t = [];
+                    for(var x = 0;x<JSON.parse(response).results.length;x++){
+                        t.push(x);
+                    }
+                    console.log("t is ",t);
+                    async.eachSeries(t, function(i, callback) {
+                        var upC = {
+                            "id": "",
+                            "title": "",
+                            "release_date":"",
+                            "poster_path":"",
+                            "original_language":"",
+                            "page":""
+                        };
+                        if(JSON.parse(response).results[i].original_language=='en'){
+                            upC["id"] = JSON.parse(response).results[i].id;
+                            upC["page"] = JSON.parse(response).page;
+                            upC["title"] = JSON.parse(response).results[i].title;
+                            upC["release_date"] = JSON.parse(response).results[i].release_date;
+                            upC["poster_path"] = './app/images/upcoming'+JSON.parse(response).results[i].poster_path;
+                            upC["original_language"] = JSON.parse(response).results[i].original_language;
+
+                            /*Adding to Database*/
+                            var query = "INSERT INTO ??(??,??,??,??) VALUES (?,?,?,?)";
+                            var table = ["upcomingMovies","upMovieId","upMovieName","upReleaseDate","upPosterPath",
+                                JSON.parse(response).results[i].id,
+                                JSON.parse(response).results[i].title,
+                                JSON.parse(response).results[i].release_date,
+                                "./app/images/upcoming"+JSON.parse(response).results[i].poster_path
+                            ];
+                            query = mysql.format(query,table);
+                            connection.query(query,function(err,rows){
+                                if(err) {
+                                    console.log("Error",err);
+                                } else {
+                                    console.log("Success",rows);
+                                }
+                            });
+                            /*End adding*/
+
+                            if(JSON.parse(response).results[i].poster_path != null){
+                                var ll =[i];
+                                async.eachSeries(ll, function(i, callback) {
+                                    download('http://image.tmdb.org/t/p/w500'+JSON.parse(response).results[i].poster_path
+                                        , './app/images/upcoming'+JSON.parse(response).results[i].poster_path, function(){
+                                            console.log('done');
+                                        });
+                                    callback();
+                                }, function(err){
+                                    // if any of the file processing produced an error, err would equal that error
+                                    if( err ) {
+                                        // One of the iterations produced an error.
+                                        // All processing will now stop.
+                                        console.log('A file failed to process',err);
+                                    } else {
+                                        console.log('All files have been processed successfully');
+                                    }
+                                });
+                            }
+                            ret.push(upC);
+                            //console.log("ret is ",ret);
+                        }
+                        callback();
+                    },function(err){
+                        // if any of the file processing produced an error, err would equal that error
+                        if( err ) {
+                            // One of the iterations produced an error.
+                            // All processing will now stop.
+                            console.log('A file failed to process',err);
+                        } else {
+                            console.log('All files have been processed successfully');
+                        }
+                    });
+                    callback();
+                });
+            }, function(err){
+                // if any of the file processing produced an error, err would equal that error
+                if( err ) {
+                    // One of the iterations produced an error.
+                    // All processing will now stop.
+                    console.log('A file failed to process',err);
+                } else {
+                    console.log('All files have been processed successfully');
+                    res.json(ret);
+                }
+            });
+        }
+    });
+});
+// ================================End online API===============================
