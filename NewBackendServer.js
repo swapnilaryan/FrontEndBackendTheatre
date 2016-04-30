@@ -15,19 +15,28 @@ var request = require('request');
 // Read the configuration file
 var mysqlConfig = JSON.parse(fs.readFileSync('config.json', 'utf8'));
 //console.log(mysqlConfig.mysql);
-// End Reading configuration files
-var connection = mysql.createConnection({ // Mysql Connection
+// End Reading configuration
+var connection = mysql.createPool({ // Mysql Connection
+    connectionLimit : 100000,
     host     : mysqlConfig.mysql.host,
     user     : mysqlConfig.mysql.user,
     password : mysqlConfig.mysql.password,
     port     : mysqlConfig.mysql.port,
     database : mysqlConfig.mysql.database
 });
+//var connection = mysql.createConnection({ // Mysql Connection
+//    host     : mysqlConfig.mysql.host,
+//    user     : mysqlConfig.mysql.user,
+//    password : mysqlConfig.mysql.password,
+//    port     : mysqlConfig.mysql.port,
+//    database : mysqlConfig.mysql.database
+//});
 function handleDisconnect(){
     connection.connect(function(err) {
         if (err) {
             console.error('error connecting: ' + err.stack);
-            setTimeout(handleDisconnect, 2000);
+            console.error('error connecting: ' + err.code);
+            setTimeout(handleDisconnect, 20);
             //return;
         }
         console.log('connected as id ' + connection.threadId);
@@ -38,7 +47,8 @@ connection.on('error', function(err) {
     if(err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
         handleDisconnect();                         // lost due to either server restart, or a
     } else {                                      // connnection idle timeout (the wait_timeout
-        throw err;                                  // server variable configures this)
+        console.log("Error is ", err.code);                          // server variable configures this)
+        handleDisconnect();
     }
 });
 // configure app to use bodyParser()
@@ -162,7 +172,7 @@ router.get("/upcoming",function(req,res) {
                             upC["page"] = JSON.parse(response).page;
                             upC["title"] = JSON.parse(response).results[i].title;
                             upC["release_date"] = JSON.parse(response).results[i].release_date;
-                            upC["poster_path"] = 'app/images/upcoming'+JSON.parse(response).results[i].poster_path;
+                            upC["poster_path"] = './app/images/upcoming'+JSON.parse(response).results[i].poster_path;
                             upC["original_language"] = JSON.parse(response).results[i].original_language;
 
                             /*Adding to Database*/

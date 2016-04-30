@@ -19,6 +19,7 @@ var mysqlConfig = JSON.parse(fs.readFileSync('config.json', 'utf8'));
 REST.prototype.connectMysql = function() {
     var self = this;
     var pool = mysql.createPool({
+        connectionLimit : 100000,
         host     : mysqlConfig.mysql.host,
         user     : mysqlConfig.mysql.user,
         password : mysqlConfig.mysql.password,
@@ -54,8 +55,8 @@ REST.prototype.configureExpress = function(connection) {
 };
 
 REST.prototype.startServer = function() {
-    app.listen(3000,function(){
-        console.log("All right ! I am alive at Port 3000.");
+    app.listen(8080,function(){
+        console.log("All right ! I am alive at Port 8080.");
     });
 };
 
