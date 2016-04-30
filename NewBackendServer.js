@@ -162,7 +162,7 @@ router.get("/upcoming",function(req,res) {
                             upC["page"] = JSON.parse(response).page;
                             upC["title"] = JSON.parse(response).results[i].title;
                             upC["release_date"] = JSON.parse(response).results[i].release_date;
-                            upC["poster_path"] = './app/images/upcoming'+JSON.parse(response).results[i].poster_path;
+                            upC["poster_path"] = 'app/images/upcoming'+JSON.parse(response).results[i].poster_path;
                             upC["original_language"] = JSON.parse(response).results[i].original_language;
 
                             /*Adding to Database*/
@@ -187,7 +187,7 @@ router.get("/upcoming",function(req,res) {
                                 var ll =[i];
                                 async.eachSeries(ll, function(i, callback) {
                                     download('http://image.tmdb.org/t/p/w500'+JSON.parse(response).results[i].poster_path
-                                        , './app/images/upcoming'+JSON.parse(response).results[i].poster_path, function(){
+                                        , 'app/images/upcoming'+JSON.parse(response).results[i].poster_path, function(){
                                             console.log('done');
                                         });
                                     callback();
