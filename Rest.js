@@ -429,12 +429,12 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
         connection.query("SELECT ??, ?? , ??, ?? from ??",
             ["infoMovieID","infoImdbID","infoMovieName","infoMoviePosterPath","movieinfo"],function(err, rows, fields){
                 console.log("Something happening");
-                if(rows.length != 0){
-                    console.log(rows.length);
-                    res.json(rows);
-                }else{
-                    console.log(rows.length);
+                if(err){
+                    //console.log(rows.length);
                     res.json({ Error: 'An error occured' });
+                }else{
+                    //console.log(rows.length);
+                    res.json(rows);
                 }
             });
     });
