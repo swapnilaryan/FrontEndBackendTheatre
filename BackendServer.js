@@ -53,10 +53,10 @@ REST.prototype.configureExpress = function(connection) {
     var rest_router = new rest(router,connection);
     self.startServer();
 };
-
+var port = process.env.PORT || mysqlConfig.sitePort;        // set our port
 REST.prototype.startServer = function() {
-    app.listen(8080,function(){
-        console.log("All right ! I am alive at Port 8080.");
+    app.listen(port,function(){
+        console.log("All right ! I am alive at Port ", port);
     });
 };
 

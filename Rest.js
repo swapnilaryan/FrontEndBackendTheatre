@@ -32,6 +32,7 @@ var cronJob = cron.job("00 06 01 * * *", function(){
     request('http://localhost:3000/api/upcoming',function(response){
             console.log("Started");
             });
+    var today = new Date();
     var time = today.toISOString().substring(0, 10);
     /*Delete Released Movies*/
     var query = "DELETE FROM upcomingMovies WHERE upReleaseDate = ?";
@@ -48,7 +49,6 @@ var cronJob = cron.job("00 06 01 * * *", function(){
     console.info('cron job completed');
 });
 cronJob.start();
-
 
 console.log("Hi");
 REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
@@ -420,19 +420,35 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
 
     //2. Get all from movieinfo
     router.get("/db/movieinfo/:movie_name", function (req,res) {
-        var query = 'SELECT * FROM ?? WHERE infoImdbID = ?';
-        var table = ["movieinfo","tt2948356"];
-        query = mysql.format(query,table);
+        //var query = 'SELECT * FROM ?? WHERE infoImdbID = ?';
+        //var table = ["movieinfo","tt2948356"];
+        //query = mysql.format(query,table);
         //console.log(query);
-        connection.query("SELECT * from movieinfo where infoImdbID = ?",["tt2948356"],function(err, rows, fields){
-            console.log("Something happening");
-            if(rows.length != 0){
-                console.log(rows.length);
-                res.json(rows[0]);
-            }else{
-                res.json({ Error: 'An error occured' });
-            }
-        });
+         connection.query("SELECT * from movieinfo where infoImdbID = ?",
+             ["tt2948356"],function(err, rows, fields){
+                console.log("Something happening");
+                if(rows.length != 0){
+                    console.log(rows.length);
+                    res.json(rows[0]);
+                }else{
+                    console.log(rows.length);
+                    res.json({ Error: 'An error occured' });
+                }
+            });
+    });
+    //3. Get all from movieinfo for now showing
+    router.get("/db/nowShowing", function (req,res) {
+        connection.query("SELECT ??, ?? , ??, ?? from ??",
+            ["infoMovieID","infoImdbID","infoMovieName","infoMoviePosterPath","movieinfo"],function(err, rows, fields){
+                console.log("Something happening");
+                if(rows.length != 0){
+                    console.log(rows.length);
+                    res.json(rows);
+                }else{
+                    console.log(rows.length);
+                    res.json({ Error: 'An error occured' });
+                }
+            });
     });
 
 };
