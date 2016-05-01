@@ -13,7 +13,7 @@ angular.module('backendTheatreApp')
       restrict: 'E',
       template:
                     '<a ng-href=\'#/moviedetails\'>' +
-                        '<img src="../images/add_to_cart_button.png" class="align_add_to_cart"  >' +
+                        '<img src="/images/add_to_cart_button.png" class="align_add_to_cart"  >' +
                     '</a>'
 
     };
