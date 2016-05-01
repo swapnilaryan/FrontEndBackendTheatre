@@ -96,7 +96,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
                                 upC["page"] = JSON.parse(response).page;
                                 upC["title"] = JSON.parse(response).results[i].title;
                                 upC["release_date"] = JSON.parse(response).results[i].release_date;
-                                upC["poster_path"] = './app/images/upcoming'+JSON.parse(response).results[i].poster_path;
+                                upC["poster_path"] = '/images/upcoming'+JSON.parse(response).results[i].poster_path;
                                 upC["original_language"] = JSON.parse(response).results[i].original_language;
 
                                 /*Adding to Database*/
@@ -105,7 +105,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
                                     JSON.parse(response).results[i].id,
                                     JSON.parse(response).results[i].title,
                                     JSON.parse(response).results[i].release_date,
-                                    "./app/images/upcoming"+JSON.parse(response).results[i].poster_path
+                                    "/images/upcoming"+JSON.parse(response).results[i].poster_path
                                 ];
                                 query = mysql.format(query,table);
                                 conn.query(query,function(err,rows){
@@ -167,18 +167,6 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
         });
     });
 
-    router.get("/movie/now_playing",function(req,res){
-        var query = "SELECT * FROM ??";
-        var table = ["upcomingmovies"];
-        query = mysql.format(query,table);
-        connection.query(query,function(err,rows){
-            if(err) {
-                res.json({"Error" : true, "Message" : "Error executing MySQL query"});
-            } else {
-                res.json({"Error" : false, "Message" : "Success", "Users" : rows});
-            }
-        });
-    });
     router.get("/rt/:movie_name", function (req,res) {
         var rc = new RottenCrawler();
         rc.getMovieInfo()
@@ -447,6 +435,21 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
                 }else{
                     console.log(rows.length);
                     res.json({ Error: 'An error occured' });
+                }
+            });
+    });
+
+    //4. Get all from upcomingmovies for upcoming
+    router.get("/db/upcoming", function (req,res) {
+        connection.query("SELECT * from ?? where ?? != '/images/upcomingnull'",
+            ["upcomingmovies","upPosterPath"],function(err, rows){
+                console.log("Something happening");
+                if(err){
+                    //console.log(rows.length);
+                    res.json({ Error: 'An error occured' });
+                }else{
+                    //console.log(rows.length);
+                    res.json(rows);
                 }
             });
     });

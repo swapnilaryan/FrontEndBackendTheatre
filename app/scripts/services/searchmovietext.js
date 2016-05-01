@@ -21,7 +21,37 @@ angular.module('backendTheatreApp')
       };
       return smt;
   })
-  .factory('movieDetails', function ($q,$http,apiKey,searchMovieText) {
+  .factory('upcomingMovies', function ($q, $http, apiKey){
+    return {
+        upcoming: function(){
+            var deferred = $q.defer();
+            console.log("api is ",apiKey.apiUrlFn());
+            $http.get(""+apiKey.apiUrlFn() + "db/upcoming")
+                .success(function (data){
+                    deferred.resolve(data);
+                }).error(function (data){
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        }
+    }
+  })
+  .factory('nowShowing', function ($q, $http, apiKey){
+      return {
+          nowShowingMovies: function(){
+              var deferred = $q.defer();
+              console.log("api is ",apiKey.apiUrlFn());
+              $http.get(""+apiKey.apiUrlFn() + "db/nowShowing")
+                  .success(function (data){
+                      deferred.resolve(data);
+                  }).error(function (data){
+                      deferred.reject(data);
+              });
+              return deferred.promise;
+          }
+      }
+  })
+  .factory('movieDetails', function ($q,$http,apiKey) {
       return {
           getTomatoResult: function () {
               var deferred = $q.defer();

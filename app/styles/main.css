@@ -35,6 +35,7 @@ body {
     overflow-x: hidden;
     height: 100%;
     padding: 0;
+    /*width: 1366px;*/
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
@@ -86,13 +87,9 @@ body {
     text-transform: uppercase;
 }
 
-.images{
-    width: auto;
-    height: 440px;
-}
 .coming_soon_images{
-    /*width: 220px;*/
-    /*height: 320px;*/
+    width: 220px;
+    height: 320px;
 }
 .parent{
     text-align: center;
@@ -103,6 +100,10 @@ body {
 }
 #show_list{
     display: inline-block;
+}
+.images{
+    width: auto;
+    height: 440px;
 }
 .list_now_showing{
     width: auto;
@@ -194,6 +195,11 @@ body {
     text-align: -webkit-right;
     padding-right: 0;
 }
+.glyphicon-menu-left, .glyphicon-menu-right{
+    color: white;
+    font-size: 50px;
+    outline: none;
+}
 #top-angle-right{
     text-align: -webkit-left;
     padding-left: 0;
@@ -235,7 +241,6 @@ body {
     background-color: #303234;
 }
 #list_coming_soon{
-    margin-top: -70px;
     margin-bottom: 10px;
     width: auto;
 }
