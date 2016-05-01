@@ -9,8 +9,8 @@
  */
 angular.module('backendTheatreApp')
   .controller('MainCtrl', function ($scope,nowShowingInTheatres,upcomingMovies) {
-      console.log(nowShowingInTheatres,nowShowingInTheatres.slice(0, 4));
-      console.log(nowShowingInTheatres,upcomingMovies.slice(0, 5));
+      console.log(nowShowingInTheatres);
+      console.log(upcomingMovies);
       $scope.slide_index = 0;
       $scope.slide_left = function slide_left(){
           if (($scope.slide_index) - 4 <= 0) {
