@@ -351,7 +351,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
                     toBeSaved.omdbData.Production,
                     toBeSaved.omdbData.Website,
                     toBeSaved.omdbData.Plot,
-                    "./app/images/nowShowing"+toBeSaved.movieDetails.poster_path,
+                    "/images/nowShowing"+toBeSaved.movieDetails.poster_path,
                     JSON.stringify(toBeSaved.credits.cast),
                     toBeSaved.omdbData.BoxOffice
                 ];
@@ -361,7 +361,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
                     if(err) {
                         console.log("Error",err);
                     } else {
-                        console.log("Success",rows);
+                        console.log("Success -------------",rows);
                     }
                 });
                 /*End adding*/
@@ -372,6 +372,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
             if(err){
                 res.json({"Error":true, "Message":err});
             }else{
+                console.log("seacrghc ekelment is ",searchElementID);
                 var query = 'SELECT * FROM ?? WHERE infoMovieID = ?';
                 var table = ["movieinfo",searchElementID];
                 query = mysql.format(query,table);
@@ -390,9 +391,11 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
     } );
     /*Fetch from our database*/
     // 1. Get all from movietomatoes
-    router.get("/db/rottenTomatoes/:movie_name", function (req,res) {
+    router.get("/db/rottenTomatoes/:imdbID", function (req,res) {
         var query = 'SELECT * FROM ?? WHERE mtImdbID = ?';
-        var table = ["movietomatoes","tt2948356"];
+        //var table = ["movietomatoes","tt1608290"];
+        console.log("So the here siasbh -==========",req.params.imdbID);
+        var table = ["movietomatoes",req.params.imdbID];
         query = mysql.format(query,table);
         //console.log(query);
         conn.query(query,function(err,rows){
@@ -407,13 +410,13 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
     });
 
     //2. Get all from movieinfo
-    router.get("/db/movieinfo/:movie_name", function (req,res) {
+    router.get("/db/movieinfo/:imdbID", function (req,res) {
         //var query = 'SELECT * FROM ?? WHERE infoImdbID = ?';
         //var table = ["movieinfo","tt2948356"];
         //query = mysql.format(query,table);
         //console.log(query);
          connection.query("SELECT * from movieinfo where infoImdbID = ?",
-             ["tt2948356"],function(err, rows, fields){
+             [req.params.imdbID],function(err, rows, fields){
                 console.log("Something happening");
                 if(rows.length != 0){
                     console.log(rows.length);

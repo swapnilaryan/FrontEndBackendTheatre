@@ -159,6 +159,7 @@ body {
     position: absolute;
     bottom: 100px;
     right: 22px;
+    cursor: pointer;
 }
 .date_month{
     position: relative;

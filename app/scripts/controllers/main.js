@@ -8,7 +8,7 @@
  * Controller of the backendTheatreApp
  */
 angular.module('backendTheatreApp')
-  .controller('MainCtrl', function ($scope,nowShowingInTheatres,upcomingMovies) {
+  .controller('MainCtrl', function ($scope,$location,searchMovieText,nowShowingInTheatres,upcomingMovies) {
       console.log(nowShowingInTheatres);
       console.log(upcomingMovies);
       $scope.slide_index = 0;
@@ -69,6 +69,11 @@ angular.module('backendTheatreApp')
       // End Slider for upcming movies
 
       $scope.images = '../images/add_to_cart_button.png';
+      $scope.moreInfo = function moreInfo(selectedImdbId) {
+          searchMovieText.set(selectedImdbId);
+          $location.url('/moviedetails');
+          console.log("----------------------",selectedImdbId);
+      };
       //$scope.movieComingSoon = [
       //    {
       //        'image':'../images/cs2.png',

@@ -8,7 +8,7 @@
  * Controller of the backendTheatreApp
  */
 angular.module('backendTheatreApp')
-  .controller('MoviedetailsCtrl', function ($sce, $http,$route,$uibModal,$location,searchMovieText,apiKey,
+  .controller('MoviedetailsCtrl', function ($sce, $http,$route,$uibModal,$location,apiKey,
                                             $q,$scope,movieTomatoDetails,movieInfoDetails) {
       console.log(movieTomatoDetails);
       console.log(movieInfoDetails);

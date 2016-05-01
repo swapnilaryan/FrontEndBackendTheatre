@@ -15,6 +15,7 @@ angular.module('backendTheatreApp')
       smt.obj1 = "";
       smt.set = function set(param){
           smt.obj = param;
+          console.log("Obj set is",smt.obj);
       };
       smt.get = function get(){
           return smt.obj;
@@ -51,13 +52,17 @@ angular.module('backendTheatreApp')
           }
       }
   })
-  .factory('movieDetails', function ($q,$http,apiKey) {
+  .factory('movieDetails', function ($q,$http,apiKey,searchMovieText) {
+      var id ="99888";
       return {
           getTomatoResult: function () {
               var deferred = $q.defer();
               //var movieFormat = searchMovieText.get();
               console.log("api is ",apiKey.apiUrlFn());
-              $http.get("" + apiKey.apiUrlFn() + "db/rottenTomatoes/zootopia")
+              id = searchMovieText.get();
+              console.log("getted id is ",id);
+              //$http.get("" + apiKey.apiUrlFn() + "db/rottenTomatoes/zootopia")
+              $http.get("" + apiKey.apiUrlFn() + "db/rottenTomatoes/"+id)
                   .success(function (data) {
                       //console.log("------", data);
                       deferred.resolve(data);
@@ -69,7 +74,8 @@ angular.module('backendTheatreApp')
           },
           getMovieInfo: function () {
               var deferred = $q.defer();
-              $http.get("" + apiKey.apiUrlFn() + "/db/movieinfo/zootopia")
+              //$http.get("" + apiKey.apiUrlFn() + "/db/movieinfo/zootopia")
+              $http.get("" + apiKey.apiUrlFn() + "/db/movieinfo/"+id)
                   .success(function (data) {
                       deferred.resolve(data);
                   }).error(function (data){
