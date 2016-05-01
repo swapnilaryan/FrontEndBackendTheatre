@@ -505,25 +505,25 @@ angular.module('backendTheatreApp')
       var tomatometerAC = $scope.displayTomatoData.allCritics.tomatometer;
       if(tomatometerAC >= 60 && tomatometerAC < 75){
           //fresh
-          $scope.displayTomatoData.allCritics.tomatoImage = "../images/rt_fresh.jpg";
+          $scope.displayTomatoData.allCritics.tomatoImage = "/images/rt_fresh.jpg";
       }else if(tomatometerAC<=59) {
           //rotten
-          $scope.displayTomatoData.allCritics.tomatoImage = "../images/rt_rotten.jpg";
+          $scope.displayTomatoData.allCritics.tomatoImage = "/images/rt_rotten.jpg";
       }else{
           //certified
-          $scope.displayTomatoData.allCritics.tomatoImage = "../images/rt_certified.jpg";
+          $scope.displayTomatoData.allCritics.tomatoImage = "/images/rt_certified.jpg";
       }
       //Second for top critics
       var tomatometerTC = $scope.displayTomatoData.topCritics.tomatometer;
       if(tomatometerTC >= 60 && tomatometerTC < 75){
           //fresh
-          $scope.displayTomatoData.topCritics.tomatoImage = "../images/rt_fresh.jpg";
+          $scope.displayTomatoData.topCritics.tomatoImage = "/images/rt_fresh.jpg";
       }else if(tomatometerTC<=59) {
           //rotten
-          $scope.displayTomatoData.topCritics.tomatoImage = "../images/rt_rotten.jpg";
+          $scope.displayTomatoData.topCritics.tomatoImage = "/images/rt_rotten.jpg";
       }else{
           //certified
-          $scope.displayTomatoData.topCritics.tomatoImage = "../images/rt_certified.jpg";
+          $scope.displayTomatoData.topCritics.tomatoImage = "/images/rt_certified.jpg";
       }
 
           /*end evaluating for freshness*/
@@ -546,9 +546,9 @@ angular.module('backendTheatreApp')
       trimAudienceScore = parseInt(trimAudienceScore.replace('/5',""));
       //console.log(trimAudience);
       if(trimAudienceScore >= 3.5){
-          $scope.displayTomatoData.audienceScore.audienceImage = "../images/rt_user_likes.jpg";
+          $scope.displayTomatoData.audienceScore.audienceImage = "/images/rt_user_likes.jpg";
       }else if(trimAudienceScore < 3.5){
-          $scope.displayTomatoData.audienceScore.audienceImage = "../images/rt_user_dislike.jpg";
+          $scope.displayTomatoData.audienceScore.audienceImage = "/images/rt_user_dislike.jpg";
       }
       $scope.audienceScore = $scope.displayTomatoData.audienceScore;
       $scope.audienceScore.ratingCount = $scope.audienceScore.ratingCount.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
@@ -559,10 +559,10 @@ angular.module('backendTheatreApp')
       //Alter their profile path with ../images/credits/:profilePath
       for(var i=0;i<$scope.totalCasts.length;i++){
           if($scope.totalCasts[i].profile_path==null) {
-              $scope.totalCasts[i].profile_path = "../images/credits/image_not_found.jpg";
+              $scope.totalCasts[i].profile_path = "/images/credits/image_not_found.jpg";
           }
           else {
-              $scope.totalCasts[i].profile_path = "../images/credits"+$scope.totalCasts[i].profile_path;
+              $scope.totalCasts[i].profile_path = "/images/credits"+$scope.totalCasts[i].profile_path;
           }
       }
       $scope.show6CastsFunction = function show6CastsFunction() {
