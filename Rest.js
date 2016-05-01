@@ -442,7 +442,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
     //4. Get all from upcomingmovies for upcoming
     router.get("/db/upcoming", function (req,res) {
         connection.query("SELECT * from ?? where ?? != '/images/upcomingnull'",
-            ["upcomingmovies","upPosterPath"],function(err, rows){
+            ["upcomingMovies","upPosterPath"],function(err, rows){
                 console.log("Something happening");
                 if(err){
                     //console.log(rows.length);
