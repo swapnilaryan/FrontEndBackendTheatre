@@ -32,7 +32,6 @@ var cronJob = cron.job("00 06 01 * * *", function(){
     request('http://localhost:3000/api/upcoming',function(response){
             console.log("Started");
             });
-    var today = new Date();
     var time = today.toISOString().substring(0, 10);
     /*Delete Released Movies*/
     var query = "DELETE FROM upcomingMovies WHERE upReleaseDate = ?";
@@ -425,13 +424,13 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
         var table = ["movieinfo","tt2948356"];
         query = mysql.format(query,table);
         //console.log(query);
-        conn.query(query,function(err,rows){
-            if(err) {
-                console.log("Error",err);
-                res.json( {"Error":rows} );
-            } else {
-                console.log("Success",rows);
+        connection.query("SELECT * from movieinfo where infoImdbID = ?",["tt2948356"],function(err, rows, fields){
+            console.log("Something happening");
+            if(rows.length != 0){
+                console.log(rows.length);
                 res.json(rows[0]);
+            }else{
+                res.json({ Error: 'An error occured' });
             }
         });
     });
