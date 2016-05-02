@@ -27,28 +27,28 @@ var download = function(uri, filename, callback){
         request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
     });
 };
-var cronJob = cron.job("00 06 01 * * *", function(){
-    // perform operation e.g. GET request http.get() etc.
-    request('http://localhost:3000/api/upcoming',function(response){
-            console.log("Started");
-            });
-    var today = new Date();
-    var time = today.toISOString().substring(0, 10);
-    /*Delete Released Movies*/
-    var query = "DELETE FROM upcomingMovies WHERE upReleaseDate = ?";
-    var table = [time];
-    query = mysql.format(query,table);
-    conn.query(query,function(err,rows){
-        if(err) {
-            console.log("Error",err);
-        } else {
-            console.log("Success",rows);
-        }
-    });
-    /*End Deleting*/
-    console.info('cron job completed');
-});
-cronJob.start();
+//var cronJob = cron.job("00 06 01 * * *", function(){
+//    // perform operation e.g. GET request http.get() etc.
+//    request('http://localhost:3000/api/upcoming',function(response){
+//            console.log("Started");
+//            });
+//    var today = new Date();
+//    var time = today.toISOString().substring(0, 10);
+//    /*Delete Released Movies*/
+//    var query = "DELETE FROM upcomingMovies WHERE upReleaseDate = ?";
+//    var table = [time];
+//    query = mysql.format(query,table);
+//    conn.query(query,function(err,rows){
+//        if(err) {
+//            console.log("Error",err);
+//        } else {
+//            console.log("Success");
+//        }
+//    });
+//    /*End Deleting*/
+//    console.info('cron job completed');
+//});
+//cronJob.start();
 
 console.log("Hi");
 REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
@@ -62,12 +62,12 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
                 for(var i =1;i<=JSON.parse(response).total_pages;i++){
                     totPage.push(i);
                 }
-                console.log("total pages fetched is",totPage);
+                //console.log("total pages fetched is",totPage);
                 callback();
             });
         },function (err){
             if(err){
-                console.log("Some Error happened at url fetching. Do manually");
+                console.log("Some Error happened at url fetching. Do manually",err);
             }
             else{
                 console.log("All Upcoming Movies Fetched");
@@ -75,13 +75,11 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
 
                     // Perform operation on file here.
                     var url = "http://api.themoviedb.org/3/movie/upcoming?api_key=2c9306d42037dfb0de0fc3f153819054&page=" + item + "&language=en";
-                    console.log('Processing page ' + url);
                     reqPro(url).then(function(response){
                         var t = [];
                         for(var x = 0;x<JSON.parse(response).results.length;x++){
                             t.push(x);
                         }
-                        console.log("t is ",t);
                         async.eachSeries(t, function(i, callback) {
                             var upC = {
                                 "id": "",
@@ -112,7 +110,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
                                     if(err) {
                                         console.log("Error",err);
                                     } else {
-                                        console.log("Success",rows);
+                                        console.log("Success");
                                     }
                                 });
                                 /*End adding*/
@@ -122,7 +120,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
                                     async.eachSeries(ll, function(i, callback) {
                                         download('http://image.tmdb.org/t/p/w500'+JSON.parse(response).results[i].poster_path
                                             , './app/images/upcoming'+JSON.parse(response).results[i].poster_path, function(){
-                                                console.log('done');
+                                                console.log('image downloaded');
                                             });
                                         callback();
                                     }, function(err){
@@ -200,12 +198,10 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
                     });
             },
             function(callback){
-                console.log("Will write later");
                 var rc = new RottenCrawler(tomatoURL);
                 rc.getMovieInfo()
                     .then(function() {
                         crawlTomatoData = rc.crawlTomato;
-                        console.log(rc);
                         callback();
                     });
             }
@@ -274,7 +270,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
                         if(re.credits.cast[i].profile_path != null){
                             download('http://image.tmdb.org/t/p/w500'+re.credits.cast[i].profile_path
                                 , './app/images/credits'+re.credits.cast[i].profile_path, function(){
-                                    console.log('saved image',i);
+                                    console.log('saved image');
                                 });
                         }
                         callback();
@@ -361,7 +357,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
                     if(err) {
                         console.log("Error",err);
                     } else {
-                        console.log("Success -------------",rows);
+                        console.log("Success");
                     }
                 });
                 /*End adding*/
@@ -381,7 +377,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
                     if(err) {
                         console.log("Error",err);
                     } else {
-                        console.log("Success",rows);
+                        console.log("Success");
                         res.json(rows);
                     }
                 });
@@ -403,7 +399,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
                 console.log("Error",err);
                 res.json( {"Error":rows} );
             } else {
-                console.log("Success",rows);
+                console.log("Success");
                 res.json(rows[0]);
             }
         });
@@ -418,13 +414,11 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
          connection.query("SELECT * from movieinfo where infoImdbID = ?",
              [req.params.imdbID],function(err, rows, fields){
                 console.log("Something happening");
-                if(rows.length != 0){
-                    console.log(rows.length);
-                    res.json(rows[0]);
-                }else{
-                    console.log(rows.length);
-                    res.json({ Error: 'An error occured' });
-                }
+                 if(err){
+                     res.json({ Error: 'An error occured' });
+                 }else{
+                     res.json(rows[0]);
+                 }
             });
     });
     //3. Get all from movieinfo for now showing
@@ -433,10 +427,8 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
             ["infoMovieID","infoImdbID","infoMovieName","infoMoviePosterPath","movieinfo"],function(err, rows, fields){
                 console.log("Something happening");
                 if(err){
-                    //console.log(rows.length);
                     res.json({ Error: 'An error occured' });
                 }else{
-                    //console.log(rows.length);
                     res.json(rows);
                 }
             });
@@ -448,10 +440,8 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
             ["upcomingMovies","upPosterPath"],function(err, rows){
                 console.log("Something happening");
                 if(err){
-                    //console.log(rows.length);
                     res.json({ Error: 'An error occured' });
                 }else{
-                    //console.log(rows.length);
                     res.json(rows);
                 }
             });
