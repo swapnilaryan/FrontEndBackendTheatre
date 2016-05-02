@@ -122,7 +122,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                                     var ll =[i];
                                     async.eachSeries(ll, function(i, callback) {
                                         download('http://image.tmdb.org/t/p/w500'+JSON.parse(response).results[i].poster_path
-                                            , './app/images/upcoming'+JSON.parse(response).results[i].poster_path, function(){
+                                            , '/images/upcoming'+JSON.parse(response).results[i].poster_path, function(){
                                                 console.log('image downloaded');
                                             });
                                         callback();
@@ -232,7 +232,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                     //console.log(re.response[0].poster_path);
                     if(ret[0].poster_path!=null){
                         download('http://image.tmdb.org/t/p/w500'+ret[0].poster_path
-                            , './app/images/nowShowing'+ret[0].poster_path, function(){
+                            , '/images/nowShowing'+ret[0].poster_path, function(){
                                 console.log('saved image');
                             });
                     }
@@ -272,7 +272,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                     async.eachSeries(times2iterate, function(i, callback) {
                         if(re.credits.cast[i].profile_path != null){
                             download('http://image.tmdb.org/t/p/w500'+re.credits.cast[i].profile_path
-                                , './app/images/credits'+re.credits.cast[i].profile_path, function(){
+                                , '/images/credits'+re.credits.cast[i].profile_path, function(){
                                     console.log('saved image');
                                 });
                         }
