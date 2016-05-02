@@ -9,12 +9,12 @@ var apiKey = "2c9306d42037dfb0de0fc3f153819054";
 var fs = require('fs'),
     request = require('request');
 var conn="";
-function REST_ROUTER(router,connection,md5) {
+function REST_ROUTER(router,connection,pool) {
     var self = this;
     conn = connection;
     var rc = new RottenCrawler("For Connection");
     var con = rc.getConnection(conn);
-    self.handleRoutes(router,connection,md5);
+    self.handleRoutes(router,connection,pool);
 }
 
 
@@ -51,7 +51,7 @@ var download = function(uri, filename, callback){
 //cronJob.start();
 
 console.log("Hi");
-REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
+REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
     router.get("/upcoming",function(req,res) {
         var items = [1];
         var totPage = [];
@@ -107,7 +107,9 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
                                 ];
                                 query = mysql.format(query,table);
                                 conn.query(query,function(err,rows){
-                                    conn.release();
+                                    if(pool._freeConnections.indexOf(conn) == -1){
+                                        conn.release();
+                                    }
                                     if(err) {
                                         console.log("Error",err);
                                     } else {
@@ -355,7 +357,9 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
                 query = mysql.format(query,table);
                 //console.log(query);
                 conn.query(query,function(err,rows){
-                    conn.release();
+                    if(pool._freeConnections.indexOf(conn) == -1){
+                        conn.release();
+                    }
                     if(err) {
                         console.log("Error",err);
                     } else {
@@ -376,7 +380,9 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
                 query = mysql.format(query,table);
                 //console.log(query);
                 conn.query(query,function(err,rows){
-                    conn.release();
+                    if(pool._freeConnections.indexOf(conn) == -1){
+                        conn.release();
+                    }
                     if(err) {
                         console.log("Error",err);
                     } else {
@@ -398,7 +404,9 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
         query = mysql.format(query,table);
         //console.log(query);
         conn.query(query,function(err,rows){
-            conn.release();
+            if(pool._freeConnections.indexOf(conn) == -1){
+                conn.release();
+            }
             if(err) {
                 console.log("Error",err);
                 res.json( {"Error":rows} );
@@ -417,7 +425,9 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
         //console.log(query);
          connection.query("SELECT * from movieinfo where infoImdbID = ?",
              [req.params.imdbID],function(err, rows){
-                 conn.release();
+                 if(pool._freeConnections.indexOf(conn) == -1){
+                     conn.release();
+                 }
                  console.log("Something happening");
                  if(err){
                      res.json({ Error: 'An error occured' });
@@ -430,7 +440,9 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
     router.get("/db/nowShowing", function (req,res) {
         connection.query("SELECT ??, ?? , ??, ?? from ??",
             ["infoMovieID","infoImdbID","infoMovieName","infoMoviePosterPath","movieinfo"],function(err, rows){
-                conn.release();
+                if(pool._freeConnections.indexOf(conn) == -1){
+                    conn.release();
+                }
                 console.log("Something happening");
                 if(err){
                     res.json({ Error: 'An error occured' });
@@ -444,7 +456,9 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
     router.get("/db/upcoming", function (req,res) {
         connection.query("SELECT * from ?? where ?? != '/images/upcomingnull'",
             ["upcomingMovies","upPosterPath"],function(err, rows){
-                conn.release();
+                if(pool._freeConnections.indexOf(conn) == -1){
+                    conn.release();
+                }
                 console.log("Something happening");
                 if(err){
                     res.json({ Error: 'An error occured' });

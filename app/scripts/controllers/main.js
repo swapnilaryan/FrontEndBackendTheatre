@@ -11,6 +11,14 @@ angular.module('backendTheatreApp')
   .controller('MainCtrl', function ($scope,$location,searchMovieText,nowShowingInTheatres,upcomingMovies) {
       console.log(nowShowingInTheatres);
       console.log(upcomingMovies);
+
+      for(var i=0;i<upcomingMovies.length;i++){
+          var tempDate = new Date(upcomingMovies[i].upReleaseDate).toDateString();
+          tempDate = tempDate.split(" ");
+          console.log(tempDate[1],tempDate[2]);
+          upcomingMovies[i].date = tempDate[2];
+          upcomingMovies[i].month = tempDate[1];
+      }
       $scope.slide_index = 0;
       $scope.slide_left = function slide_left(){
           if (($scope.slide_index) - 4 <= 0) {

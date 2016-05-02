@@ -163,7 +163,8 @@ body {
 }
 .date_month{
     position: relative;
-    top: 90px;
+    height: 0;
+    top: 26px;
 }
 #coming-soon{
     background-color: #303234;

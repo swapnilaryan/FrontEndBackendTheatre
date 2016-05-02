@@ -8,10 +8,11 @@
  * Controller of the backendTheatreApp
  */
 angular.module('backendTheatreApp')
-  .controller('MoviedetailsCtrl', function ($sce, $http,$route,$uibModal,$location,apiKey,
+  .controller('MoviedetailsCtrl', function ($sce, localStorageService, $http,$route,$uibModal,$location,apiKey,
                                             $q,$scope,movieTomatoDetails,movieInfoDetails) {
-      console.log(movieTomatoDetails);
-      console.log(movieInfoDetails);
+      console.log("---------",movieTomatoDetails);
+      console.log("++++++++++++",movieInfoDetails);
+      //var movieTomatoDetails = localStorageService.set();
       //$http.get('http://cinestar.affpc.com:8080/api/')
       //    .then(function(response) {
       //        console.log(response);

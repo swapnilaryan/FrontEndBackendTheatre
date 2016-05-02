@@ -19,9 +19,13 @@ angular
     'ngSanitize',
     'ngTouch',
     'ui.bootstrap',
-    'ui.router'
+    'ui.router',
+    'LocalStorageModule'
   ])
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider,localStorageServiceProvider) {
+      localStorageServiceProvider
+          .setPrefix('backendTheatreApp')
+          .setStorageType('sessionStorage');
       // For any unmatched url, redirect to /
       //$urlRouterProvider.otherwise("/");
       //$stateProvider

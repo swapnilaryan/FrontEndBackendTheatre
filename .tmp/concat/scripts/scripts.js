@@ -19,9 +19,13 @@ angular
     'ngSanitize',
     'ngTouch',
     'ui.bootstrap',
-    'ui.router'
+    'ui.router',
+    'LocalStorageModule'
   ])
-  .config(["$routeProvider", function ($routeProvider) {
+  .config(["$routeProvider", "localStorageServiceProvider", function ($routeProvider,localStorageServiceProvider) {
+      localStorageServiceProvider
+          .setPrefix('backendTheatreApp')
+          .setStorageType('sessionStorage');
       // For any unmatched url, redirect to /
       //$urlRouterProvider.otherwise("/");
       //$stateProvider
@@ -82,6 +86,14 @@ angular.module('backendTheatreApp')
   .controller('MainCtrl', ["$scope", "$location", "searchMovieText", "nowShowingInTheatres", "upcomingMovies", function ($scope,$location,searchMovieText,nowShowingInTheatres,upcomingMovies) {
       console.log(nowShowingInTheatres);
       console.log(upcomingMovies);
+
+      for(var i=0;i<upcomingMovies.length;i++){
+          var tempDate = new Date(upcomingMovies[i].upReleaseDate).toDateString();
+          tempDate = tempDate.split(" ");
+          console.log(tempDate[1],tempDate[2]);
+          upcomingMovies[i].date = tempDate[2];
+          upcomingMovies[i].month = tempDate[1];
+      }
       $scope.slide_index = 0;
       $scope.slide_left = function slide_left(){
           if (($scope.slide_index) - 4 <= 0) {
@@ -374,15 +386,19 @@ angular.module('backendTheatreApp')
           }
       }
   }])
-  .factory('movieDetails', ["$q", "$http", "apiKey", "searchMovieText", function ($q,$http,apiKey,searchMovieText) {
-      var id ="99888";
+  .factory('movieDetails', ["$q", "localStorageService", "$http", "apiKey", "searchMovieText", function ($q,localStorageService,$http,apiKey,searchMovieText) {
+      var id ="";
       return {
           getTomatoResult: function () {
               var deferred = $q.defer();
               //var movieFormat = searchMovieText.get();
               console.log("api is ",apiKey.apiUrlFn());
               id = searchMovieText.get();
-              console.log("getted id is ",id);
+              if(id!=""){
+                  var storedId = localStorageService.set('storeId',id);
+              }else{
+                  id = localStorageService.get('storeId');
+              }
               //$http.get("" + apiKey.apiUrlFn() + "db/rottenTomatoes/zootopia")
               $http.get("" + apiKey.apiUrlFn() + "db/rottenTomatoes/"+id)
                   .success(function (data) {
@@ -469,10 +485,11 @@ angular.module('backendTheatreApp')
  * Controller of the backendTheatreApp
  */
 angular.module('backendTheatreApp')
-  .controller('MoviedetailsCtrl', ["$sce", "$http", "$route", "$uibModal", "$location", "apiKey", "$q", "$scope", "movieTomatoDetails", "movieInfoDetails", function ($sce, $http,$route,$uibModal,$location,apiKey,
+  .controller('MoviedetailsCtrl', ["$sce", "localStorageService", "$http", "$route", "$uibModal", "$location", "apiKey", "$q", "$scope", "movieTomatoDetails", "movieInfoDetails", function ($sce, localStorageService, $http,$route,$uibModal,$location,apiKey,
                                             $q,$scope,movieTomatoDetails,movieInfoDetails) {
-      console.log(movieTomatoDetails);
-      console.log(movieInfoDetails);
+      console.log("---------",movieTomatoDetails);
+      console.log("++++++++++++",movieInfoDetails);
+      //var movieTomatoDetails = localStorageService.set();
       //$http.get('http://cinestar.affpc.com:8080/api/')
       //    .then(function(response) {
       //        console.log(response);
@@ -637,7 +654,7 @@ angular.module('backendTheatreApp').run(['$templateCache', function($templateCac
 
 
   $templateCache.put('views/main.html',
-    "<div class=\"row&quot;\"> <div class=\"col-md-12\" id=\"main_view\"> <div class=\"row\"> <div class=\"container\"> <div class=\"col-md-1\" id=\"top-angle-left\"> <p><a ng-href=\"\"><span ng-click=\"slide_left()\" class=\"glyphicon glyphicon-menu-left\"></span></a></p> </div> <div class=\"col-md-10\"> <div class=\"col-md-4\" id=\"left_banner_now_showing\"></div> <div class=\"col-md-4\" id=\"now_showing_text\">NOW SHOWING</div> <div class=\"col-md-4\" id=\"right_banner_now_showing\"></div> </div> <div class=\"col-md-1\" id=\"top-angle-right\"> <p><span ng-click=\"slide_right()\" class=\"glyphicon glyphicon-menu-right\"></span></p> </div> </div> <div class=\"container\" id=\"show_list\"> <div class=\"col-md-3 container list_now_showing\" ng-repeat=\"mvs in movieNowShowing\"> <div class=\"wrap_all\"> <img class=\"images\" ng-src=\"{{mvs.infoMoviePosterPath}}\"> <div class=\"all_timings\"> <div class=\"list-show-none\"> <span ng-repeat=\"list_show in mvs.list_show_none\">{{list_show}}</span> </div> <div class=\"list-show-3d\"> <span><img ng-src=\"{{mvs.list_show_3d_image}}\"> </span> <span ng-repeat=\"list_show in mvs.list_show_3d\">{{list_show}}</span> </div> <div class=\"list-show-2d\"> <!--<img ng-src=\"\">--> <span><img ng-src=\"{{mvs.list_show_2d_image}}\"></span> <span ng-repeat=\"list_show in mvs.list_show_2d\">{{list_show}}</span> </div> </div> <add-to-cart ng-click=\"moreInfo(mvs.infoImdbID)\" class=\"align_add_to_cart show-cart\"></add-to-cart> </div> </div> </div> </div> <div class=\"row coming-soon\"> <div class=\"container coming-soon\"> <div class=\"col-md-12\"> <div class=\"col-md-5\" id=\"bottom-angle-left\"> <p><span ng-click=\"slide_left_upcoming()\" class=\"glyphicon glyphicon-menu-left\"></span></p> </div> <div class=\"col-md-2\"> <h1 id=\"coming_soon_text\">Coming Soon</h1> </div> <div class=\"col-md-5\" id=\"bottom-angle-right\"> <p><span ng-click=\"slide_right_upcoming()\" class=\"glyphicon glyphicon-menu-right\"></span></p> </div> </div> </div> <div class=\"container\" id=\"coming-soon\"> <div class=\"col-md-3\" id=\"list_coming_soon\" ng-repeat=\"mcs in movieComingSoon\"> <div class=\"parent\"> <div class=\"imagewrap\"> <div class=\"date_month\"> <h1 class=\"coming_soon_date\">{{mcs.date}}</h1> <h1 class=\"coming_soon_month\">{{mcs.month}}</h1> </div> <img class=\"coming_soon_circle\" src=\"/images/circle.png\"> </div> <img class=\"coming_soon_images\" ng-src=\"{{mcs.upPosterPath}}\"> </div> </div> </div> </div> </div> </div>"
+    "<div class=\"row&quot;\"> <div class=\"col-md-12\" id=\"main_view\"> <div class=\"row\"> <div class=\"container\"> <div class=\"col-md-1\" id=\"top-angle-left\"> <p><a ng-href=\"\"><span ng-click=\"slide_left()\" class=\"glyphicon glyphicon-menu-left\"></span></a></p> </div> <div class=\"col-md-10\"> <div class=\"col-md-4\" id=\"left_banner_now_showing\"></div> <div class=\"col-md-4\" id=\"now_showing_text\">NOW SHOWING</div> <div class=\"col-md-4\" id=\"right_banner_now_showing\"></div> </div> <div class=\"col-md-1\" id=\"top-angle-right\"> <p><span ng-click=\"slide_right()\" class=\"glyphicon glyphicon-menu-right\"></span></p> </div> </div> <div class=\"container\" id=\"show_list\"> <div class=\"col-md-3 container list_now_showing\" ng-repeat=\"mvs in movieNowShowing\"> <div class=\"wrap_all\"> <img class=\"images\" ng-src=\"{{mvs.infoMoviePosterPath}}\"> <div class=\"all_timings\"> <div class=\"list-show-none\"> <span ng-repeat=\"list_show in mvs.list_show_none\">{{list_show}}</span> </div> <div class=\"list-show-3d\"> <span><img ng-src=\"{{mvs.list_show_3d_image}}\"> </span> <span ng-repeat=\"list_show in mvs.list_show_3d\">{{list_show}}</span> </div> <div class=\"list-show-2d\"> <!--<img ng-src=\"\">--> <span><img ng-src=\"{{mvs.list_show_2d_image}}\"></span> <span ng-repeat=\"list_show in mvs.list_show_2d\">{{list_show}}</span> </div> </div> <add-to-cart ng-click=\"moreInfo(mvs.infoImdbID)\" class=\"align_add_to_cart show-cart\"></add-to-cart> </div> </div> </div> </div> <div class=\"row coming-soon\"> <div class=\"container coming-soon\"> <div class=\"col-md-12\"> <div class=\"col-md-5\" id=\"bottom-angle-left\"> <p><span ng-click=\"slide_left_upcoming()\" class=\"glyphicon glyphicon-menu-left\"></span></p> </div> <div class=\"col-md-2\"> <h1 id=\"coming_soon_text\">Coming Soon</h1> </div> <div class=\"col-md-5\" id=\"bottom-angle-right\"> <p><span ng-click=\"slide_right_upcoming()\" class=\"glyphicon glyphicon-menu-right\"></span></p> </div> </div> </div> <div class=\"container\" id=\"coming-soon\"> <div class=\"col-md-3\" id=\"list_coming_soon\" ng-repeat=\"mcs in movieComingSoon\"> <div class=\"parent\"> <!--<div class=\"imagewrap\">--> <div class=\"date_month\"> <h1 class=\"coming_soon_date\">{{mcs.date}}</h1> <h1 class=\"coming_soon_month\">{{mcs.month}}</h1> </div> <img class=\"coming_soon_circle\" src=\"/images/circle.png\"> <!--</div>--> <img class=\"coming_soon_images\" ng-src=\"{{mcs.upPosterPath}}\"> </div> </div> </div> </div> </div> </div>"
   );
 
 

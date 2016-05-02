@@ -34,12 +34,12 @@ REST.prototype.connectMysql = function() {
             self.stop(err);
         } else {
             console.log("Connected");
-            self.configureExpress(connection);
+            self.configureExpress(connection,pool);
         }
     });
 };
 
-REST.prototype.configureExpress = function(connection) {
+REST.prototype.configureExpress = function(connection,pool) {
     var self = this;
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
@@ -52,7 +52,7 @@ REST.prototype.configureExpress = function(connection) {
     //end handling
     var router = express.Router();
     app.use('/api', router);
-    var rest_router = new rest(router,connection);
+    var rest_router = new rest(router,connection,pool);
     self.startServer();
 };
 var port = process.env.PORT || mysqlConfig.sitePort;        // set our port

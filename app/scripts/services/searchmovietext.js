@@ -52,15 +52,19 @@ angular.module('backendTheatreApp')
           }
       }
   })
-  .factory('movieDetails', function ($q,$http,apiKey,searchMovieText) {
-      var id ="99888";
+  .factory('movieDetails', function ($q,localStorageService,$http,apiKey,searchMovieText) {
+      var id ="";
       return {
           getTomatoResult: function () {
               var deferred = $q.defer();
               //var movieFormat = searchMovieText.get();
               console.log("api is ",apiKey.apiUrlFn());
               id = searchMovieText.get();
-              console.log("getted id is ",id);
+              if(id!=""){
+                  var storedId = localStorageService.set('storeId',id);
+              }else{
+                  id = localStorageService.get('storeId');
+              }
               //$http.get("" + apiKey.apiUrlFn() + "db/rottenTomatoes/zootopia")
               $http.get("" + apiKey.apiUrlFn() + "db/rottenTomatoes/"+id)
                   .success(function (data) {
