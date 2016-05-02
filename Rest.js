@@ -107,6 +107,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
                                 ];
                                 query = mysql.format(query,table);
                                 conn.query(query,function(err,rows){
+                                    conn.release();
                                     if(err) {
                                         console.log("Error",err);
                                     } else {
@@ -354,6 +355,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
                 query = mysql.format(query,table);
                 //console.log(query);
                 conn.query(query,function(err,rows){
+                    conn.release();
                     if(err) {
                         console.log("Error",err);
                     } else {
@@ -374,6 +376,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
                 query = mysql.format(query,table);
                 //console.log(query);
                 conn.query(query,function(err,rows){
+                    conn.release();
                     if(err) {
                         console.log("Error",err);
                     } else {
@@ -395,6 +398,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
         query = mysql.format(query,table);
         //console.log(query);
         conn.query(query,function(err,rows){
+            conn.release();
             if(err) {
                 console.log("Error",err);
                 res.json( {"Error":rows} );
@@ -412,8 +416,9 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
         //query = mysql.format(query,table);
         //console.log(query);
          connection.query("SELECT * from movieinfo where infoImdbID = ?",
-             [req.params.imdbID],function(err, rows, fields){
-                console.log("Something happening");
+             [req.params.imdbID],function(err, rows){
+                 conn.release();
+                 console.log("Something happening");
                  if(err){
                      res.json({ Error: 'An error occured' });
                  }else{
@@ -424,7 +429,8 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
     //3. Get all from movieinfo for now showing
     router.get("/db/nowShowing", function (req,res) {
         connection.query("SELECT ??, ?? , ??, ?? from ??",
-            ["infoMovieID","infoImdbID","infoMovieName","infoMoviePosterPath","movieinfo"],function(err, rows, fields){
+            ["infoMovieID","infoImdbID","infoMovieName","infoMoviePosterPath","movieinfo"],function(err, rows){
+                conn.release();
                 console.log("Something happening");
                 if(err){
                     res.json({ Error: 'An error occured' });
@@ -438,6 +444,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,md5) {
     router.get("/db/upcoming", function (req,res) {
         connection.query("SELECT * from ?? where ?? != '/images/upcomingnull'",
             ["upcomingMovies","upPosterPath"],function(err, rows){
+                conn.release();
                 console.log("Something happening");
                 if(err){
                     res.json({ Error: 'An error occured' });

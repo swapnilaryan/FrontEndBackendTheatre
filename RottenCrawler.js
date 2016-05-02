@@ -111,6 +111,7 @@ RottenCrawler.prototype.getMovieInfo = function() {
                 rc.crawlTomato["movieDes"],JSON.stringify(rc.crawlTomato["genre"])];
             query = mysql.format(query,table);
             connection.query(query,function(err,rows){
+                connection.release();
                 if(err) {
                     console.log("Error executing MySQL query", err);
                 } else {
