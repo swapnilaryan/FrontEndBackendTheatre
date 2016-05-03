@@ -445,7 +445,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                 }
                 console.log("Something happening");
                 if(err){
-                    res.json({ Error: 'An error occured' });
+                    res.json({ Error: 'An error occured :- '+err });
                 }else{
                     res.json(rows);
                 }
