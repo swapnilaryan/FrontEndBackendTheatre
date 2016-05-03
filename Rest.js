@@ -460,8 +460,8 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
 
     //4. Get all from upcomingmovies for upcoming
     router.get("/db/upcoming", function (req,res) {
-        connection.query("SELECT * from ?? where ?? != '/images/upcomingnull'",
-            ["upcomingMovies","upPosterPath"],function(err, rows){
+        connection.query("SELECT * from ?? where ?? != '/images/upcomingnull' ORDER BY ?? ",
+            ["upcomingMovies","upPosterPath","upReleaseDate"],function(err, rows){
                 if(pool._freeConnections.indexOf(conn) == -1){
                     conn.release();
                 }
