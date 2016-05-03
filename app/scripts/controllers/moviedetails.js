@@ -83,7 +83,7 @@ angular.module('backendTheatreApp')
       $scope.click('all'); //on load all critics should be selected
       /*For Audience Score*/
       var trimAudienceScore = $scope.displayTomatoData.audienceScore.averageRating;
-      trimAudienceScore = parseInt(trimAudienceScore.replace('/5',""));
+      trimAudienceScore = parseFloat(trimAudienceScore.replace('/5',""));
       //console.log(trimAudience);
       if(trimAudienceScore >= 3.5){
           $scope.displayTomatoData.audienceScore.audienceImage = "/images/rt_user_likes.jpg";
