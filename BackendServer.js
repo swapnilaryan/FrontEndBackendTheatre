@@ -16,19 +16,20 @@ function REST(){
 var mysqlConfig = JSON.parse(fs.readFileSync('config.json', 'utf8'));
 //console.log(mysqlConfig.mysql);
 // End Reading configuration files
+var pool = mysql.createPool({
+    connectionLimit : 100000,
+    queueLimit: 0,
+    waitForConnections: true,
+    host     : mysqlConfig.mysql.host,
+    user     : mysqlConfig.mysql.user,
+    password : mysqlConfig.mysql.password,
+    port     : mysqlConfig.mysql.port,
+    database : mysqlConfig.mysql.database,
+    debug    : mysqlConfig.mysql.debug
+});
+
 REST.prototype.connectMysql = function() {
     var self = this;
-    var pool = mysql.createPool({
-        connectionLimit : 100000,
-        queueLimit: 0,
-        waitForConnections: true,
-        host     : mysqlConfig.mysql.host,
-        user     : mysqlConfig.mysql.user,
-        password : mysqlConfig.mysql.password,
-        port     : mysqlConfig.mysql.port,
-        database : mysqlConfig.mysql.database,
-        debug    : mysqlConfig.mysql.debug
-    });
     pool.getConnection(function(err,connection){
         connection.on('error', function(err) {
             if(err.code === "PROTOCOL_CONNECTION_LOST" ||
@@ -36,11 +37,15 @@ REST.prototype.connectMysql = function() {
                 err.code === "PROTOCOL_ENQUEUE_AFTER_FATAL_ERROR" ||
                 err.code == "PROTOCOL_ENQUEUE_AFTER_FATAL_ERROR") {
                 console.log("Here in error",err);
-                connection.destroy();
+                //connection.destroy();
+                self.connectMysql();
             }
         });
         if(err) {
-            self.stop(err);
+            console.log("Error happened :- ",err);
+            self.connectMysql();
+            //self.configureExpress(connection,pool);
+            //self.stop(err);
         } else {
             console.log("Connected");
             self.configureExpress(connection,pool);

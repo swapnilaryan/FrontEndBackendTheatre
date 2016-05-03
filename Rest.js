@@ -13,7 +13,7 @@ function REST_ROUTER(router,connection,pool) {
     var self = this;
     conn = connection;
     var rc = new RottenCrawler("For Connection");
-    var con = rc.getConnection(conn);
+    var con = rc.getConnection(conn,pool);
     self.handleRoutes(router,connection,pool);
 }
 
@@ -192,7 +192,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
             function(callback){
                 rc.theMovieDB()
                     .then(function() {
-                        //console.log(rc.movieResponse["movieInfo"][0].imdb_id);
+                        //console.log(rc.movieResponse["movieInfo"]);
                         imdb_id = rc.movieResponse["movieInfo"][0].imdb_id;
                         tomatoURL = rc.movieResponse["omdbData"][0].tomatoURL;
                         tomatoURL = tomatoURL.replace("http://www.rottentomatoes.com","");
@@ -230,13 +230,19 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                 reqPro(url).then(function(response){
                     var ret = JSON.parse(response).results;
                     //console.log(re.response[0].poster_path);
-                    if(ret[0].poster_path!=null){
-                        download('http://image.tmdb.org/t/p/w500'+ret[0].poster_path
-                            , './app/images/nowShowing'+ret[0].poster_path, function(){
-                                console.log('saved image');
-                            });
+                    // if movie not found
+                    //console.log("total results",response,);
+                    if( JSON.parse(response).total_results!=0){
+                        if(ret[0].poster_path!=null){
+                            download('http://image.tmdb.org/t/p/w500'+ret[0].poster_path
+                                , './app/images/nowShowing'+ret[0].poster_path, function(){
+                                    console.log('saved image');
+                                });
+                        }
+                        callback(null, ret[0].id);
+                    }else{
+                        res.json({"Error":true, "Message":"No Movies Found"});
                     }
-                    callback(null, ret[0].id);
                 });
             },
             function(id, callback) {

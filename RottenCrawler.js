@@ -4,6 +4,7 @@ var mysql = require("mysql");
 var imdb_id = "";
 
 var connection = "";
+var pool = "";
 var RottenCrawler = function(movieURL) {
     var rc = this;
     rc.apiKey = "2c9306d42037dfb0de0fc3f153819054";
@@ -17,8 +18,9 @@ var RottenCrawler = function(movieURL) {
     return rc;
 };
 
-RottenCrawler.prototype.getConnection = function(conn){
+RottenCrawler.prototype.getConnection = function(conn,p){
     connection = conn;
+    pool = p;
     return connection;
 };
 RottenCrawler.prototype.theMovieDB = function() {
@@ -111,7 +113,9 @@ RottenCrawler.prototype.getMovieInfo = function() {
                 rc.crawlTomato["movieDes"],JSON.stringify(rc.crawlTomato["genre"])];
             query = mysql.format(query,table);
             connection.query(query,function(err,rows){
-                connection.release();
+                if(pool._freeConnections.indexOf(connection) == -1){
+                    connection.release();
+                }
                 if(err) {
                     console.log("Error executing MySQL query", err);
                 } else {
