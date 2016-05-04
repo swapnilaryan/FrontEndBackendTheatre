@@ -38,12 +38,13 @@ REST.prototype.connectMysql = function() {
                 err.code == "PROTOCOL_ENQUEUE_AFTER_FATAL_ERROR") {
                 console.log("Here in error",err);
                 //connection.destroy();
-                self.connectMysql();
+                new REST();
             }
         });
         if(err) {
             console.log("Error happened :- ",err);
-            self.connectMysql();
+            new REST();
+            //self.connectMysql();
             //self.configureExpress(connection,pool);
             //self.stop(err);
         } else {
