@@ -111,7 +111,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                                         conn.release();
                                     }
                                     if(err) {
-                                        console.log("Error",err);
+                                        console.log("Here line 114 Error",err);
                                     } else {
                                         console.log("Success");
                                     }
@@ -367,7 +367,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                         conn.release();
                     }
                     if(err) {
-                        console.log("Error",err);
+                        console.log("Here line 370 Error",err);
                     } else {
                         console.log("Success");
                     }
@@ -390,7 +390,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                         conn.release();
                     }
                     if(err) {
-                        console.log("Error",err);
+                        console.log("Here line 393 Error",err);
                     } else {
                         console.log("Success");
                         res.json(rows);
@@ -414,8 +414,8 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                 conn.release();
             }
             if(err) {
-                console.log("Error",err);
-                res.json( {"Error":rows} );
+                console.log("Error --Here line 417---",err);
+                res.json( {"Error":err} );
             } else {
                 console.log("Success");
                 res.json(rows[0]);
@@ -436,7 +436,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                  }
                  console.log("Something happening");
                  if(err){
-                     res.json({ Error: 'An error occured' });
+                     res.json({ Error: 'Here line 439 Rest An error occured' });
                  }else{
                      res.json(rows[0]);
                  }
@@ -451,7 +451,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                 }
                 console.log("Something happening");
                 if(err){
-                    res.json({ Error: 'An error occured :- '+err });
+                    res.json({ Error: 'Here line 454 An error occured :- '+err });
                 }else{
                     res.json(rows);
                 }
@@ -467,7 +467,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                 }
                 console.log("Something happening");
                 if(err){
-                    res.json({ Error: 'An error occured' });
+                    res.json({ Error: 'here line 470 An error occured' });
                 }else{
                     res.json(rows);
                 }
