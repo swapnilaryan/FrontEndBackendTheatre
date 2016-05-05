@@ -107,8 +107,8 @@ REST.prototype.configureExpress = function(connection,pool) {
     router.get("/db/nowShowing", function (req,res) {
         connection.query("SELECT ??, ?? , ??, ?? from ??",
             ["infoMovieID","infoImdbID","infoMovieName","infoMoviePosterPath","movieinfo"],function(err, rows){
-                if(pool._freeConnections.indexOf(conn) == -1){
-                    conn.release();
+                if(pool._freeConnections.indexOf(connection) == -1){
+                    connection.release();
                 }
                 console.log("Something happening");
                 if(err){
