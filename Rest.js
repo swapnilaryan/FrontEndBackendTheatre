@@ -443,36 +443,36 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
             });
     });
     //3. Get all from movieinfo for now showing
-    router.get("/db/nowShowing", function (req,res) {
-        connection.query("SELECT ??, ?? , ??, ?? from ??",
-            ["infoMovieID","infoImdbID","infoMovieName","infoMoviePosterPath","movieinfo"],function(err, rows){
-                if(pool._freeConnections.indexOf(conn) == -1){
-                    conn.release();
-                }
-                console.log("Something happening");
-                if(err){
-                    res.json({ Error: 'Here line 454 An error occured :- '+err });
-                }else{
-                    res.json(rows);
-                }
-            });
-    });
+    //router.get("/db/nowShowing", function (req,res) {
+    //    connection.query("SELECT ??, ?? , ??, ?? from ??",
+    //        ["infoMovieID","infoImdbID","infoMovieName","infoMoviePosterPath","movieinfo"],function(err, rows){
+    //            if(pool._freeConnections.indexOf(conn) == -1){
+    //                conn.release();
+    //            }
+    //            console.log("Something happening");
+    //            if(err){
+    //                res.json({ Error: 'Here line 454 An error occured :- '+err });
+    //            }else{
+    //                res.json(rows);
+    //            }
+    //        });
+    //});
 
     //4. Get all from upcomingmovies for upcoming
-    router.get("/db/upcoming", function (req,res) {
-        connection.query("SELECT * from ?? where ?? != '/images/upcomingnull' ORDER BY ?? ",
-            ["upcomingMovies","upPosterPath","upReleaseDate"],function(err, rows){
-                if(pool._freeConnections.indexOf(conn) == -1){
-                    conn.release();
-                }
-                console.log("Something happening");
-                if(err){
-                    res.json({ Error: 'here line 470 An error occured' });
-                }else{
-                    res.json(rows);
-                }
-            });
-    });
+    //router.get("/db/upcoming", function (req,res) {
+    //    connection.query("SELECT * from ?? where ?? != '/images/upcomingnull' ORDER BY ?? ",
+    //        ["upcomingMovies","upPosterPath","upReleaseDate"],function(err, rows){
+    //            if(pool._freeConnections.indexOf(conn) == -1){
+    //                conn.release();
+    //            }
+    //            console.log("Something happening");
+    //            if(err){
+    //                res.json({ Error: 'here line 470 An error occured' });
+    //            }else{
+    //                res.json(rows);
+    //            }
+    //        });
+    //});
 
 };
 

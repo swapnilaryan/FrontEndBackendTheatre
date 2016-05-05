@@ -9,6 +9,7 @@ var rest = require("./Rest.js");
 var app  = express();
 var server ="";
 var flag = 0;
+var router = "";
 function REST(){
     var self = this;
     self.connectMysql();
@@ -84,9 +85,39 @@ REST.prototype.configureExpress = function(connection,pool) {
     });
     //res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     //end handling
-    var router = express.Router();
+    router = express.Router();
     app.use('/api', router);
     var rest_router = new rest(router,connection,pool);
+    router.get("/db/upcoming", function (req,res) {
+        connection.query("SELECT * from ?? where ?? != '/images/upcomingnull' ORDER BY ?? ",
+            ["upcomingMovies","upPosterPath","upReleaseDate"],function(err, rows){
+                if(pool._freeConnections.indexOf(connection) == -1){
+                    connection.release();
+                }
+                console.log("Something happening");
+                if(err){
+                    res.json({ Error: 'here line 470 An error occured' });
+                }else{
+                    res.json(rows);
+                }
+            });
+    });
+
+    //3. Get all from movieinfo for now showing
+    router.get("/db/nowShowing", function (req,res) {
+        connection.query("SELECT ??, ?? , ??, ?? from ??",
+            ["infoMovieID","infoImdbID","infoMovieName","infoMoviePosterPath","movieinfo"],function(err, rows){
+                if(pool._freeConnections.indexOf(conn) == -1){
+                    conn.release();
+                }
+                console.log("Something happening");
+                if(err){
+                    res.json({ Error: 'Here line 454 An error occured :- '+err });
+                }else{
+                    res.json(rows);
+                }
+            });
+    });
     self.startServer();
 };
 var port = process.env.PORT || mysqlConfig.sitePort;        // set our port
@@ -102,3 +133,4 @@ REST.prototype.stop = function(err) {
 };
 
 new REST();
+
