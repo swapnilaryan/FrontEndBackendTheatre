@@ -33,16 +33,16 @@ REST.prototype.connectMysql = function() {
         debug    : mysqlConfig.mysql.debug
     });
     pool.getConnection(function(err,connection){
-        connection.on('error', function(err) {
-            if(err ||  err.code === "PROTOCOL_CONNECTION_LOST" ||
-                err.code == "PROTOCOL_CONNECTION_LOST" ||
-                err.code === "PROTOCOL_ENQUEUE_AFTER_FATAL_ERROR" ||
-                err.code == "PROTOCOL_ENQUEUE_AFTER_FATAL_ERROR") {
-                console.log("Here in error",err);
-                //connection.destroy();
-                new REST();
-            }
-        });
+        //connection.on('error', function(err) {
+        //    if(err ||  err.code === "PROTOCOL_CONNECTION_LOST" ||
+        //        err.code == "PROTOCOL_CONNECTION_LOST" ||
+        //        err.code === "PROTOCOL_ENQUEUE_AFTER_FATAL_ERROR" ||
+        //        err.code == "PROTOCOL_ENQUEUE_AFTER_FATAL_ERROR") {
+        //        console.log("Here in error",err);
+        //        //connection.destroy();
+        //        new REST();
+        //    }
+        //});
         if(err) {
             console.log("Error happened :- ",err);
             new REST();
