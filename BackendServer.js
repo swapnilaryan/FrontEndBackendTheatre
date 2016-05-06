@@ -39,19 +39,19 @@ REST.prototype.connectMysql = function() {
             new REST();
         } else {
             console.log("Connected");
-            setTimeout(function () {
-                console.log('boo');
-            }, 10000);
+            //setTimeout(function () {
+            //    console.log('boo');
+            //}, 10000);
             self.configureExpress(connection,pool);
-            setTimeout(function() {
-                server.close();
-                console.log("Hey closing trial", connection);
-                connection = null;
-            },20000);
-            setTimeout(function (){
-                console.log("Going to start a new REST");
-                new REST();
-            },30000);
+            //setTimeout(function() {
+            //    server.close();
+            //    console.log("Hey closing trial", connection);
+            //    connection = null;
+            //},20000);
+            //setTimeout(function (){
+            //    console.log("Going to start a new REST");
+            //    new REST();
+            //},30000);
         }
     });
 };
@@ -70,38 +70,38 @@ REST.prototype.configureExpress = function(connection,pool) {
     router = express.Router();
     app.use('/api', router);
     var rest_router = new rest(router,connection,pool);
-    router.get("/db/upcoming", function (req,res) {
-        connection.query("SELECT * from ?? where ?? != '/images/upcomingnull' ORDER BY ?? ",
-            ["upcomingMovies","upPosterPath","upReleaseDate"],function(err, rows){
-                //if(pool._freeConnections.indexOf(connection) == -1){
-                //    connection.release();
-                //}
-                console.log("Something happening");
-                if(err){
-                    connection.release();
-                    res.json({ Error: 'here line 470 An error occured' });
-                }else{
-                    res.json(rows);
-                }
-            });
-    });
+    //router.get("/db/upcoming", function (req,res) {
+    //    connection.query("SELECT * from ?? where ?? != '/images/upcomingnull' ORDER BY ?? ",
+    //        ["upcomingMovies","upPosterPath","upReleaseDate"],function(err, rows){
+    //            //if(pool._freeConnections.indexOf(connection) == -1){
+    //            //    connection.release();
+    //            //}
+    //            console.log("Something happening");
+    //            if(err){
+    //                connection.release();
+    //                res.json({ Error: 'here line 470 An error occured' });
+    //            }else{
+    //                res.json(rows);
+    //            }
+    //        });
+    //});
 
-    //3. Get all from movieinfo for now showing
-    router.get("/db/nowShowing", function (req,res) {
-        connection.query("SELECT ??, ?? , ??, ?? from ??",
-            ["infoMovieID","infoImdbID","infoMovieName","infoMoviePosterPath","movieinfo"],function(err, rows){
-                //if(pool._freeConnections.indexOf(connection) == -1){
-                //    connection.release();
-                //}
-                console.log("Something happening");
-                if(err){
-                    connection.release();
-                    res.json({ Error: 'Here line 454 An error occured :- '+err });
-                }else{
-                    res.json(rows);
-                }
-            });
-    });
+    ////3. Get all from movieinfo for now showing
+    //router.get("/db/nowShowing", function (req,res) {
+    //    connection.query("SELECT ??, ?? , ??, ?? from ??",
+    //        ["infoMovieID","infoImdbID","infoMovieName","infoMoviePosterPath","movieinfo"],function(err, rows){
+    //            //if(pool._freeConnections.indexOf(connection) == -1){
+    //            //    connection.release();
+    //            //}
+    //            console.log("Something happening");
+    //            if(err){
+    //                connection.release();
+    //                res.json({ Error: 'Here line 454 An error occured :- '+err });
+    //            }else{
+    //                res.json(rows);
+    //            }
+    //        });
+    //});
     self.startServer();
 };
 var port = process.env.PORT || mysqlConfig.sitePort;        // set our port

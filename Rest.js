@@ -107,9 +107,9 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                                 ];
                                 query = mysql.format(query,table);
                                 conn.query(query,function(err,rows){
-                                    if(pool._freeConnections.indexOf(conn) == -1){
-                                        conn.release();
-                                    }
+                                    //if(pool._freeConnections.indexOf(conn) == -1){
+                                    //    conn.release();
+                                    //}
                                     if(err) {
                                         console.log("Here line 114 Error",err);
                                     } else {
@@ -363,9 +363,9 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                 query = mysql.format(query,table);
                 //console.log(query);
                 conn.query(query,function(err,rows){
-                    if(pool._freeConnections.indexOf(conn) == -1){
-                        conn.release();
-                    }
+                    //if(pool._freeConnections.indexOf(conn) == -1){
+                    //    conn.release();
+                    //}
                     if(err) {
                         console.log("Here line 370 Error",err);
                     } else {
@@ -386,9 +386,9 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                 query = mysql.format(query,table);
                 //console.log(query);
                 conn.query(query,function(err,rows){
-                    if(pool._freeConnections.indexOf(conn) == -1){
-                        conn.release();
-                    }
+                    //if(pool._freeConnections.indexOf(conn) == -1){
+                    //    conn.release();
+                    //}
                     if(err) {
                         console.log("Here line 393 Error",err);
                     } else {
@@ -410,9 +410,9 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
         query = mysql.format(query,table);
         //console.log(query);
         conn.query(query,function(err,rows){
-            if(pool._freeConnections.indexOf(conn) == -1){
-                conn.release();
-            }
+            //if(pool._freeConnections.indexOf(conn) == -1){
+            //    conn.release();
+            //}
             if(err) {
                 console.log("Error --Here line 417---",err);
                 res.json( {"Error":err} );
@@ -431,9 +431,9 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
         //console.log(query);
          connection.query("SELECT * from movieinfo where infoImdbID = ?",
              [req.params.imdbID],function(err, rows){
-                 if(pool._freeConnections.indexOf(conn) == -1){
-                     conn.release();
-                 }
+                 //if(pool._freeConnections.indexOf(conn) == -1){
+                 //    conn.release();
+                 //}
                  console.log("Something happening");
                  if(err){
                      res.json({ Error: 'Here line 439 Rest An error occured' });
@@ -443,36 +443,36 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
             });
     });
     //3. Get all from movieinfo for now showing
-    //router.get("/db/nowShowing", function (req,res) {
-    //    connection.query("SELECT ??, ?? , ??, ?? from ??",
-    //        ["infoMovieID","infoImdbID","infoMovieName","infoMoviePosterPath","movieinfo"],function(err, rows){
-    //            if(pool._freeConnections.indexOf(conn) == -1){
-    //                conn.release();
-    //            }
-    //            console.log("Something happening");
-    //            if(err){
-    //                res.json({ Error: 'Here line 454 An error occured :- '+err });
-    //            }else{
-    //                res.json(rows);
-    //            }
-    //        });
-    //});
+    router.get("/db/nowShowing", function (req,res) {
+        connection.query("SELECT ??, ?? , ??, ?? from ??",
+            ["infoMovieID","infoImdbID","infoMovieName","infoMoviePosterPath","movieinfo"],function(err, rows){
+                //if(pool._freeConnections.indexOf(conn) == -1){
+                //    conn.release();
+                //}
+                console.log("Something happening");
+                if(err){
+                    res.json({ Error: 'Here line 454 An error occured :- '+err });
+                }else{
+                    res.json(rows);
+                }
+            });
+    });
 
     //4. Get all from upcomingmovies for upcoming
-    //router.get("/db/upcoming", function (req,res) {
-    //    connection.query("SELECT * from ?? where ?? != '/images/upcomingnull' ORDER BY ?? ",
-    //        ["upcomingMovies","upPosterPath","upReleaseDate"],function(err, rows){
-    //            if(pool._freeConnections.indexOf(conn) == -1){
-    //                conn.release();
-    //            }
-    //            console.log("Something happening");
-    //            if(err){
-    //                res.json({ Error: 'here line 470 An error occured' });
-    //            }else{
-    //                res.json(rows);
-    //            }
-    //        });
-    //});
+    router.get("/db/upcoming", function (req,res) {
+        connection.query("SELECT * from ?? where ?? != '/images/upcomingnull' ORDER BY ?? ",
+            ["upcomingMovies","upPosterPath","upReleaseDate"],function(err, rows){
+                //if(pool._freeConnections.indexOf(conn) == -1){
+                //    conn.release();
+                //}
+                console.log("Something happening");
+                if(err){
+                    res.json({ Error: 'here line 470 An error occured' });
+                }else{
+                    res.json(rows);
+                }
+            });
+    });
 
 };
 
