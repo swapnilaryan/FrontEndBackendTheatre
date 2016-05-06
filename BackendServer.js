@@ -5,7 +5,7 @@ var express = require("express");
 var mysql   = require("mysql");
 var bodyParser  = require("body-parser");
 var fs = require('fs');
-var rest = require("./Rest.js");
+//var rest = require("./Rest.js");
 var app  = express();
 var server ="";
 var flag = 0;
@@ -21,6 +21,7 @@ var mysqlConfig = JSON.parse(fs.readFileSync('config.json', 'utf8'));
 //console.log(mysqlConfig.mysql);
 // End Reading configuration files
 REST.prototype.connectMysql = function() {
+    console.log('-----------------------------------------------------------');
     var self = this;
     pool = mysql.createPool({
         connectionLimit : 1000,
@@ -35,20 +36,9 @@ REST.prototype.connectMysql = function() {
     });
     pool.getConnection(function(err,connection){
         if(err) {
-            console.log("Error happened :- ",err);
-            self.connectMysql();
-            //new REST();
+            self.stop(err);
         } else {
-            console.log("Connected");
             self.configureExpress(connection,pool);
-            setTimeout(function() {
-                server.close();
-                console.log("Hey closing trial", connection);
-            },20000);
-            setTimeout(function (){
-                console.log("Going to start a new REST");
-                self.connectMysql();
-            },35000);
         }
     });
 };
@@ -66,39 +56,47 @@ REST.prototype.configureExpress = function(connection,pool) {
     //end handling
     router = express.Router();
     app.use('/api', router);
-    var rest_router = new rest(router,connection,pool);
-    //router.get("/db/upcoming", function (req,res) {
-    //    connection.query("SELECT * from ?? where ?? != '/images/upcomingnull' ORDER BY ?? ",
-    //        ["upcomingMovies","upPosterPath","upReleaseDate"],function(err, rows){
-    //            //if(pool._freeConnections.indexOf(connection) == -1){
-    //            //    connection.release();
-    //            //}
-    //            console.log("Something happening");
-    //            if(err){
-    //                connection.release();
-    //                res.json({ Error: 'here line 470 An error occured' });
-    //            }else{
-    //                res.json(rows);
-    //            }
-    //        });
-    //});
+    //var rest_router = new rest(router,connection,pool);
+    router.get("/db/upcoming", function (req,res) {
+        pool.getConnection(function(err,connection){
+            if(err){
+                console.log("Error happened :- ",err);
+                self.connectMysql();
+            }else{
+                connection.query("SELECT * from ?? where ?? != '/images/upcomingnull' ORDER BY ?? ",
+                    ["upcomingMovies","upPosterPath","upReleaseDate"],function(err, rows){
+                        console.log("Something happening");
+                        if(err){
+                            res.json({ Error: 'here line 470 An error occured' });
+                        }else{
+                            res.json(rows);
+                        }
+                    });
+            }
+            connection.release();
+        });
+    });
 
-    ////3. Get all from movieinfo for now showing
-    //router.get("/db/nowShowing", function (req,res) {
-    //    connection.query("SELECT ??, ?? , ??, ?? from ??",
-    //        ["infoMovieID","infoImdbID","infoMovieName","infoMoviePosterPath","movieinfo"],function(err, rows){
-    //            //if(pool._freeConnections.indexOf(connection) == -1){
-    //            //    connection.release();
-    //            //}
-    //            console.log("Something happening");
-    //            if(err){
-    //                connection.release();
-    //                res.json({ Error: 'Here line 454 An error occured :- '+err });
-    //            }else{
-    //                res.json(rows);
-    //            }
-    //        });
-    //});
+    //3. Get all from movieinfo for now showing
+    router.get("/db/nowShowing", function (req,res) {
+        pool.getConnection(function(err,connection) {
+            if(err){
+                console.log("Error happened :- ",err);
+                self.connectMysql();
+            }else {
+                connection.query("SELECT ??, ?? , ??, ?? from ??",
+                    ["infoMovieID", "infoImdbID", "infoMovieName", "infoMoviePosterPath", "movieinfo"], function (err, rows) {
+                        console.log("Something happening");
+                        if (err) {
+                            res.json({Error: 'Here line 454 An error occured :- ' + err});
+                        } else {
+                            res.json(rows);
+                        }
+                    });
+            }
+            connection.release();
+        });
+    });
     self.startServer();
 };
 var port = process.env.PORT || mysqlConfig.sitePort;        // set our port
