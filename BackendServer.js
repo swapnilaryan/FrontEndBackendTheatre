@@ -9,7 +9,8 @@ var rest = require("./Rest.js");
 var app  = express();
 var server ="";
 var flag = 0;
-var router = "";
+var router = null;
+var pool = null;
 function REST(){
     var self = this;
     self.connectMysql();
@@ -21,7 +22,7 @@ var mysqlConfig = JSON.parse(fs.readFileSync('config.json', 'utf8'));
 // End Reading configuration files
 REST.prototype.connectMysql = function() {
     var self = this;
-    var pool = mysql.createPool({
+    pool = mysql.createPool({
         connectionLimit : 1000,
         queueLimit: 0,
         waitForConnections: true,
@@ -33,43 +34,24 @@ REST.prototype.connectMysql = function() {
         debug    : mysqlConfig.mysql.debug
     });
     pool.getConnection(function(err,connection){
-        //connection.on('error', function(err) {
-        //    if(err ||  err.code === "PROTOCOL_CONNECTION_LOST" ||
-        //        err.code == "PROTOCOL_CONNECTION_LOST" ||
-        //        err.code === "PROTOCOL_ENQUEUE_AFTER_FATAL_ERROR" ||
-        //        err.code == "PROTOCOL_ENQUEUE_AFTER_FATAL_ERROR") {
-        //        console.log("Here in error",err);
-        //        //connection.destroy();
-        //        new REST();
-        //    }
-        //});
         if(err) {
             console.log("Error happened :- ",err);
             new REST();
-            //self.connectMysql();
-            //self.configureExpress(connection,pool);
-            //self.stop(err);
         } else {
             console.log("Connected");
-            //   connection.destroy();
             setTimeout(function () {
                 console.log('boo');
             }, 10000);
             self.configureExpress(connection,pool);
             setTimeout(function() {
                 server.close();
-                //connection.destroy();
-                connection = "";
                 console.log("Hey closing trial", connection);
+                connection = null;
             },20000);
             setTimeout(function (){
-                //app.listen(port, function() {
-                //    console.log("Hey starting again on port",port);
-                //});
+                console.log("Going to start a new REST");
                 new REST();
             },30000);
-//self.configureExpress(connection,pool);
-
         }
     });
 };
@@ -91,11 +73,12 @@ REST.prototype.configureExpress = function(connection,pool) {
     router.get("/db/upcoming", function (req,res) {
         connection.query("SELECT * from ?? where ?? != '/images/upcomingnull' ORDER BY ?? ",
             ["upcomingMovies","upPosterPath","upReleaseDate"],function(err, rows){
-                if(pool._freeConnections.indexOf(connection) == -1){
-                    connection.release();
-                }
+                //if(pool._freeConnections.indexOf(connection) == -1){
+                //    connection.release();
+                //}
                 console.log("Something happening");
                 if(err){
+                    connection.release();
                     res.json({ Error: 'here line 470 An error occured' });
                 }else{
                     res.json(rows);
@@ -107,11 +90,12 @@ REST.prototype.configureExpress = function(connection,pool) {
     router.get("/db/nowShowing", function (req,res) {
         connection.query("SELECT ??, ?? , ??, ?? from ??",
             ["infoMovieID","infoImdbID","infoMovieName","infoMoviePosterPath","movieinfo"],function(err, rows){
-                if(pool._freeConnections.indexOf(connection) == -1){
-                    connection.release();
-                }
+                //if(pool._freeConnections.indexOf(connection) == -1){
+                //    connection.release();
+                //}
                 console.log("Something happening");
                 if(err){
+                    connection.release();
                     res.json({ Error: 'Here line 454 An error occured :- '+err });
                 }else{
                     res.json(rows);
