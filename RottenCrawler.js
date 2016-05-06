@@ -44,7 +44,7 @@ RottenCrawler.prototype.theMovieDB = function() {
                         return rp("http://www.omdbapi.com/?i="+imdb_id+"&plot=full&r=json&tomatoes=true")
                             .then(function(r){
                                 rc.movieResponse["omdbData"].push(JSON.parse(r));
-                                console.log(rc["movieResponse"],rc["movieCredits"],rc["omdbData"]);
+                                //console.log(rc["movieResponse"],rc["movieCredits"],rc["omdbData"]);
                             });
                     });
             });
@@ -58,7 +58,7 @@ RottenCrawler.prototype.getMovieInfo = function() {
     rc.crawlTomato = {};
     return rp('http://www.rottentomatoes.com' + rc.movieURL)
         .then(function(response) {
-            console.log(rc.movieURL);
+            //console.log(rc.movieURL);
             var $ = cheerio.load(response);
 
             var ratingRegex = /(\d+)?(.)?\d+\/\d+$/;
@@ -119,7 +119,7 @@ RottenCrawler.prototype.getMovieInfo = function() {
                 if(err) {
                     console.log("Error executing MySQL query", err);
                 } else {
-                   console.log("Success", "Data Inserted",rows);
+                   console.log("Success", "Data Inserted");
                 }
             });
             /*End Adding tomato data to the database*/
@@ -221,15 +221,6 @@ RottenCrawler.prototype.getReviews = function(url) {
             if (nextURL != '#')
                 return rc.getReviews('http://www.rottentomatoes.com' + nextURL);
         });
-};
-
-RottenCrawler.prototype.getAllReviews = function() {
-    var rc = this;
-    return "gfdsa";
-    //return rc.getReviews('http://www.rottentomatoes.com' + rc.movieURL + 'reviews/?type=user')
-    //    .then(function() {
-    //        // console.log(rc.reviews);
-    //    });
 };
 
 module.exports = RottenCrawler;

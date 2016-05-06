@@ -449,7 +449,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                 //if(pool._freeConnections.indexOf(conn) == -1){
                 //    conn.release();
                 //}
-                console.log("Something happening");
+                console.log("Something happening on nowShowing");
                 if(err){
                     res.json({ Error: 'Here line 454 An error occured :- '+err });
                 }else{
@@ -465,9 +465,9 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                 //if(pool._freeConnections.indexOf(conn) == -1){
                 //    conn.release();
                 //}
-                console.log("Something happening");
+                console.log("Something happening on upcoming");
                 if(err){
-                    res.json({ Error: 'here line 470 An error occured' });
+                    res.json({ Error: 'here line 470 An error occured'+err });
                 }else{
                     res.json(rows);
                 }

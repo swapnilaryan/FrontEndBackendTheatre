@@ -36,22 +36,19 @@ REST.prototype.connectMysql = function() {
     pool.getConnection(function(err,connection){
         if(err) {
             console.log("Error happened :- ",err);
-            new REST();
+            self.connectMysql();
+            //new REST();
         } else {
             console.log("Connected");
-            //setTimeout(function () {
-            //    console.log('boo');
-            //}, 10000);
             self.configureExpress(connection,pool);
-            //setTimeout(function() {
-            //    server.close();
-            //    console.log("Hey closing trial", connection);
-            //    connection = null;
-            //},20000);
-            //setTimeout(function (){
-            //    console.log("Going to start a new REST");
-            //    new REST();
-            //},30000);
+            setTimeout(function() {
+                server.close();
+                console.log("Hey closing trial", connection);
+            },20000);
+            setTimeout(function (){
+                console.log("Going to start a new REST");
+                self.connectMysql();
+            },35000);
         }
     });
 };
