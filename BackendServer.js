@@ -45,6 +45,7 @@ REST.prototype.connectMysql = function() {
             },20000);
             setTimeout(function (){
                 console.log("Going to start a new REST");
+                connection.destroy();
                 self.connectMysql();
             },35000);
         }
