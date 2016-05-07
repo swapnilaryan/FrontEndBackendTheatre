@@ -9,14 +9,17 @@ var apiKey = "2c9306d42037dfb0de0fc3f153819054";
 var fs = require('fs'),
     request = require('request');
 var conn="";
+var pool="";
 function REST_ROUTER(router,connection,pool) {
     var self = this;
     conn = connection;
+    console.log("this pool", this.pool);
+    //this.pool = pool;
+    console.log("this pool", this.pool);
     var rc = new RottenCrawler("For Connection");
     var con = rc.getConnection(conn,pool);
     self.handleRoutes(router,connection,pool);
 }
-
 
 //Run the upcoming api everyday
 var cron = require('cron');
@@ -27,30 +30,38 @@ var download = function(uri, filename, callback){
         request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
     });
 };
-//var cronJob = cron.job("00 06 01 * * *", function(){
-//    // perform operation e.g. GET request http.get() etc.
-//    request('http://localhost:3000/api/upcoming',function(response){
-//            console.log("Started");
-//            });
-//    var today = new Date();
-//    var time = today.toISOString().substring(0, 10);
-//    /*Delete Released Movies*/
-//    var query = "DELETE FROM upcomingMovies WHERE upReleaseDate = ?";
-//    var table = [time];
-//    query = mysql.format(query,table);
-//    conn.query(query,function(err,rows){
-//        if(err) {
-//            console.log("Error",err);
-//        } else {
-//            console.log("Success");
-//        }
-//    });
-//    /*End Deleting*/
-//    console.info('cron job completed');
-//});
-//cronJob.start();
-
 console.log("Hi");
+//var cronJob = cron.job("00 06 01 * * *", function(){
+var cronJob1 = cron.job("* 28 * * * *", function(){
+    // perform operation e.g. GET request http.get() etc.
+    reqPro('http://localhost:8000/api/upcoming').then(function(response){
+        console.info('cron job completed',response);
+    });
+    //request('http://localhost:8000/api/upcoming',function(response){
+    //    console.log("Started",response);
+    //});
+    console.info('cron job completed --------------');
+});
+//cronJob1.start();
+var cronJob2 = cron.job("* * * * * *", function(){
+    var today = new Date();
+    var time = today.toISOString().substring(0, 10);
+    /*Delete Released Movies*/
+    var query = "DELETE FROM upcomingMovies WHERE upReleaseDate <= ?";
+    var table = [time];
+        query = mysql.format(query, table);
+        conn.query(query, function (err, rows) {
+            if (err) {
+                console.log("Error", err);
+            } else {
+                console.log("Success");
+            }
+        });
+    //conn.release();
+    /*End Deleting*/
+});
+//cronJob2.start();
+
 REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
     router.get("/upcoming",function(req,res) {
         var items = [1];
@@ -106,15 +117,23 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                                     "/images/upcoming"+JSON.parse(response).results[i].poster_path
                                 ];
                                 query = mysql.format(query,table);
-                                conn.query(query,function(err,rows){
-                                    //if(pool._freeConnections.indexOf(conn) == -1){
-                                    //    conn.release();
-                                    //}
-                                    if(err) {
-                                        console.log("Here line 114 Error",err);
-                                    } else {
-                                        console.log("Success");
+                                pool.getConnection(function(err,connection){
+                                    if(err){
+                                        console.log("Error happened :- ",err);
+                                        //self.connectMysql();
+                                    }else {
+                                        connection.query(query, function (err, rows) {
+                                            //if(pool._freeConnections.indexOf(conn) == -1){
+                                            //    conn.release();
+                                            //}
+                                            if (err) {
+                                                console.log("Here line 114 Error", err);
+                                            } else {
+                                                console.log("Success");
+                                            }
+                                        });
                                     }
+                                    connection.release();
                                 });
                                 /*End adding*/
 
@@ -360,17 +379,22 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                     JSON.stringify(toBeSaved.credits.cast),
                     toBeSaved.omdbData.BoxOffice
                 ];
-                query = mysql.format(query,table);
-                //console.log(query);
-                conn.query(query,function(err,rows){
-                    //if(pool._freeConnections.indexOf(conn) == -1){
-                    //    conn.release();
-                    //}
-                    if(err) {
-                        console.log("Here line 370 Error",err);
-                    } else {
-                        console.log("Success");
+                pool.getConnection(function(err,connection){
+                    if(err){
+                        console.log("Error happened :- ",err);
+                        self.connectMysql();
+                    }else {
+                        query = mysql.format(query, table);
+                        //console.log(query);
+                        connection.query(query, function (err, rows) {
+                            if (err) {
+                                console.log("Here line 370 Error", err);
+                            } else {
+                                console.log("Success");
+                            }
+                        });
                     }
+                    connection.release();
                 });
                 /*End adding*/
                 callback(null,toBeSaved);
@@ -383,18 +407,23 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                 console.log("seacrghc ekelment is ",searchElementID);
                 var query = 'SELECT * FROM ?? WHERE infoMovieID = ?';
                 var table = ["movieinfo",searchElementID];
-                query = mysql.format(query,table);
-                //console.log(query);
-                conn.query(query,function(err,rows){
-                    //if(pool._freeConnections.indexOf(conn) == -1){
-                    //    conn.release();
-                    //}
-                    if(err) {
-                        console.log("Here line 393 Error",err);
+                pool.getConnection(function(err,connection) {
+                    if (err) {
+                        console.log("Error happened :- ", err);
+                        self.connectMysql();
                     } else {
-                        console.log("Success");
-                        res.json(rows);
+                        query = mysql.format(query, table);
+                        //console.log(query);
+                        connection.query(query, function (err, rows) {
+                            if (err) {
+                                console.log("Here line 393 Error", err);
+                            } else {
+                                console.log("Success");
+                                res.json(rows);
+                            }
+                        });
                     }
+                    connection.release();
                 });
             }
         });
@@ -405,42 +434,56 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
     router.get("/db/rottenTomatoes/:imdbID", function (req,res) {
         var query = 'SELECT * FROM ?? WHERE mtImdbID = ?';
         //var table = ["movietomatoes","tt1608290"];
-        console.log("So the here siasbh -==========",req.params.imdbID);
-        var table = ["movietomatoes",req.params.imdbID];
-        query = mysql.format(query,table);
-        //console.log(query);
-        conn.query(query,function(err,rows){
-            //if(pool._freeConnections.indexOf(conn) == -1){
-            //    conn.release();
-            //}
-            if(err) {
-                console.log("Error --Here line 417---",err);
-                res.json( {"Error":err} );
-            } else {
-                console.log("Success");
-                res.json(rows[0]);
+        console.log("So the here siasbh -==========", req.params.imdbID);
+        var table = ["movietomatoes", req.params.imdbID];
+        pool.getConnection(function (err, connection) {
+            if (err) {
+                console.log("Error happened :- ", err);
+                self.connectMysql();
             }
+            else {
+                query = mysql.format(query, table);
+                //console.log(query);
+                connection.query(query, function (err, rows) {
+                    //if(pool._freeConnections.indexOf(conn) == -1){
+                    //    conn.release();
+                    //}
+                    if (err) {
+                        console.log("Error --Here line 417---", err);
+                        res.json({"Error": err});
+                    } else {
+                        console.log("Success");
+                        res.json(rows[0]);
+                    }
+                });
+            }
+            connection.release();
         });
     });
 
     //2. Get all from movieinfo
     router.get("/db/movieinfo/:imdbID", function (req,res) {
-        //var query = 'SELECT * FROM ?? WHERE infoImdbID = ?';
-        //var table = ["movieinfo","tt2948356"];
-        //query = mysql.format(query,table);
-        //console.log(query);
-         connection.query("SELECT * from movieinfo where infoImdbID = ?",
-             [req.params.imdbID],function(err, rows){
-                 //if(pool._freeConnections.indexOf(conn) == -1){
-                 //    conn.release();
-                 //}
-                 console.log("Something happening");
-                 if(err){
-                     res.json({ Error: 'Here line 439 Rest An error occured' });
-                 }else{
-                     res.json(rows[0]);
-                 }
-            });
+        pool.getConnection(function (err, connection) {
+            if (err) {
+                console.log("Error happened :- ", err);
+                self.connectMysql();
+            }
+            else {
+                connection.query("SELECT * from movieinfo where infoImdbID = ?",
+                [req.params.imdbID], function (err, rows) {
+                    //if(pool._freeConnections.indexOf(conn) == -1){
+                    //    conn.release();
+                    //}
+                    console.log("Something happening");
+                    if (err) {
+                        res.json({Error: 'Here line 439 Rest An error occured'});
+                    } else {
+                        res.json(rows[0]);
+                    }
+                });
+            }
+            connection.release();
+        });
     });
     //3. Get all from movieinfo for now showing
     router.get("/db/nowShowing", function (req,res) {

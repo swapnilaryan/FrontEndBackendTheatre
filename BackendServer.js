@@ -42,15 +42,6 @@ REST.prototype.connectMysql = function() {
             self.connectMysql();
         } else {
             self.configureExpress(connection,pool);
-            setTimeout(function() {
-                server.close();
-                connection.destroy();
-                console.log("Hey closing trial", connection);
-            },20000);
-            setTimeout(function (){
-                console.log("Going to start a new REST");
-                self.connectMysql();
-            },35000);
         }
     });
 };

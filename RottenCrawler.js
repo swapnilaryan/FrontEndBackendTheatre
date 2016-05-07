@@ -111,16 +111,24 @@ RottenCrawler.prototype.getMovieInfo = function() {
                 imdb_id,rc.crawlTomato["movieTitle"],JSON.stringify(rc.crawlTomato["allCritics"]),
                 JSON.stringify(rc.crawlTomato["topCritics"]),JSON.stringify(rc.crawlTomato["audienceScore"]),
                 rc.crawlTomato["movieDes"],JSON.stringify(rc.crawlTomato["genre"])];
-            query = mysql.format(query,table);
-            connection.query(query,function(err,rows){
-                if(pool._freeConnections.indexOf(connection) == -1){
-                    connection.release();
-                }
-                if(err) {
-                    console.log("Error executing MySQL query", err);
+            pool.getConnection(function(err,connection) {
+                if (err) {
+                    console.log("Error happened :- ", err);
+                    self.connectMysql();
                 } else {
-                   console.log("Success", "Data Inserted");
+                    query = mysql.format(query, table);
+                    connection.query(query, function (err, rows) {
+                        if (pool._freeConnections.indexOf(connection) == -1) {
+                            connection.release();
+                        }
+                        if (err) {
+                            console.log("Error executing MySQL query", err);
+                        } else {
+                            console.log("Success", "Data Inserted");
+                        }
+                    });
                 }
+                connection.release();
             });
             /*End Adding tomato data to the database*/
             console.log("After everything");
