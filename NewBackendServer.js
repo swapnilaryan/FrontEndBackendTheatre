@@ -16,41 +16,41 @@ var request = require('request');
 var mysqlConfig = JSON.parse(fs.readFileSync('config.json', 'utf8'));
 //console.log(mysqlConfig.mysql);
 // End Reading configuration
-var connection = mysql.createPool({ // Mysql Connection
-    connectionLimit : 100000,
-    host     : mysqlConfig.mysql.host,
-    user     : mysqlConfig.mysql.user,
-    password : mysqlConfig.mysql.password,
-    port     : mysqlConfig.mysql.port,
-    database : mysqlConfig.mysql.database
-});
-//var connection = mysql.createConnection({ // Mysql Connection
+//var connection = mysql.createPool({ // Mysql Connection
+//    connectionLimit : 100000,
 //    host     : mysqlConfig.mysql.host,
 //    user     : mysqlConfig.mysql.user,
 //    password : mysqlConfig.mysql.password,
 //    port     : mysqlConfig.mysql.port,
 //    database : mysqlConfig.mysql.database
 //});
-function handleDisconnect(){
-    connection.connect(function(err) {
-        if (err) {
-            console.error('error connecting: ' + err.stack);
-            console.error('error connecting: ' + err.code);
-            setTimeout(handleDisconnect, 20);
-            //return;
-        }
-        console.log('connected as id ' + connection.threadId);
-    });
-}
-connection.on('error', function(err) {
-    console.log('db error', err);
-    if(err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
-        handleDisconnect();                         // lost due to either server restart, or a
-    } else {                                      // connnection idle timeout (the wait_timeout
-        console.log("Error is ", err.code);                          // server variable configures this)
-        handleDisconnect();
-    }
-});
+////var connection = mysql.createConnection({ // Mysql Connection
+////    host     : mysqlConfig.mysql.host,
+////    user     : mysqlConfig.mysql.user,
+////    password : mysqlConfig.mysql.password,
+////    port     : mysqlConfig.mysql.port,
+////    database : mysqlConfig.mysql.database
+////});
+//function handleDisconnect(){
+//    connection.connect(function(err) {
+//        if (err) {
+//            console.error('error connecting: ' + err.stack);
+//            console.error('error connecting: ' + err.code);
+//            setTimeout(handleDisconnect, 20);
+//            //return;
+//        }
+//        console.log('connected as id ' + connection.threadId);
+//    });
+//}
+//connection.on('error', function(err) {
+//    console.log('db error', err);
+//    if(err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
+//        handleDisconnect();                         // lost due to either server restart, or a
+//    } else {                                      // connnection idle timeout (the wait_timeout
+//        console.log("Error is ", err.code);                          // server variable configures this)
+//        handleDisconnect();
+//    }
+//});
 // configure app to use bodyParser()
 // this will let us get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }));

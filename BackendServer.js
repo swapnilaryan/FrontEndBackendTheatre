@@ -10,6 +10,7 @@ var app  = express();
 var server ="";
 var router = null;
 var pool = null;
+var kill = require("killport");
 function REST(){
     var self = this;
     self.connectMysql();
@@ -60,12 +61,27 @@ REST.prototype.configureExpress = function(connection,pool) {
     router = express.Router();
     app.use('/api', router);
     var rest_router = new rest(router,connection,pool);
+    app.listen(port,function(err){
+        console.log("All right ! I am alive at Port----- ", port);
+    });
     self.startServer();
 };
 var port = process.env.PORT || mysqlConfig.sitePort;        // set our port
 REST.prototype.startServer = function() {
-    server = app.listen(port,function(){
+    console.log("trying to craeate error");
+    kill(port).then(function(out){
+            console.log(out);
+        })
+        // if failed
+        .catch(function(err){
+            console.log(err);
+        });
+    server = app.listen(port,function(err){
         console.log("All right ! I am alive at Port ", port);
+    }).on('error', function(err) {
+        console.log("qweqwter", err);
+        server.close();
+        REST.prototype.stop(null);
     });
 };
 

@@ -337,7 +337,9 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                 toBeSaved.omdbData.Production = (toBeSaved.omdbData.Production)?toBeSaved.omdbData.Production:"N/A";
                 toBeSaved.omdbData.Production = (toBeSaved.omdbData.Production)?toBeSaved.omdbData.Production:"N/A";
                 toBeSaved.omdbData.Website = (toBeSaved.omdbData.Website)?toBeSaved.omdbData.Website:"N/A";
-                toBeSaved.omdbData.Plot = (toBeSaved.omdbData.Plot)?toBeSaved.omdbData.Plot:"N/A";
+                //toBeSaved.omdbData.Plot = (toBeSaved.omdbData.Plot)?toBeSaved.omdbData.Plot:"N/A";
+                // This is just alternative of OMDB... fetching from themovieapiary
+                toBeSaved.omdbData.Plot = (toBeSaved.movieDetails.overview)?toBeSaved.movieDetails.overview:"N/A";
                 toBeSaved.movieDetails.poster_path = (toBeSaved.movieDetails.poster_path)?toBeSaved.movieDetails.poster_path:"N/A";
                 toBeSaved.omdbData.BoxOffice = (toBeSaved.omdbData.BoxOffice)?toBeSaved.omdbData.BoxOffice:"N/A";
 

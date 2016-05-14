@@ -49,6 +49,7 @@
     "grunt-build-control": "^0.6.3",
     "gzippo": "^0.2.0",
     "jscs": "^2.11.0",
+    "killport": "^1.0.1",
     "md5": "~2.1.0",
     "morgan": "^1.7.0",
     "mysql": "^2.10.2",
