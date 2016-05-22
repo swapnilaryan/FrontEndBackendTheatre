@@ -536,8 +536,8 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                 console.log("Error happened :- ",err);
                 res.json(err);
             }else{
-                connection.query("DELETE from ?? where ?? = ??",
-                    ["movieinfo","infoImdbID","tt3498820"],function(err, rows){
+                connection.query("DELETE from ?? where ?? = 'tt3498820'",
+                    ["movieinfo","infoImdbID"],function(err, rows){
                         console.log("Something happening");
                         if(err){
                             res.json({ Error: 'here line proof of concept An error occured'+err });
