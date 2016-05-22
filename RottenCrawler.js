@@ -76,14 +76,15 @@ RottenCrawler.prototype.getMovieInfo = function() {
                 rottenCount: parseInt(/\d+$/.exec($('#all-critics-numbers #scoreStats > div:nth-of-type(4)').text().trim())[0]),
                 criticsConsensus: $('#all-critics-numbers .critic_consensus').clone().find('span').remove().end().text().trim()
             });
+//                 reviewCount: parseInt($('#top-critics-numbers #scoreStats span[itemprop*=reviewCount]').text().trim()),
 
             if ($('#top-critics-numbers .meter-value').length)
 
             rc.crawlTomato["topCritics"] = (rc.topCritics = {
                 freshness: $('#top-critics-numbers .meter-tomato').hasClass('fresh') ? 'fresh' : 'rotten',
-                tomatometer: parseInt($('#top-critics-numbers .meter-value span').text()),
+                tomatometer: (parseInt($('#top-critics-numbers .meter-value span').text()))?(parseInt($('#top-critics-numbers .meter-value span').text())):(parseInt(($('#top-critics-numbers .meter-value').text()).replace("%",""))),
                 averageRating: $('#top-critics-numbers #scoreStats > div:first-of-type').text().trim().match(ratingRegex)[0].trim(),
-                reviewCount: parseInt($('#top-critics-numbers #scoreStats span[itemprop*=reviewCount]').text().trim()),
+                reviewCount: (parseInt($('#top-critics-numbers #scoreStats span[itemprop*=reviewCount]').text().trim()))?(1):(parseInt( ((($('#top-critics-numbers #scoreStats span')).contents())[2]).data )),
                 freshCount: parseInt(/\d+$/.exec($('#top-critics-numbers #scoreStats > div:nth-of-type(3)').text().trim())[0]),
                 rottenCount: parseInt(/\d+$/.exec($('#top-critics-numbers #scoreStats > div:nth-of-type(4)').text().trim())[0]),
                 criticsConsensus: $('#top-critics-numbers .critic_consensus').clone().find('span').remove().end().text().trim()
