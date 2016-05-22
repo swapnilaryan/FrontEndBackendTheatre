@@ -530,17 +530,17 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
     });
 
     /*Proof of concept*/
-    router.get("/db/upcoming", function (req,res) {
+    router.delete("/db/delete", function (req,res) {
         pool.getConnection(function(err,connection){
             if(err){
                 console.log("Error happened :- ",err);
                 res.json(err);
             }else{
-                connection.query("DELETE from ?? where ?? = ",
+                connection.query("DELETE from ?? where ?? = ??",
                     ["movieinfo","infoImdbID","tt3498820"],function(err, rows){
                         console.log("Something happening");
                         if(err){
-                            res.json({ Error: 'here line proof of concept An error occured' });
+                            res.json({ Error: 'here line proof of concept An error occured'+err });
                         }else{
                             res.json(rows);
                         }
