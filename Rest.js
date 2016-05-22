@@ -529,6 +529,28 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
         });
     });
 
+    /*Proof of concept*/
+    router.get("/db/upcoming", function (req,res) {
+        pool.getConnection(function(err,connection){
+            if(err){
+                console.log("Error happened :- ",err);
+                res.json(err);
+            }else{
+                connection.query("DELETE from ?? where ?? = ",
+                    ["movieinfo","infoImdbID","tt3498820"],function(err, rows){
+                        console.log("Something happening");
+                        if(err){
+                            res.json({ Error: 'here line proof of concept An error occured' });
+                        }else{
+                            res.json(rows);
+                        }
+                    });
+            }
+            connection.release();
+        });
+    });
+    /*End proof of concept*/
+
 };
 
 module.exports = REST_ROUTER;
