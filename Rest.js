@@ -120,6 +120,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                                 pool.getConnection(function(err,connection){
                                     if(err){
                                         console.log("Error happened :- ",err);
+                                        res.json(err);
                                         //self.connectMysql();
                                     }else {
                                         connection.query(query, function (err, rows) {
@@ -384,7 +385,8 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                 pool.getConnection(function(err,connection){
                     if(err){
                         console.log("Error happened :- ",err);
-                        self.connectMysql();
+                        res.json(err);
+                        //self.connectMysql();
                     }else {
                         query = mysql.format(query, table);
                         //console.log(query);
@@ -412,7 +414,8 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                 pool.getConnection(function(err,connection) {
                     if (err) {
                         console.log("Error happened :- ", err);
-                        self.connectMysql();
+                        res.json(err);
+                        //self.connectMysql();
                     } else {
                         query = mysql.format(query, table);
                         //console.log(query);
@@ -441,7 +444,8 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
         pool.getConnection(function (err, connection) {
             if (err) {
                 console.log("Error happened :- ", err);
-                self.connectMysql();
+                res.json(err);
+                //self.connectMysql();
             }
             else {
                 query = mysql.format(query, table);
@@ -468,7 +472,8 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
         pool.getConnection(function (err, connection) {
             if (err) {
                 console.log("Error happened :- ", err);
-                self.connectMysql();
+                res.json(err);
+                //self.connectMysql();
             }
             else {
                 connection.query("SELECT * from movieinfo where infoImdbID = ?",
@@ -492,7 +497,8 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
         pool.getConnection(function(err,connection) {
             if(err){
                 console.log("Error happened :- ",err);
-                self.connectMysql();
+                res.json(err);
+                //self.connectMysql();
             }else {
                 connection.query("SELECT ??, ?? , ??, ?? from ??",
                     ["infoMovieID", "infoImdbID", "infoMovieName", "infoMoviePosterPath", "movieinfo"], function (err, rows) {
@@ -513,7 +519,8 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
         pool.getConnection(function(err,connection){
             if(err){
                 console.log("Error happened :- ",err);
-                self.connectMysql();
+                res.json(err);
+                //self.connectMysql();
             }else{
                 connection.query("SELECT * from ?? where ?? != '/images/upcomingnull' ORDER BY ?? ",
                     ["upcomingMovies","upPosterPath","upReleaseDate"],function(err, rows){
