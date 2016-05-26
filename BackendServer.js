@@ -32,7 +32,8 @@ REST.prototype.connectMysql = function() {
         password : mysqlConfig.mysql.password,
         port     : mysqlConfig.mysql.port,
         database : mysqlConfig.mysql.database,
-        debug    : mysqlConfig.mysql.debug
+        debug    : mysqlConfig.mysql.debug,
+        socketPath : mysqlConfig.mysql.socketPath
     });
     pool.getConnection(function(err,connection){
         if(err) {
