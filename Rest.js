@@ -47,16 +47,16 @@ var cronJob2 = cron.job("* * * * * *", function(){
     var today = new Date();
     var time = today.toISOString().substring(0, 10);
     /*Delete Released Movies*/
-    var query = "DELETE FROM upcomingMovies WHERE upReleaseDate <= ?";
+    var query = "DELETE FROM upcomingmovies WHERE upReleaseDate <= ?";
     var table = [time];
-        query = mysql.format(query, table);
-        conn.query(query, function (err, rows) {
-            if (err) {
-                console.log("Error", err);
-            } else {
-                console.log("Success");
-            }
-        });
+    query = mysql.format(query, table);
+    conn.query(query, function (err, rows) {
+        if (err) {
+            console.log("Error", err);
+        } else {
+            console.log("Success");
+        }
+    });
     //conn.release();
     /*End Deleting*/
 });
@@ -110,7 +110,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
 
                                 /*Adding to Database*/
                                 var query = "INSERT INTO ??(??,??,??,??) VALUES (?,?,?,?)";
-                                var table = ["upcomingMovies","upMovieId","upMovieName","upReleaseDate","upPosterPath",
+                                var table = ["upcomingmovies","upMovieId","upMovieName","upReleaseDate","upPosterPath",
                                     JSON.parse(response).results[i].id,
                                     JSON.parse(response).results[i].title,
                                     JSON.parse(response).results[i].release_date,
@@ -246,7 +246,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
         var re = {};
         async.waterfall([
             //1stly Search Movies via apiary/search/movie
-           function(callback) {
+            function(callback) {
                 reqPro(url).then(function(response){
                     var ret = JSON.parse(response).results;
                     //console.log(re.response[0].poster_path);
@@ -296,14 +296,14 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                     }
                     //save cast images to credits
                     async.eachSeries(times2iterate, function(i, callback) {
-                        if(re.credits.cast[i].profile_path != null){
-                            download('http://image.tmdb.org/t/p/w500'+re.credits.cast[i].profile_path
-                                , './app/images/credits'+re.credits.cast[i].profile_path, function(){
-                                    console.log('saved image');
-                                });
-                        }
-                        callback();
-                    },
+                            if(re.credits.cast[i].profile_path != null){
+                                download('http://image.tmdb.org/t/p/w500'+re.credits.cast[i].profile_path
+                                    , './app/images/credits'+re.credits.cast[i].profile_path, function(){
+                                        console.log('saved image');
+                                    });
+                            }
+                            callback();
+                        },
                         function(err){
                             // if any of the file processing produced an error, err would equal that error
                             if( err ) {
@@ -477,17 +477,17 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
             }
             else {
                 connection.query("SELECT * from movieinfo where infoImdbID = ?",
-                [req.params.imdbID], function (err, rows) {
-                    //if(pool._freeConnections.indexOf(conn) == -1){
-                    //    conn.release();
-                    //}
-                    console.log("Something happening");
-                    if (err) {
-                        res.json({Error: 'Here line 439 Rest An error occured'});
-                    } else {
-                        res.json(rows[0]);
-                    }
-                });
+                    [req.params.imdbID], function (err, rows) {
+                        //if(pool._freeConnections.indexOf(conn) == -1){
+                        //    conn.release();
+                        //}
+                        console.log("Something happening");
+                        if (err) {
+                            res.json({Error: 'Here line 439 Rest An error occured'});
+                        } else {
+                            res.json(rows[0]);
+                        }
+                    });
             }
             connection.release();
         });
@@ -523,7 +523,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                 //self.connectMysql();
             }else{
                 connection.query("SELECT * from ?? where ?? != '/images/upcomingnull' ORDER BY ?? ",
-                    ["upcomingMovies","upPosterPath","upReleaseDate"],function(err, rows){
+                    ["upcomingmovies","upPosterPath","upReleaseDate"],function(err, rows){
                         console.log("Something happening");
                         if(err){
                             res.json({ Error: 'here line 470 An error occured' });
