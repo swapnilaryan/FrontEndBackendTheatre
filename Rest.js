@@ -558,6 +558,11 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
     });
     /*End proof of concept*/
 
+    /*Trial Get Critics Info*/
+    router.get("trial/getCriticsInfo", function(req, res){
+
+    });
+    /*Trial Get Critics Info*/
 };
 
 module.exports = REST_ROUTER;

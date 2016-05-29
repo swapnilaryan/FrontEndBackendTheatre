@@ -20,7 +20,8 @@ angular.module('backendTheatreApp')
                   apiUrl = "http://localhost:8000/api/";
               }
               else {
-                  apiUrl = "http://cinestar.affpc.com:8080/api/";
+                  // apiUrl = "http://cinestar.affpc.com:8080/api/";
+                  apiUrl = "http://69.28.91.229:8000/api/";
               }
               return apiUrl;
           }
