@@ -7,7 +7,8 @@ var RottenCrawler = require("./RottenCrawler.js");
 var async = require("async");
 var apiKey = "2c9306d42037dfb0de0fc3f153819054";
 var fs = require('fs'),
-    request = require('request');
+    request = require('request'),
+    cheerio = require('cheerio');
 var conn="";
 var pool="";
 function REST_ROUTER(router,connection,pool) {
@@ -559,8 +560,191 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
     /*End proof of concept*/
 
     /*Trial Get Critics Info*/
-    router.get("trial/getCriticsInfo", function(req, res){
+    router.get("/kidsinmind/rating", function(req, res){
+        var alpha = ["z"];
+        var results = "All files have been processed successfully";
+        // apha is times to iterate
+        var alphaa = ["a","b"];
+        var kidsInMindData = [];
+        var x = 0; // increment the kidsinmind array to store rating as well
+        var kimIterator = 0;
+        var iterator = [];
+        async.waterfall([
+            function(callback) {
+                async.eachSeries(alpha, function(apl, callbackk) {
+                    var url = "http://www.kids-in-mind.com/"+apl+"/index.htm";
+                    //console.log(url);
+                    reqPro(url).then(function(response){
+                        var $ = cheerio.load(response);
+                        results = $('p.t11normal').eq(4).filter(function() {
+                            k = (this);
+                            /*For Fetching the movie names*/
+                            for (i = 1; i < k.children.length; i++) {
+                                var movieStruct = {"MovieName": "", "Rating": "", "IMDB": ""};
+                                //console.log(i);
+                                if (k.children[i].children != undefined && k.children[i].children.length != 0) {
+                                    movieStruct.MovieName = k.children[i].children[0].data;
+                                    movieStruct.Rating = "";
+                                    movieStruct.IMDB = "";
+                                    kidsInMindData.push(movieStruct);
+                                }
+                            }
+                            /*for fetching the rating*/
+                            for(var j =1; j< k.children.length; j++) {
+                                if(k.children[j].prev.next.data != undefined && k.children[j].prev.next.data != '\n'
+                                    && (k.children[j].prev.next.data).replace(/\s+$/,"") != ''){
+                                    kidsInMindData[x].Rating = (k.children[j].prev.next.data).replace("\n","");
+                                    //  console.log("***",kidsInMindData[x]);
+                                    x++;
+                                    if(x>kidsInMindData.length){
+                                        x = 0;
+                                    }
+                                }
+                            }
+                            /*end fetching the rating*/
 
+                            /*for fetching the imdb id*/
+                            //for(var y=0;y<kidsInMindData.length;y++){
+                            //    async.waterfall([
+                            //        function(callback){
+                            //            //console.log(kidsInMindData[y]);
+                            //            var movieName = kidsInMindData[y].MovieName.split(" ");
+                            //            if(movieName[movieName.length-1] == "The"){
+                            //                kidsInMindData[y].MovieName = "The "+kidsInMindData[y].MovieName.replace(", The","");
+                            //            }
+                            //            movieName = kidsInMindData[y].MovieName;
+                            //            var MovieYear = kidsInMindData[y].Rating.match(/(19\d{2})|(200\d)|(201\d)/g);
+                            //            console.log(kidsInMindData[y],"--",MovieYear);
+                            //            var urll = "http://api.themoviedb.org/3/search/movie?api_key="
+                            //            +apiKey+"&query="+kidsInMindData[y].MovieName+"&year="+MovieYear;
+                            //            reqPro(urll).then(function(response){
+                            //                console.log(response.results.title);
+                            //                //for(var r=0;r<response.results.length;r++){
+                            //                //    if(response.results.title.localeCompare(kidsInMindData[y].MovieName)==0){
+                            //                //        console.log(response.results.title);
+                            //                //        break;
+                            //                //    }
+                            //                //}
+                            //            });
+                            //            callback(null, "done");
+                            //        }], function (err, result) {
+                            //                console.log(result);
+                            //            });
+                            //}
+                            for(var y=0;y<kidsInMindData.length;y++){
+                                var movieName = kidsInMindData[y].MovieName.split(" ");
+                                if(movieName[movieName.length-1] == "The"){
+                                    kidsInMindData[y].MovieName = "The "+kidsInMindData[y].MovieName.replace(", The","");
+                                }
+                            }
+                            for(var ii = 1; ii< k.children.length; ii++) {
+                                //console.log(k.children[ii].attribs.href);
+                                if( (k.children[ii].attribs != undefined) &&
+                                    ((k.children[ii].attribs).href != undefined) ){
+                                    iterator.push(k.children[ii].attribs.href);
+                                    //console.log(k.children[ii].attribs.href);
+                                }
+                            }
+                            callbackk();
+                        });
+                        //callback();
+                    });
+                    //console.log(apl,"  loaded");
+                }, function(err){
+                    console.log("done proceesing");
+                    callback(null, iterator);
+                });
+            },
+            function(iterator, callback) {
+                // arg1 now equals 'one' and arg2 now equals 'two'
+                //console.log(iterator, "----", iterator.length);
+                for(var i =0; i<iterator.length;i++){
+                    console.log(iterator[i],"****",iterator[i].charAt(0));
+                }
+                console.log(kidsInMindData);
+                async.eachSeries(iterator, function(iter, callback){
+                    //var u = "http://www.kids-in-mind.com/"+apl+"/"+k.children[ii].attribs.href;
+                    if(iter.charAt(0) == '.'){
+                        iter = iter.replace(/\.\.\/[a-z]/ ,"");
+                        iter = iter.replace(iter.charAt(0),"");
+                    }
+                    var u = "http://www.kids-in-mind.com/"+iter.charAt(0)+"/"+iter;
+                    console.log("currently processing = ",u);
+                    //callback();
+                    async.waterfall([
+                        function(callback) {
+                            var u = "http://www.kids-in-mind.com/"+iter.charAt(0)+"/"+iter;
+                            //console.log("currently processing = ",u);
+                            callback(null, u);
+                        },
+                        function(u, callback) {
+                            reqPro(u).then(function(response){
+                                var _$ = cheerio.load(response);
+                                try{
+                                    if(_$('p.t11normal').eq(3).find('a')[2].attribs == undefined
+                                        || _$('p.t11normal').eq(3).find('a')[2] == undefined){
+                                        kidsInMindData[kimIterator].IMDB = "notFound";
+                                        // console.log(kidsInMindData[kimIterator]);
+                                        kimIterator++;
+                                    }else {
+                                        kidsInMindData[kimIterator].IMDB = _$('p.t11normal').eq(3).find('a')[2].attribs.href
+                                            .match(/tt\d{7}/g);
+                                        kidsInMindData[kimIterator].IMDB = kidsInMindData[kimIterator].IMDB[0];
+                                        console.log(kimIterator,"=-()",kidsInMindData[kimIterator]);
+                                        /*Insert them into database*/
+                                        var query = "INSERT INTO ?? (??,??,??) VALUES (?,?,?)";
+                                        var table = ["moviekidsinmind",
+                                            "movieKIM_IMDB",
+                                            "movieKIM_MovieName",
+                                            "movieKIM_Rating",
+                                            kidsInMindData[kimIterator].IMDB,
+                                            kidsInMindData[kimIterator].MovieName,
+                                            kidsInMindData[kimIterator].Rating];
+                                         query = mysql.format(query,table);
+                                        pool.getConnection(function(err,connection){
+                                            if(err){
+                                                console.log("Error happened :- ",err);
+                                                //res.json(err);
+                                                //self.connectMysql();
+                                            }else {
+                                                connection.query(query, function (err, rows) {
+                                                    if (err) {
+                                                        console.log("Here line Error", err.lineNumber);
+                                                    } else {
+                                                        console.log("Success");
+                                                    }
+                                                });
+                                            }
+                                            connection.release();
+                                        });
+                                        /*End Inserting*/
+                                        kimIterator++;
+                                        callback(null, 'for');
+                                    }
+                                }catch (Exception){
+                                    kidsInMindData[kimIterator].IMDB = "notFound";
+                                    //console.log(kidsInMindData[kimIterator], kimIterator, Exception);
+                                    kimIterator++;
+                                    callback(null, 'hurray Swapnil you did it');
+                                }
+                            });
+                        }
+                    ], function (err, result) {
+                        // result now equals 'done'
+                        console.log("-----------x---------------------x----------",result);
+                        callback();
+                    });
+                });
+                callback(null, 'three');
+            },
+            function(arg1, callback) {
+                // arg1 now equals 'three'
+                callback(null, 'done');
+            }
+        ], function (err, result) {
+            // result now equals 'done'
+        });
+        res.json({"Result":results});
     });
     /*Trial Get Critics Info*/
 };
