@@ -613,7 +613,9 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
 
     /*Trial Get Critics Info*/
     router.get("/kidsinmind/rating", function(req, res){
-        var alpha = ["z"];
+        var alpha = ["a","b","c","d","e","f","g","h","i","j",
+                     "k","l","m","n","o","p","q","r","s","t",
+                     "u","v","w","x","y","z"];
         var results = "All files have been processed successfully";
         // apha is times to iterate
         var alphaa = ["a","b"];
