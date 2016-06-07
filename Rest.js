@@ -477,11 +477,9 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                 //self.connectMysql();
             }
             else {
-                connection.query("SELECT * from movieinfo where infoImdbID = ?",
+                //connection.query("SELECT * from movieinfo where infoImdbID = ?",
+                connection.query("SELECT mi.* , kim.* FROM movieinfo as mi JOIN moviekidsinmind as kim ON kim.movieKIM_IMDB = mi.infoImdbID WHERE mi.infoImdbID = ?",
                     [req.params.imdbID], function (err, rows) {
-                        //if(pool._freeConnections.indexOf(conn) == -1){
-                        //    conn.release();
-                        //}
                         console.log("Something happening");
                         if (err) {
                             res.json({Error: 'Here line 439 Rest An error occured'});
@@ -537,6 +535,60 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
         });
     });
 
+    //5. Get all from kids in mind
+    router.get("/db/kids-in-mind/:imdbID", function (req,res) {
+        pool.getConnection(function (err, connection) {
+            if (err) {
+                console.log("Error happened :- ", err);
+                res.json(err);
+                //self.connectMysql();
+            }
+            else {
+                connection.query("SELECT * from moviekidsinmind where movieKIM_IMDB = ?",
+                    [req.params.imdbID], function (err, rows) {
+                        //if(pool._freeConnections.indexOf(conn) == -1){
+                        //    conn.release();
+                        //}
+                        console.log("Something happening");
+                        if (err) {
+                            res.json({Error: 'Here line 439 Rest An error occured'});
+                        } else {
+                            res.json(rows[0]);
+                        }
+                    });
+            }
+            connection.release();
+        });
+    });
+
+    //Download images from kids in mind rating
+    router.get("/download/images/kidsinmind", function(req, res) {
+        var one_ten = "http://www.kids-in-mind.com/images/ratings/1to10.jpg"; // one to ten
+        var combine = [];
+        combine.push(one_ten);
+        for (var i =0;i<10;i++){
+            combine.push("http://www.kids-in-mind.com/images/ratings/s&n"+(i+1)+".jpg");
+            combine.push("http://www.kids-in-mind.com/images/ratings/v&g"+(i+1)+".jpg");
+            combine.push("http://www.kids-in-mind.com/images/ratings/prof"+(i+1)+".jpg");
+        }
+        async.eachSeries(combine, function(url, callback) {
+            download(url
+                , './app/images/kidsinmind'+url.replace("http://www.kids-in-mind.com/images/ratings",""), function(){
+                    console.log('image downloaded');
+                });
+            callback();
+        }, function(err){
+            // if any of the file processing produced an error, err would equal that error
+            if( err ) {
+                // One of the iterations produced an error.
+                // All processing will now stop.
+                console.log('A file failed to process',err);
+            } else {
+                res.json({"Message":combine});
+                console.log('All files have been processed successfully');
+            }
+        });
+    });
     /*Proof of concept*/
     router.delete("/db/delete", function (req,res) {
         pool.getConnection(function(err,connection){

@@ -155,6 +155,18 @@
                         <div>{{displayMovieDetails.infoMovieRuntime}}</div>
                     </div>
 
+                    <div class="col-md-4 movieTopic" ng-if="kidsinmind">
+                        <br><br><br>
+                        <div>Parents Rating:</div>
+                    </div>
+                    <div class="col-md-8 movieDetails" ng-if="kidsinmind">
+                        <!--<div><b>SEX & NUDITY</b></div>-->
+                        <div><img class="kim_sex_nudity" ng-src="{{displayMovieDetails.s_n}}"></div>
+                        <div><img class="kim_violence_gore" ng-src="{{displayMovieDetails.v_g}}"></div>
+                        <div><img class="kim_profanity" ng-src="{{displayMovieDetails.prof}}"></div>
+                        <div><img class="kim_one2ten" ng-src="{{displayMovieDetails.one_ten}}"></div>
+                    </div>
+
                     <div class="col-md-8 movieTopic">
                         <div>{{displayMovieDetails.infoMovieProduction}}:
                             <span><a ng-href={{displayMovieDetails.infoMovieWebsite}}>Official Site</a> </span>

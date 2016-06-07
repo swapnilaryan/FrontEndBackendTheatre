@@ -157,3 +157,19 @@ a.criticsLinkTextBold{
     font-size: 25px;
     cursor: pointer;
 }
+.kim_sex_nudity{
+    width: 151px;
+    height: 41px;
+}
+.kim_violence_gore{
+    width: 151px;
+    height: 32px;
+}
+.kim_profanity{
+    width: 151px;
+    height: 37px;
+}
+.kim_one2ten{
+    width: 151px;
+    height: 22px;
+}

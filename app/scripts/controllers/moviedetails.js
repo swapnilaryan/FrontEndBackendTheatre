@@ -35,6 +35,22 @@ angular.module('backendTheatreApp')
       $scope.displayMovieDetails.infoMovieRuntime = ""+hours+" hr."+minutes+" min";
       $scope.displayMovieDetails.infoMoviePosterPath = $scope.displayMovieDetails.infoMoviePosterPath.replace("./app","..");
       //end calculate runtime
+      /*Kids In Mind Rating*/
+      // get the overall rating
+      $scope.kidsinmind = false;
+      if($scope.displayMovieDetails.movieKIM_Rating == null){
+          $scope.kidsinmind = false;
+      }else{
+          $scope.displayMovieDetails.kimRating = ($scope.displayMovieDetails.movieKIM_Rating.match(/\d{1}.\d{1}.\d{1,2}/)[0]);
+          $scope.displayMovieDetails.kimRating = $scope.displayMovieDetails.kimRating.split(".");
+          $scope.displayMovieDetails.s_n = "/images/kidsinmind/s&n"+$scope.displayMovieDetails.kimRating[0]+".jpg";
+          $scope.displayMovieDetails.v_g = "/images/kidsinmind/v&g"+$scope.displayMovieDetails.kimRating[1]+".jpg";
+          $scope.displayMovieDetails.prof = "/images/kidsinmind/prof"+$scope.displayMovieDetails.kimRating[2]+".jpg";
+          $scope.displayMovieDetails.one_ten = "/images/kidsinmind/1to10.jpg";
+          $scope.kidsinmind = true;
+      }
+      console.log("The kids in mind rating is ",$scope.displayMovieDetails.kimRating,$scope.kidsinmind);
+      /*End Kids In Mind Rating*/
       $scope.displayMovieDetails.releaseYear = $scope.displayMovieDetails.infoMovieInTheatres
                                             .substr($scope.displayMovieDetails.infoMovieInTheatres.length - 4);
       console.log($scope.displayMovieDetails);
