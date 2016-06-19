@@ -51,9 +51,19 @@ angular
         }
       })
       .when('/about', {
-        templateUrl: 'views/about.html',
-        controller: 'AboutCtrl',
-        controllerAs: 'about'
+          templateUrl: 'views/about.html',
+          controller: 'AboutCtrl',
+          controllerAs: 'about'
+      })
+      .when('/admin', {
+          templateUrl: 'views/admin.html',
+          controller: 'AdminCtrl',
+          controllerAs: 'admin',
+          resolve: {
+              upcomingMovies : function (upcomingMovies){
+                  return upcomingMovies.upcoming();
+              }
+          }
       })
       .when('/moviedetails', {
           templateUrl: 'views/moviedetails.html',

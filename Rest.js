@@ -69,12 +69,11 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
         var totPage = [];
         var ret = [];
         async.eachSeries(items, function(item, callback){
-            var url = "http://api.themoviedb.org/3/movie/upcoming?api_key=2c9306d42037dfb0de0fc3f153819054&page=" + item + "&language=en";
+            var url = "http://api.themoviedb.org/3/movie/upcoming?api_key="+apiKey+"&page=" + item + "&language=en";
             reqPro(url).then(function(response){
                 for(var i =1;i<=JSON.parse(response).total_pages;i++){
                     totPage.push(i);
                 }
-                //console.log("total pages fetched is",totPage);
                 callback();
             });
         },function (err){
@@ -86,7 +85,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                 async.eachSeries(totPage, function(item, callback) {
 
                     // Perform operation on file here.
-                    var url = "http://api.themoviedb.org/3/movie/upcoming?api_key=2c9306d42037dfb0de0fc3f153819054&page=" + item + "&language=en";
+                    var url = "http://api.themoviedb.org/3/movie/upcoming?api_key="+apiKey+"&page=" + item + "&language=en";
                     reqPro(url).then(function(response){
                         var t = [];
                         for(var x = 0;x<JSON.parse(response).results.length;x++){
@@ -102,6 +101,26 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                                 "page":""
                             };
                             if(JSON.parse(response).results[i].original_language=='en'){
+                                async.series([
+                                    function(callback){
+                                    // do some stuff ...
+                                        var date = new Date();
+                                        var year = date.getFullYear();
+                                        //var fetchRuntimeURL = "http://www.omdbapi.com/?t="+JSON.parse(response).results[i].title+"&y="+year+"&plot=short&r=
+                                        var fetchRuntimeURL = "http://api.themoviedb.org/3/movie/"+JSON.parse(response).results[i].id+"?api_key="+apiKey;
+                                        reqPro(fetchRuntimeURL).then(function(responsee){
+                                            console.log(JSON.parse(response).results[i].title,"!@#$%^&*()_+",JSON.parse(responsee).runtime);
+                                        });
+                                        callback(null, 'one');
+                                    },
+                                    function(callback){
+                                        // do some more stuff ...
+                                        callback(null, 'two');
+                                    }
+                                ],
+                                function(err, results){
+                                    // results is now equal to ['one', 'two']
+                                });
                                 upC["id"] = JSON.parse(response).results[i].id;
                                 upC["page"] = JSON.parse(response).page;
                                 upC["title"] = JSON.parse(response).results[i].title;
@@ -217,7 +236,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                         imdb_id = rc.movieResponse["movieInfo"][0].imdb_id;
                         tomatoURL = rc.movieResponse["omdbData"][0].tomatoURL;
                         tomatoURL = tomatoURL.replace("http://www.rottentomatoes.com","");
-                        //console.log("Done",tomatoURL);
+                        console.log("Done",tomatoURL);
                         callback();
                     });
             },
@@ -535,6 +554,28 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
         });
     });
 
+    // 4.1 Delete from Upcoming Movies
+    router.delete("/db/upcoming/:upId", function (req,res) {
+        pool.getConnection(function(err,connection){
+            if(err){
+                console.log("Error happened :- ",err);
+                res.json(err);
+                //self.connectMysql();
+            }else{
+                connection.query("DELETE FROM ?? where ?? = "+req.params.upId,
+                    ["upcomingmovies","upMovieId"],function(err, rows){
+                        console.log("Something happening");
+                        if(err){
+                            res.json({ Error: 'here line 470 An error occured' });
+                        }else{
+                            res.json(rows);
+                        }
+                    });
+            }
+            connection.release();
+        });
+    });
+
     //5. Get all from kids in mind
     router.get("/db/kids-in-mind/:imdbID", function (req,res) {
         pool.getConnection(function (err, connection) {
@@ -618,14 +659,14 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                      "u","v","w","x","y","z"];
         var results = "All files have been processed successfully";
         // apha is times to iterate
-        var alphaa = ["a","b"];
+        var alphaa = ["c"];
         var kidsInMindData = [];
         var x = 0; // increment the kidsinmind array to store rating as well
         var kimIterator = 0;
         var iterator = [];
         async.waterfall([
             function(callback) {
-                async.eachSeries(alpha, function(apl, callbackk) {
+                async.eachSeries(alphaa, function(apl, callbackk) {
                     var url = "http://www.kids-in-mind.com/"+apl+"/index.htm";
                     //console.log(url);
                     reqPro(url).then(function(response){
@@ -656,35 +697,6 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                                 }
                             }
                             /*end fetching the rating*/
-
-                            /*for fetching the imdb id*/
-                            //for(var y=0;y<kidsInMindData.length;y++){
-                            //    async.waterfall([
-                            //        function(callback){
-                            //            //console.log(kidsInMindData[y]);
-                            //            var movieName = kidsInMindData[y].MovieName.split(" ");
-                            //            if(movieName[movieName.length-1] == "The"){
-                            //                kidsInMindData[y].MovieName = "The "+kidsInMindData[y].MovieName.replace(", The","");
-                            //            }
-                            //            movieName = kidsInMindData[y].MovieName;
-                            //            var MovieYear = kidsInMindData[y].Rating.match(/(19\d{2})|(200\d)|(201\d)/g);
-                            //            console.log(kidsInMindData[y],"--",MovieYear);
-                            //            var urll = "http://api.themoviedb.org/3/search/movie?api_key="
-                            //            +apiKey+"&query="+kidsInMindData[y].MovieName+"&year="+MovieYear;
-                            //            reqPro(urll).then(function(response){
-                            //                console.log(response.results.title);
-                            //                //for(var r=0;r<response.results.length;r++){
-                            //                //    if(response.results.title.localeCompare(kidsInMindData[y].MovieName)==0){
-                            //                //        console.log(response.results.title);
-                            //                //        break;
-                            //                //    }
-                            //                //}
-                            //            });
-                            //            callback(null, "done");
-                            //        }], function (err, result) {
-                            //                console.log(result);
-                            //            });
-                            //}
                             for(var y=0;y<kidsInMindData.length;y++){
                                 var movieName = kidsInMindData[y].MovieName.split(" ");
                                 if(movieName[movieName.length-1] == "The"){
