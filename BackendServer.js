@@ -5,6 +5,7 @@ var express = require("express");
 var mysql   = require("mysql");
 var bodyParser  = require("body-parser");
 var fs = require('fs');
+var session	= require('express-session');
 var rest = require("./Rest.js");
 var app  = express();
 var server ="";
@@ -52,6 +53,7 @@ REST.prototype.configureExpress = function(connection,pool) {
     var self = this;
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
+    // app.use(session({secret: 'swapnil',saveUninitialized: true,resave: true}));
     //handle cors issue
     app.use(function(req, res, next) {
         res.header("Access-Control-Allow-Origin", "*");
@@ -61,6 +63,7 @@ REST.prototype.configureExpress = function(connection,pool) {
     //res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     //end handling
     router = express.Router();           // get an instance of the express Router
+    router.use(session({secret: 'swapnil',saveUninitialized: true,resave: true}));
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
     router.get('/', function(req, res) {
         res.json({ message: 'hooray! welcome to our api!' });

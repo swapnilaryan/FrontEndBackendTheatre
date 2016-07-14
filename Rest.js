@@ -9,9 +9,16 @@ var apiKey = "2c9306d42037dfb0de0fc3f153819054";
 var fs = require('fs'),
     request = require('request'),
     cheerio = require('cheerio');
+
+var shortid = require('shortid');
+var bcrypt = require('bcryptjs');
 var conn="";
 var pool="";
+var sess;
 function REST_ROUTER(router,connection,pool) {
+
+
+
     var self = this;
     conn = connection;
     console.log("this pool", this.pool);
@@ -813,6 +820,91 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
         res.json({"Result":results});
     });
     /*Trial Get Critics Info*/
+
+    /*****************************login logout************************************/
+    //1: Registration
+    router.post("/db/registerUser",function (req, res){
+        // Step 1: Check if user already exists
+        console.log("---------------!@#$%^&*()-",sess);
+        var userExists = 0;
+        var query = 'SELECT COUNT(*) as UserExists FROM ?? WHERE movieUserEmailId = ?';
+        var table = ["movieuser",(req.body.emailId).toLowerCase()];
+        query = mysql.format(query,table);
+          pool.getConnection(function(err,connection){
+              if(err){
+                  console.log("Error happened :- ",err);
+                  res.json(err);
+                  //self.connectMysql();
+              }else {
+                connection.query(query, function (err, rows) {
+                  if (err) {
+                      res.json({"Error":"Error Occurred"});
+                      console.log("====Here line 114 Error", err);
+                  } else {
+                      userExists = rows[0].UserExists;
+                      console.log(userExists);
+                      if(userExists == 0){
+                          var salt = bcrypt.genSaltSync(10);
+                          var hashPassword = bcrypt.hashSync(req.body.password, salt);
+                          req.body.id = shortid.generate();
+                          req.body.password = hashPassword;
+                          query = "INSERT INTO ??(??,??,??,??,??) VALUES (?,?,?,?,?)";
+                          table = ["movieUser","movieUserId","movieUserFirstName","movieUserLastName","movieUserEmailId",
+                              "movieUserPassword", req.body.id, req.body.firstName, req.body.lastName, (req.body.emailId).toLowerCase(), req.body.password];
+                          query = mysql.format(query,table);
+                          pool.getConnection(function(err,connection){
+                              if(err){
+                                  console.log("Error happened :- ",err);
+                                  res.json(err);
+                              }else {
+                                  connection.query(query, function (err, rows) {
+                                      if (err) {
+                                          console.log("Here line 114 Error", err);
+                                      } else {
+                                          res.json({"Message":"User created Successfully", "Details":sess});
+                                          console.log("Success");
+                                      }
+                                  });
+                              }
+                              connection.release();
+                          });
+                      }
+                      else{
+                          res.json({"Error":"User "+(req.body.emailId).toLowerCase()+" already exists please login to continue"});
+                      }
+                  }
+                });
+          }
+          connection.release();
+        });
+    });
+    //2: Login
+    router.post("/db/userLogin", function (req, res){
+        sess=req.session;
+        sess.email=req.body.emailId;
+        res.send(sess);
+    });
+    //3: Logout
+    router.get("/db/userLogout", function (req, res){
+        sess = req.session;
+        req.session.destroy(function(err){
+            if(err){
+                res.json({"Error":err});
+            }
+            else
+            {
+                res.json({"Message":"Successfully "+sess.email+" logged out"});
+            }
+        });
+
+    });
+
+    router.get("/check", function (req, res) {
+        sess = req.session;
+        res.send(sess);
+    });
+    /******************************login logout***********************************/
+
 };
 
 module.exports = REST_ROUTER;
