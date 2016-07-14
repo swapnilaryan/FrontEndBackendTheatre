@@ -849,7 +849,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                           req.body.id = shortid.generate();
                           req.body.password = hashPassword;
                           query = "INSERT INTO ??(??,??,??,??,??) VALUES (?,?,?,?,?)";
-                          table = ["movieUser","movieUserId","movieUserFirstName","movieUserLastName","movieUserEmailId",
+                          table = ["movieuser","movieUserId","movieUserFirstName","movieUserLastName","movieUserEmailId",
                               "movieUserPassword", req.body.id, req.body.firstName, req.body.lastName, (req.body.emailId).toLowerCase(), req.body.password];
                           query = mysql.format(query,table);
                           pool.getConnection(function(err,connection){
