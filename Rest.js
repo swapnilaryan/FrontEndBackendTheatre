@@ -898,14 +898,19 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                     if (err) {
                         console.log("Here line 114 Error", err);
                     } else {
-                        matchPassword = rows[0].movieUserPassword;
-                        var isMatch = bcrypt.compareSync(sess.password, matchPassword);
-                        if(isMatch){
-                            res.json({"Message":"Logged in Successfully","Details":sess});
-                        }else{
-                            res.json({"Message":"Wrong Password","Details":sess});
+                        if(rows.length>1){
+                            matchPassword = rows[0].movieUserPassword;
+                            var isMatch = bcrypt.compareSync(sess.password, matchPassword);
+                            if(isMatch){
+                                res.json({"Message":"Logged in Successfully","Details":sess});
+                            }else{
+                                res.json({"Message":"Wrong Password","Details":sess});
+                            }
+                            console.log("Success");
+                        }else {
+                            res.json({"Message":"No such user "+req.body.emailId+". Please SignUp to login"});
                         }
-                        console.log("Success");
+
                     }
                 });
             }
