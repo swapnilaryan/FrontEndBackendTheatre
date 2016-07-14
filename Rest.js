@@ -880,9 +880,37 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
     });
     //2: Login
     router.post("/db/userLogin", function (req, res){
+        var matchPassword;
         sess=req.session;
         sess.email=req.body.emailId;
-        res.send(sess);
+        sess.password=req.body.password;
+        // Fetch the details from the db of given email
+        var query = 'SELECT * FROM ?? WHERE movieUserEmailId = ?';
+        var table = ["movieuser",(req.body.emailId).toLowerCase()];
+        query = mysql.format(query,table);
+        pool.getConnection(function(err,connection){
+            if(err){
+                console.log("Error happened :- ",err);
+                res.json(err);
+                //self.connectMysql();
+            }else {
+                connection.query(query, function (err, rows) {
+                    if (err) {
+                        console.log("Here line 114 Error", err);
+                    } else {
+                        matchPassword = rows[0].movieUserPassword;
+                        var isMatch = bcrypt.compareSync(sess.password, matchPassword);
+                        if(isMatch){
+                            res.json({"Message":"Logged in Successfully","Details":sess});
+                        }else{
+                            res.json({"Message":"Wrong Password","Details":sess});
+                        }
+                        console.log("Success");
+                    }
+                });
+            }
+            connection.release();
+        });
     });
     //3: Logout
     router.get("/db/userLogout", function (req, res){
@@ -890,13 +918,10 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
         req.session.destroy(function(err){
             if(err){
                 res.json({"Error":err});
-            }
-            else
-            {
+            }else {
                 res.json({"Message":"Successfully "+sess.email+" logged out"});
             }
         });
-
     });
 
     router.get("/check", function (req, res) {
