@@ -2549,8 +2549,8 @@ CREATE TABLE IF NOT EXISTS `movie_schedule` (
   `movieImdbID` varchar(10) NOT NULL,
   `movieTypeID` int(11) DEFAULT NULL,
   `movieShowDate` date NOT NULL,
-  `movieStartTime` time(6) NOT NULL,
-  `movieEndTime` time(6) NOT NULL,
+  `movieStartTime` varchar(10) NOT NULL,
+  `movieEndTime` varchar(10) NOT NULL,
   PRIMARY KEY (`scheduleID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
