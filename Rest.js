@@ -825,7 +825,6 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
     //1: Registration
     router.post("/db/registerUser",function (req, res){
         // Step 1: Check if user already exists
-        console.log("---------------!@#$%^&*()-",sess);
         var userExists = 0;
         var query = 'SELECT COUNT(*) as UserExists FROM ?? WHERE movieUserEmailId = ?';
         var table = ["movieuser",(req.body.emailId).toLowerCase()];

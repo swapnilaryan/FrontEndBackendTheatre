@@ -1,0 +1,33 @@
+<div class="header" ng-controller="HeaderCtrl">
+  <div class="navbar" role="navigation">
+    <div class="container">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-5"  id="top-list">
+            <ul class="list-inline">
+              <li><a href="#">Movies</a></li>
+              <li><a ng-href="#/about">Promotions</a></li>
+              <li><a ng-href="#/moviedetails">Contact</a></li>
+              <li><a ng-href="#/">Location</a></li>
+            </ul>
+          </div>
+          <div class="col-md-2 cinestar_logo">
+            <img src="images/Logo.png">
+          </div> <!-- end col-md-2 -->
+
+          <div class="col-md-5">
+            <ul class="list-inline" id="right-menu">
+              <!--Trigger the modal-->
+              <li><a ui-sref="#" ng-href="#"><img src="images/twitter.png"></a></li>
+              <li><a ng-href="#"><img src="images/facebook.png"></a></li>
+              <li><a ng-href="#"><img src="images/add_to_cart.png"></a></li>
+              <li><a ng-click="openSignIn('md')">Login / Register</a></li>
+              <!--<li><a>/</a></li>-->
+              <!--<li><a ng-click="openSignUp('md')">Sign Up</a></li>-->
+            </ul>
+          </div> <!-- end col-md-5 -->
+        </div> <!-- row -->
+      </div> <!-- end md-12-->
+    </div><!-- End Container -->
+  </div>
+</div>

@@ -37,19 +37,19 @@ angular
       //    });
 
       $routeProvider
-      .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl',
-        controllerAs: 'main',
-        resolve: {
+        .when('/', {
+          templateUrl: 'views/main.html',
+          controller: 'MainCtrl',
+          controllerAs: 'main',
+          resolve: {
             nowShowingInTheatres : function (nowShowing){
-                return nowShowing.nowShowingMovies();
+              return nowShowing.nowShowingMovies();
             },
             upcomingMovies : function (upcomingMovies){
-                return upcomingMovies.upcoming();
+              return upcomingMovies.upcoming();
             }
-        }
-      })
+          }
+        })
       .when('/about', {
           templateUrl: 'views/about.html',
           controller: 'AboutCtrl',
