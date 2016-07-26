@@ -20,6 +20,12 @@ angular.module('backendTheatreApp')
         size: size
       });
     };
+    $rootScope.$on("signinWithSignUp", function (event, data) {
+      console.log("---------------------",data);
+      $scope.register.emailId = data.emailId;
+      $scope.register.password = data.password;
+      $scope.signinUser();
+    });
     $scope.register = {"emailId":"","password": ""};
     $scope.signinUser = function signinUser(){
       $scope.data = {

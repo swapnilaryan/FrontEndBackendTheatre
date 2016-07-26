@@ -781,7 +781,7 @@ angular.module('backendTheatreApp')
  * Controller of the backendTheatreApp
  */
 angular.module('backendTheatreApp')
-  .controller('SignupCtrl', ["$scope", "$uibModalInstance", "$uibModal", "signup", function ($scope, $uibModalInstance, $uibModal, signup) {
+  .controller('SignupCtrl', ["$scope", "$rootScope", "$uibModalInstance", "$uibModal", "signup", function ($scope, $rootScope, $uibModalInstance, $uibModal, signup) {
     $scope.cancel = function () {
       $uibModalInstance.dismiss('cancel');
     };
@@ -793,6 +793,13 @@ angular.module('backendTheatreApp')
         size: size
       });
     };
+    // $scope.register = {
+    //   "firstname":"",
+    //   "lastName":"",
+    //   "emailId":"",
+    //   "password":"",
+    //   "confirm_password":""
+    // };
     $scope.registerUser = function registerUser(){
       $scope.data = {
         "firstName": $scope.register.firstName,
@@ -805,10 +812,11 @@ angular.module('backendTheatreApp')
         console.log(resolve);
         console.log(reject);
         if(resolve.Status!="Fail"){
+          $rootScope.$broadcast('signinWithSignUp', $scope.data);
           $scope.cancel();
         }
       });
-    }
+    };
   }]);
 
 'use strict';
@@ -898,6 +906,12 @@ angular.module('backendTheatreApp')
         size: size
       });
     };
+    $rootScope.$on("signinWithSignUp", function (event, data) {
+      console.log("---------------------",data);
+      $scope.register.emailId = data.emailId;
+      $scope.register.password = data.password;
+      $scope.signinUser();
+    });
     $scope.register = {"emailId":"","password": ""};
     $scope.signinUser = function signinUser(){
       $scope.data = {
