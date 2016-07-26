@@ -8,3 +8,4 @@ app/images/credits/
 app/images/nowShowing/
 #dist/images/
 .DS_Store
+.tmp/
