@@ -119,3 +119,6 @@ div[ng-messages] {
     position: relative;
     color: #FF0000;
 }
+.login_register:hover{
+  cursor: pointer;
+}

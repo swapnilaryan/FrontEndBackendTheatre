@@ -8,7 +8,7 @@
  * Controller of the backendTheatreApp
  */
 angular.module('backendTheatreApp')
-  .controller('SignupCtrl', function ($scope, $uibModalInstance, $uibModal) {
+  .controller('SignupCtrl', function ($scope, $uibModalInstance, $uibModal, signup) {
     $scope.cancel = function () {
       $uibModalInstance.dismiss('cancel');
     };
@@ -20,4 +20,20 @@ angular.module('backendTheatreApp')
         size: size
       });
     };
+    $scope.registerUser = function registerUser(){
+      $scope.data = {
+        "firstName": $scope.register.firstName,
+        "lastName":$scope.register.lastName,
+        "emailId": $scope.register.emailId,
+        "password":$scope.register.password,
+        "confirm_password":$scope.register.confirm_password
+      };
+      signup.registration($scope.data).then(function(resolve, reject){
+        console.log(resolve);
+        console.log(reject);
+        if(resolve.Status!="Fail"){
+          $scope.cancel();
+        }
+      });
+    }
   });

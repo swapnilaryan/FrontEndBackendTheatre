@@ -8,6 +8,79 @@
  * Service in the backendTheatreApp.
  */
 angular.module('backendTheatreApp')
+  .factory('signup', function ($q, $http, apiKey){
+  return {
+    registration: function(data){
+      var deferred = $q.defer();
+      $http.post(""+apiKey.apiUrlFn()+"db/registerUser", data)
+        .success(function(data, status, headers){
+          deferred.resolve(data);
+        }).error(function(data){
+        deferred.reject(data);
+      });
+      return deferred.promise;
+    }
+  }
+})
+  .factory('signin', function ($q, $http, apiKey){
+    return {
+      signin: function(data){
+        var deferred = $q.defer();
+        $http.post(""+apiKey.apiUrlFn()+"db/userLogin", data)
+          .success(function(data, status, headers){
+            console.log(data);
+            deferred.resolve(data);
+          }).error(function(data){
+          deferred.reject(data);
+        });
+        return deferred.promise;
+      },
+      userLoggedIn: function(){
+        var deferred = $q.defer();
+        $http.get(""+apiKey.apiUrlFn()+"db/check")
+          .success(function(data, status, headers){
+            console.log(data);
+            deferred.resolve(data);
+          }).error(function(data){
+          deferred.reject(data);
+        });
+        return deferred.promise;
+      }
+    }
+  })
+  .factory('signout', function ($q, $http, apiKey){
+    return {
+      signout: function () {
+        var deferred = $q.defer();
+        $http.get("" + apiKey.apiUrlFn() + "db/userLogout")
+          .success(function (data, status, headers) {
+            console.log(data);
+            deferred.resolve(data);
+          }).error(function (data) {
+          deferred.reject(data);
+        });
+        return deferred.promise;
+      }
+    }
+  })
+  .factory('userLogInStatus', function () {
+    // AngularJS will instantiate a singleton by calling "new" on this function
+    var user = {};
+    var loginUser = function(newObj) {
+      user.emailId = newObj;
+      console.log(user);
+    };
+
+    var getUser = function(){
+      console.log(user);
+      return user.emailId;
+    };
+
+    return {
+      loginUser: loginUser,
+      getUser: getUser
+    };
+  })
   .factory('searchMovieText', function () {
     // AngularJS will instantiate a singleton by calling "new" on this function
       var smt = {};

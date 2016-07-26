@@ -825,57 +825,63 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
     //1: Registration
     router.post("/db/registerUser",function (req, res){
         // Step 1: Check if user already exists
+      console.log(req.body);
         var userExists = 0;
         var query = 'SELECT COUNT(*) as UserExists FROM ?? WHERE movieUserEmailId = ?';
         var table = ["movieuser",(req.body.emailId).toLowerCase()];
         query = mysql.format(query,table);
-          pool.getConnection(function(err,connection){
-              if(err){
-                  console.log("Error happened :- ",err);
-                  res.json(err);
-                  //self.connectMysql();
-              }else {
-                connection.query(query, function (err, rows) {
-                  if (err) {
-                      res.json({"Error":"Error Occurred"});
-                      console.log("====Here line 114 Error", err);
-                  } else {
-                      userExists = rows[0].UserExists;
-                      console.log(userExists);
-                      if(userExists == 0){
-                          var salt = bcrypt.genSaltSync(10);
-                          var hashPassword = bcrypt.hashSync(req.body.password, salt);
-                          req.body.id = shortid.generate();
-                          req.body.password = hashPassword;
-                          query = "INSERT INTO ??(??,??,??,??,??) VALUES (?,?,?,?,?)";
-                          table = ["movieuser","movieUserId","movieUserFirstName","movieUserLastName","movieUserEmailId",
-                              "movieUserPassword", req.body.id, req.body.firstName, req.body.lastName, (req.body.emailId).toLowerCase(), req.body.password];
-                          query = mysql.format(query,table);
-                          pool.getConnection(function(err,connection){
-                              if(err){
-                                  console.log("Error happened :- ",err);
-                                  res.json(err);
-                              }else {
-                                  connection.query(query, function (err, rows) {
-                                      if (err) {
-                                          console.log("Here line 114 Error", err);
-                                      } else {
-                                          res.json({"Message":"User created Successfully", "Details":sess});
-                                          console.log("Success");
-                                      }
-                                  });
-                              }
-                              connection.release();
-                          });
-                      }
-                      else{
-                          res.json({"Error":"User "+(req.body.emailId).toLowerCase()+" already exists please login to continue"});
-                      }
-                  }
-                });
-          }
-          connection.release();
-        });
+        pool.getConnection(function(err,connection){
+        if(err){
+          console.log("Error happened :- ",err);
+          res.json({"Message":"Error occured", "Status":"Fail"});
+          //self.connectMysql();
+        }else {
+          connection.query(query, function (err, rows) {
+            if (err) {
+              res.json({"Error":"Error Occurred", "Status":"Fail"});
+              console.log("====Here line 114 Error", err);
+            } else {
+              userExists = rows[0].UserExists;
+              if(userExists == 0){
+                var passwords_match = false;
+                var salt = bcrypt.genSaltSync(10);
+                var hashPassword = bcrypt.hashSync(req.body.password, salt);
+                req.body.id = shortid.generate();
+                req.body.password = hashPassword;
+                passwords_match = bcrypt.compareSync(req.body.confirm_password, hashPassword);
+                if(passwords_match == false){
+                  res.json({"Message":"Passwords don't match", "Status":"Fail"});
+                }else{
+                  query = "INSERT INTO ??(??,??,??,??,??) VALUES (?,?,?,?,?)";
+                  table = ["movieuser","movieUserId","movieUserFirstName","movieUserLastName","movieUserEmailId",
+                    "movieUserPassword", req.body.id, req.body.firstName, req.body.lastName, (req.body.emailId).toLowerCase(), req.body.password];
+                  query = mysql.format(query,table);
+                  pool.getConnection(function(err,connection){
+                    if(err){
+                      console.log("Error happened :- ",err);
+                      res.json({"Message":"Error occured", "Status":"Fail"});
+                    }else {
+                      connection.query(query, function (err, rows) {
+                        if (err) {
+                          console.log("Here line 114 Error", err);
+                        } else {
+                          res.json({"Message":"User created Successfully", "Details":sess, "Status":"Success"});
+                          console.log("Success");
+                        }
+                      });
+                    }
+                    connection.release();
+                  });
+                }
+              }
+              else{
+                res.json({"Error":"User "+(req.body.emailId).toLowerCase()+" already exists please login to continue", "Status":"Fail"});
+              }
+            }
+          });
+        }
+        connection.release();
+      });
     });
     //2: Login
     router.post("/db/userLogin", function (req, res){
@@ -890,24 +896,24 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
         pool.getConnection(function(err,connection){
             if(err){
                 console.log("Error happened :- ",err);
-                res.json(err);
+                res.json({"Message":'Error occured'+err, "Status":"Fail"});
                 //self.connectMysql();
             }else {
                 connection.query(query, function (err, rows) {
                     if (err) {
                         console.log("Here line 114 Error", err);
                     } else {
-                        if(rows.length>1){
+                        if(rows.length>0){
                             matchPassword = rows[0].movieUserPassword;
                             var isMatch = bcrypt.compareSync(sess.password, matchPassword);
                             if(isMatch){
-                                res.json({"Message":"Logged in Successfully","Details":sess});
+                                res.json({"Message":"Logged in Successfully","Details":sess, "Status":"Success"});
                             }else{
-                                res.json({"Message":"Wrong Password","Details":sess});
+                                res.json({"Message":"Wrong Password", "Status":"Fail"});
                             }
                             console.log("Success");
                         }else {
-                            res.json({"Message":"No such user "+req.body.emailId+". Please SignUp to login"});
+                            res.json({"Message":"No such email "+req.body.emailId+". Please SignUp to continue", "Status":"Fail"});
                         }
 
                     }
@@ -918,18 +924,22 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
     });
     //3: Logout
     router.get("/db/userLogout", function (req, res){
-        sess = req.session;
-        req.session.destroy(function(err){
+        req.session = sess;
+        if(sess == undefined){
+          res.json({"Message":"No user is logged in.","status":"Fail"});
+        }else {
+          req.session.destroy(function(err){
             if(err){
-                res.json({"Error":err});
+              res.json({"Error":err});
             }else {
-                res.json({"Message":"Successfully "+sess.email+" logged out"});
+              res.json({"Message":"Successfully "+sess.email+" logged out"});
             }
-        });
+          });
+        }
     });
 
-    router.get("/check", function (req, res) {
-        sess = req.session;
+    router.get("/db/check", function (req, res) {
+        req.session = sess;
         res.send(sess);
     });
     /******************************login logout***********************************/

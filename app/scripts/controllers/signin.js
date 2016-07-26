@@ -8,7 +8,7 @@
  * Controller of the backendTheatreApp
  */
 angular.module('backendTheatreApp')
-  .controller('SigninCtrl', function ($scope, $uibModalInstance, $uibModal) {
+  .controller('SigninCtrl', function ($scope, $rootScope, userLogInStatus, $uibModalInstance, $cookieStore, $uibModal, signin, signout) {
     $scope.cancel = function () {
       $uibModalInstance.dismiss('cancel');
     };
@@ -20,4 +20,24 @@ angular.module('backendTheatreApp')
         size: size
       });
     };
+    $scope.register = {"emailId":"","password": ""};
+    $scope.signinUser = function signinUser(){
+      $scope.data = {
+        "emailId": $scope.register.emailId,
+        "password":$scope.register.password
+      };
+      signin.signin($scope.data).then(function(resolve, reject){
+        console.log(resolve);
+        console.log(reject);
+        if(resolve.Status!="Fail"){
+          $scope.userLoggedIn = true;
+          $cookieStore.put('userLogin', $scope.register.emailId);
+          $rootScope.$broadcast('userLoggedin', $scope.register.emailId);
+          $scope.cancel();
+        }else{
+          $scope.userLoggedIn = false;
+        }
+        console.log($cookieStore.get('userLogin'));
+      });
+    }
   });

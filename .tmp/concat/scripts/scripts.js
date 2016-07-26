@@ -352,6 +352,79 @@ angular.module('backendTheatreApp')
  * Service in the backendTheatreApp.
  */
 angular.module('backendTheatreApp')
+  .factory('signup', ["$q", "$http", "apiKey", function ($q, $http, apiKey){
+  return {
+    registration: function(data){
+      var deferred = $q.defer();
+      $http.post(""+apiKey.apiUrlFn()+"db/registerUser", data)
+        .success(function(data, status, headers){
+          deferred.resolve(data);
+        }).error(function(data){
+        deferred.reject(data);
+      });
+      return deferred.promise;
+    }
+  }
+}])
+  .factory('signin', ["$q", "$http", "apiKey", function ($q, $http, apiKey){
+    return {
+      signin: function(data){
+        var deferred = $q.defer();
+        $http.post(""+apiKey.apiUrlFn()+"db/userLogin", data)
+          .success(function(data, status, headers){
+            console.log(data);
+            deferred.resolve(data);
+          }).error(function(data){
+          deferred.reject(data);
+        });
+        return deferred.promise;
+      },
+      userLoggedIn: function(){
+        var deferred = $q.defer();
+        $http.get(""+apiKey.apiUrlFn()+"db/check")
+          .success(function(data, status, headers){
+            console.log(data);
+            deferred.resolve(data);
+          }).error(function(data){
+          deferred.reject(data);
+        });
+        return deferred.promise;
+      }
+    }
+  }])
+  .factory('signout', ["$q", "$http", "apiKey", function ($q, $http, apiKey){
+    return {
+      signout: function () {
+        var deferred = $q.defer();
+        $http.get("" + apiKey.apiUrlFn() + "db/userLogout")
+          .success(function (data, status, headers) {
+            console.log(data);
+            deferred.resolve(data);
+          }).error(function (data) {
+          deferred.reject(data);
+        });
+        return deferred.promise;
+      }
+    }
+  }])
+  .factory('userLogInStatus', function () {
+    // AngularJS will instantiate a singleton by calling "new" on this function
+    var user = {};
+    var loginUser = function(newObj) {
+      user.emailId = newObj;
+      console.log(user);
+    };
+
+    var getUser = function(){
+      console.log(user);
+      return user.emailId;
+    };
+
+    return {
+      loginUser: loginUser,
+      getUser: getUser
+    };
+  })
   .factory('searchMovieText', function () {
     // AngularJS will instantiate a singleton by calling "new" on this function
       var smt = {};
@@ -708,7 +781,7 @@ angular.module('backendTheatreApp')
  * Controller of the backendTheatreApp
  */
 angular.module('backendTheatreApp')
-  .controller('SignupCtrl', ["$scope", "$uibModalInstance", "$uibModal", function ($scope, $uibModalInstance, $uibModal) {
+  .controller('SignupCtrl', ["$scope", "$uibModalInstance", "$uibModal", "signup", function ($scope, $uibModalInstance, $uibModal, signup) {
     $scope.cancel = function () {
       $uibModalInstance.dismiss('cancel');
     };
@@ -720,6 +793,22 @@ angular.module('backendTheatreApp')
         size: size
       });
     };
+    $scope.registerUser = function registerUser(){
+      $scope.data = {
+        "firstName": $scope.register.firstName,
+        "lastName":$scope.register.lastName,
+        "emailId": $scope.register.emailId,
+        "password":$scope.register.password,
+        "confirm_password":$scope.register.confirm_password
+      };
+      signup.registration($scope.data).then(function(resolve, reject){
+        console.log(resolve);
+        console.log(reject);
+        if(resolve.Status!="Fail"){
+          $scope.cancel();
+        }
+      });
+    }
   }]);
 
 'use strict';
@@ -732,7 +821,7 @@ angular.module('backendTheatreApp')
  * Controller of the backendTheatreApp
  */
 angular.module('backendTheatreApp')
-  .controller('HeaderCtrl', ["$scope", "$uibModal", function ($scope, $uibModal) {
+  .controller('HeaderCtrl', ["$scope", "$cookieStore", "$rootScope", "userLogInStatus", "$uibModal", "signout", function ($scope, $cookieStore, $rootScope, userLogInStatus, $uibModal, signout) {
     $scope.openSignIn = function (size) {
       var modalInstance = $uibModal.open({
         templateUrl: 'views/signin.html',
@@ -747,6 +836,30 @@ angular.module('backendTheatreApp')
         size: size
       });
     };
+    $rootScope.$on("userLoggedin", function (event, data) {
+        $scope.showUser = true;
+        $scope.loginRegister = false;
+        $scope.userDetails = $cookieStore.get('userLogin');
+      console.log("---------------------",data, $scope.userDetails);
+    });
+    $scope.showUser = false;
+    $scope.userDetails = $cookieStore.get('userLogin');
+    if($scope.userDetails!=null || $scope.userDetails != undefined){
+      $scope.showUser = true;
+      $scope.loginRegister = false;
+    }else{
+      $scope.showUser = false;
+      $scope.loginRegister = true;
+    }
+    $scope.logout = function logout(){
+      signout.signout().then(function(response){
+        console.log(response);
+        $scope.showUser = false;
+        $scope.loginRegister = true;
+        $cookieStore.remove('userLogin');
+        // console.log($cookieStore.get('userLogin'));
+      });
+    }
   }]);
 
 'use strict';
@@ -773,7 +886,7 @@ angular.module('backendTheatreApp')
  * Controller of the backendTheatreApp
  */
 angular.module('backendTheatreApp')
-  .controller('SigninCtrl', ["$scope", "$uibModalInstance", "$uibModal", function ($scope, $uibModalInstance, $uibModal) {
+  .controller('SigninCtrl', ["$scope", "$rootScope", "userLogInStatus", "$uibModalInstance", "$cookieStore", "$uibModal", "signin", "signout", function ($scope, $rootScope, userLogInStatus, $uibModalInstance, $cookieStore, $uibModal, signin, signout) {
     $scope.cancel = function () {
       $uibModalInstance.dismiss('cancel');
     };
@@ -785,6 +898,26 @@ angular.module('backendTheatreApp')
         size: size
       });
     };
+    $scope.register = {"emailId":"","password": ""};
+    $scope.signinUser = function signinUser(){
+      $scope.data = {
+        "emailId": $scope.register.emailId,
+        "password":$scope.register.password
+      };
+      signin.signin($scope.data).then(function(resolve, reject){
+        console.log(resolve);
+        console.log(reject);
+        if(resolve.Status!="Fail"){
+          $scope.userLoggedIn = true;
+          $cookieStore.put('userLogin', $scope.register.emailId);
+          $rootScope.$broadcast('userLoggedin', $scope.register.emailId);
+          $scope.cancel();
+        }else{
+          $scope.userLoggedIn = false;
+        }
+        console.log($cookieStore.get('userLogin'));
+      });
+    }
   }]);
 
 angular.module('backendTheatreApp').run(['$templateCache', function($templateCache) {
@@ -876,7 +1009,7 @@ angular.module('backendTheatreApp').run(['$templateCache', function($templateCac
 
 
   $templateCache.put('views/header.html',
-    "<div class=\"header\" ng-controller=\"HeaderCtrl\"> <div class=\"navbar\" role=\"navigation\"> <div class=\"container\"> <div class=\"col-md-12\"> <div class=\"row\"> <div class=\"col-md-5\" id=\"top-list\"> <ul class=\"list-inline\"> <li><a href=\"#\">Movies</a></li> <li><a ng-href=\"#/about\">Promotions</a></li> <li><a ng-href=\"#/moviedetails\">Contact</a></li> <li><a ng-href=\"#/\">Location</a></li> </ul> </div> <div class=\"col-md-2 cinestar_logo\"> <img src=\"images/Logo.png\"> </div> <!-- end col-md-2 --> <div class=\"col-md-5\"> <ul class=\"list-inline\" id=\"right-menu\"> <!--Trigger the modal--> <li><a ui-sref=\"#\" ng-href=\"#\"><img src=\"images/twitter.png\"></a></li> <li><a ng-href=\"#\"><img src=\"images/facebook.png\"></a></li> <li><a ng-href=\"#\"><img src=\"images/add_to_cart.png\"></a></li> <li><a ng-click=\"openSignIn('md')\">Login / Register</a></li> <!--<li><a>/</a></li>--> <!--<li><a ng-click=\"openSignUp('md')\">Sign Up</a></li>--> </ul> </div> <!-- end col-md-5 --> </div> <!-- row --> </div> <!-- end md-12--> </div><!-- End Container --> </div> </div>"
+    "<div class=\"header\" ng-controller=\"HeaderCtrl\"> <div class=\"navbar\" role=\"navigation\"> <div class=\"container\"> <div class=\"col-md-12\"> <div class=\"row\"> <div class=\"col-md-5\" id=\"top-list\"> <ul class=\"list-inline\"> <li><a href=\"#\">Movies</a></li> <li><a ng-href=\"#/about\">Promotions</a></li> <li><a ng-href=\"#/moviedetails\">Contact</a></li> <li><a ng-href=\"#/\">Location</a></li> </ul> </div> <div class=\"col-md-2 cinestar_logo\"> <img src=\"images/Logo.png\"> </div> <!-- end col-md-2 --> <div class=\"col-md-5\"> <ul class=\"list-inline\" id=\"right-menu\"> <!--Trigger the modal--> <li><a ui-sref=\"#\" ng-href=\"#\"><img src=\"images/twitter.png\"></a></li> <li><a ng-href=\"#\"><img src=\"images/facebook.png\"></a></li> <li><a ng-href=\"#\"><img src=\"images/add_to_cart.png\"></a></li> <li><a ng-show=\"loginRegister\" class=\"login_register\" ng-click=\"openSignIn('md')\">Login / Register</a></li> <li ng-show=\"showUser\">Welcome <a class=\"login_register\" ng-model=\"userDetails\" ng-click=\"logout()\">{{userDetails}}</a></li> <!--<li><a>/</a></li>--> <!--<li><a ng-click=\"openSignUp('md')\">Sign Up</a></li>--> </ul> </div> <!-- end col-md-5 --> </div> <!-- row --> </div> <!-- end md-12--> </div><!-- End Container --> </div> </div>"
   );
 
 
@@ -905,7 +1038,7 @@ angular.module('backendTheatreApp').run(['$templateCache', function($templateCac
 
 
   $templateCache.put('views/signin.html',
-    "<div class=\"modal-header\" style=\"padding:35px 50px\"> <button type=\"button\" class=\"close\" ng-click=\"cancel()\">&times;</button> <h4><span class=\"glyphicon glyphicon-lock\"></span> Login</h4> </div> <div class=\"modal-body\" style=\"padding:40px 50px\"> <form role=\"form\"> <div class=\"form-group\"> <label for=\"usrname\"><span class=\"glyphicon glyphicon-user\"></span> Username</label> <input type=\"text\" class=\"form-control\" id=\"usrname\" placeholder=\"Enter email\"> </div> <div class=\"form-group\"> <label for=\"psw\"><span class=\"glyphicon glyphicon-eye-open\"></span> Password</label> <input type=\"text\" class=\"form-control\" id=\"psw\" placeholder=\"Enter password\"> </div> <div class=\"checkbox\"> <label><input type=\"checkbox\" value=\"\" checked>Remember me</label> </div> <button type=\"submit\" class=\"btn btn-success btn-block\">Login</button> </form> </div> <div class=\"modal-footer\"> <button type=\"submit\" class=\"btn btn-danger btn-default pull-left\" ng-click=\"cancel()\"><span class=\"glyphicon glyphicon-remove\"></span> Cancel</button> <p>Not a member? <a ng-click=\"openSignUp('md')\">Register</a></p> <p>Forgot <a href=\"#\">Password?</a></p> </div> <style>.modal-header, h4, .close {\n" +
+    "<div class=\"modal-header\" style=\"padding:35px 50px\"> <button type=\"button\" class=\"close\" ng-click=\"cancel()\">&times;</button> <h4><span class=\"glyphicon glyphicon-lock\"></span> Login</h4> </div> <div class=\"modal-body\" style=\"padding:40px 50px\"> <form role=\"form\"> <div class=\"form-group\"> <label for=\"usrname\"><span class=\"glyphicon glyphicon-envelope\"></span> Email</label> <input type=\"text\" class=\"form-control\" id=\"usrname\" ng-model=\"register.emailId\" placeholder=\"Enter email\" required> </div> <div class=\"form-group\"> <label for=\"psw\"><span class=\"glyphicon glyphicon-eye-open\"></span> Password</label> <input type=\"password\" class=\"form-control\" id=\"psw\" ng-model=\"register.password\" placeholder=\"Enter password\" required> </div> <div class=\"checkbox\"> <label><input type=\"checkbox\" value=\"\" checked>Remember me</label> </div> <button type=\"submit\" ng-click=\"signinUser()\" class=\"btn btn-success btn-block\">Login</button> </form> </div> <div class=\"modal-footer\"> <button type=\"submit\" class=\"btn btn-danger btn-default pull-left\" ng-click=\"cancel()\"><span class=\"glyphicon glyphicon-remove\"></span> Cancel</button> <p>Not a member? <a class=\"login_register\" ng-click=\"openSignUp('md')\">Register</a></p> <p>Forgot <a href=\"#\">Password?</a></p> </div> <style>.modal-header, h4, .close {\n" +
     "    background-color: #5cb85c;\n" +
     "    color:white !important;\n" +
     "    text-align: center;\n" +
@@ -918,7 +1051,7 @@ angular.module('backendTheatreApp').run(['$templateCache', function($templateCac
 
 
   $templateCache.put('views/signup.html',
-    "<div class=\"modal-header\" style=\"padding:35px 50px\"> <button type=\"button\" class=\"close\" ng-click=\"cancel()\">&times;</button> <h4><span class=\"glyphicon glyphicon-lock\"></span> SignUp</h4> </div> <div class=\"modal-body\" style=\"padding:40px 50px\"> <form role=\"form\"> <div class=\"form-group\"> <label for=\"usrname\"><span class=\"glyphicon glyphicon-envelope\" required></span> Email</label> <input type=\"text\" class=\"form-control\" id=\"usrname\" placeholder=\"Enter email\" required> </div> <div class=\"form-group\"> <label for=\"psw\"><span class=\"glyphicon glyphicon-eye-open\"></span> Password</label> <input type=\"text\" class=\"form-control\" id=\"psw\" placeholder=\"Enter password\"> </div> <div class=\"form-group\"> <label for=\"psw\"><span class=\"glyphicon glyphicon-eye-open\"></span> Confirm Password</label> <input type=\"text\" class=\"form-control\" id=\"confirm_psw\" placeholder=\"Enter password\"> </div> <button type=\"submit\" class=\"btn btn-success btn-block\">SignUp</button> </form> </div> <div class=\"modal-footer\"> <button type=\"submit\" class=\"btn btn-danger btn-default pull-left\" ng-click=\"cancel()\"><span class=\"glyphicon glyphicon-remove\"></span> Cancel</button> <p>Already a member? <a ng-click=\"openSignIn('md')\">Login</a></p> </div> <style>.modal-header, h4, .close {\n" +
+    "<div class=\"modal-header\" style=\"padding:35px 50px\"> <button type=\"button\" class=\"close\" ng-click=\"cancel()\">&times;</button> <h4><span class=\"glyphicon glyphicon-lock\"></span> SignUp</h4> </div> <div class=\"modal-body\" style=\"padding:40px 50px\"> <form role=\"form\"> <div class=\"form-group\"> <label for=\"firstName\"><span class=\"glyphicon glyphicon-user\" required></span> First Name</label> <input type=\"text\" class=\"form-control\" id=\"firstName\" ng-model=\"register.firstName\" placeholder=\"First Name\" required> </div> <div class=\"form-group\"> <label for=\"lastName\"><span class=\"glyphicon glyphicon-user\" required></span> Last Name</label> <input type=\"text\" class=\"form-control\" id=\"lastName\" ng-model=\"register.lastName\" placeholder=\"Last Name\" required> </div> <div class=\"form-group\"> <label for=\"usrname\"><span class=\"glyphicon glyphicon-envelope\" required></span> Email</label> <input type=\"text\" class=\"form-control\" id=\"usrname\" ng-model=\"register.emailId\" placeholder=\"Email\" required> </div> <div class=\"form-group\"> <label for=\"psw\"><span class=\"glyphicon glyphicon-eye-open\"></span> Password</label> <input type=\"password\" class=\"form-control\" id=\"psw\" ng-model=\"register.password\" placeholder=\"Password\"> </div> <div class=\"form-group\"> <label for=\"confirm_psw\"><span class=\"glyphicon glyphicon-eye-open\"></span> Confirm Password</label> <input type=\"password\" class=\"form-control\" id=\"confirm_psw\" ng-model=\"register.confirm_password\" placeholder=\"Confirm password\"> </div> <button type=\"submit\" ng-click=\"registerUser()\" class=\"btn btn-success btn-block\">SignUp</button> </form> </div> <div class=\"modal-footer\"> <button type=\"submit\" class=\"btn btn-danger btn-default pull-left\" ng-click=\"cancel()\"><span class=\"glyphicon glyphicon-remove\"></span> Cancel</button> <p>Already a member? <a class=\"login_register\" ng-click=\"openSignIn('md')\">Login</a></p> </div> <style>.modal-header, h4, .close {\n" +
     "    background-color: #5cb85c;\n" +
     "    color:white !important;\n" +
     "    text-align: center;\n" +
