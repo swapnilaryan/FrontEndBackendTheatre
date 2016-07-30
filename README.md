@@ -9,13 +9,11 @@ Run :
 * `npm install`
 * `bower install`
 
-If you run into grunt error install 
-`npm install -g grunt-cli`
-then run the above two commands.
-
 ## Build & development
 
 Run `grunt` for building and `grunt serve` for preview.
+
+If you run into grunt error install `npm install -g grunt-cli` and run the above commands.
 
 ## Testing
 
