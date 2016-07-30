@@ -20,12 +20,19 @@ angular
     'ngTouch',
     'ui.bootstrap',
     'ui.router',
+    'ngIdle',
     'LocalStorageModule'
   ])
-  .config(function ($routeProvider,localStorageServiceProvider) {
+  // .run(['Idle', function(Idle) {
+  //   Idle.watch();
+  // }])
+  .config(function ($routeProvider,localStorageServiceProvider, IdleProvider, KeepaliveProvider) {
       localStorageServiceProvider
-          .setPrefix('backendTheatreApp')
-          .setStorageType('sessionStorage');
+      .setPrefix('backendTheatreApp')
+      .setStorageType('sessionStorage');
+      IdleProvider.idle(5); // to be changed
+      IdleProvider.timeout(5); // to be changed
+      KeepaliveProvider.interval(10); // to be changed
       // For any unmatched url, redirect to /
       //$urlRouterProvider.otherwise("/");
       //$stateProvider
@@ -37,7 +44,7 @@ angular
       //    });
 
       $routeProvider
-        .when('/', {
+      .when('/', {
           templateUrl: 'views/main.html',
           controller: 'MainCtrl',
           controllerAs: 'main',

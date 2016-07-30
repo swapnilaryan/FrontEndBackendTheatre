@@ -113,6 +113,7 @@ module.exports = function (grunt) {
       dist: {
         options: {
           open: true,
+          port: 9002,
           base: '<%= yeoman.dist %>'
         }
       }
@@ -204,7 +205,7 @@ module.exports = function (grunt) {
         src: ['<%= yeoman.app %>/index.html'],
         ignorePath:  /\.\.\//
       }
-    }, 
+    },
 
     // Renames files for browser caching purposes
     filerev: {

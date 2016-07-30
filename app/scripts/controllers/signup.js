@@ -20,13 +20,6 @@ angular.module('backendTheatreApp')
         size: size
       });
     };
-    // $scope.register = {
-    //   "firstname":"",
-    //   "lastName":"",
-    //   "emailId":"",
-    //   "password":"",
-    //   "confirm_password":""
-    // };
     $scope.registerUser = function registerUser(){
       $scope.data = {
         "firstName": $scope.register.firstName,
