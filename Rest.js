@@ -944,6 +944,28 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
     });
     /******************************login logout***********************************/
 
+    /******************************Admin Panel************************************/
+    router.get("/db/setting/site_config", function(req, res){
+        pool.getConnection(function(err,connection){
+            if(err){
+                console.log("Error happened :- ",err);
+                res.json(err);
+            }else{
+                connection.query("SELECT * from ?? where ?? = 'userID_1'",
+                    ["siteconfiguration","siteAdminID"],function(err, rows){
+                        console.log("Something happening");
+                        if(err){
+                            res.json({ Error: 'here line proof of concept An error occured'+err });
+                        }else{
+                            res.json(rows);
+                        }
+                    });
+            }
+            connection.release();
+        });
+    });
+    /****************************End Admin Panel**********************************/
+
 };
 
 module.exports = REST_ROUTER;

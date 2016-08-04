@@ -5,7 +5,7 @@ License: Creative Commons Attribution 3.0 Unported
 License URL: http://creativecommons.org/licenses/by/3.0/
 -->
 <!DOCTYPE HTML>
-<html>
+<html ng-app>
 <head>
 <title>Cinestar Admin Panel</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,8 +18,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <link href="css/style.css" rel='stylesheet' type='text/css' />
 <link href="css/font-awesome.css" rel="stylesheet"> 
 <script src="js/jquery.min.js"> </script>
-<script src="js/bootstrap.min.js"> </script>
-  
+<script src="js/bootstrap.min.js"> </script>  
 <!-- Mainly scripts -->
 <script src="js/jquery.metisMenu.js"></script>
 <script src="js/jquery.slimscroll.min.js"></script>
@@ -27,30 +26,30 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <link href="css/custom.css" rel="stylesheet">
 <script src="js/custom.js"></script>
 <script src="js/screenfull.js"></script>
-		<script>
-		$(function () {
-			$('#supported').text('Supported/allowed: ' + !!screenfull.enabled);
+<script src="js/angular/angular.js"></script>
+<script>
+$(function () {
+	$('#supported').text('Supported/allowed: ' + !!screenfull.enabled);
 
-			if (!screenfull.enabled) {
-				return false;
-			}
+	if (!screenfull.enabled) {
+		return false;
+	}
+	$('#toggle').click(function () {
+		screenfull.toggle($('#container')[0]);
+	});
+});
+</script>
 
-			
-
-			$('#toggle').click(function () {
-				screenfull.toggle($('#container')[0]);
-			});
-			
-
-			
-		});
-		</script>
-
-
+<script type="text/javascript">
+    function siteConfig($scope) {
+        $scope.message = "Angular Running";
+    }	
+</script>
 
 </head>
 <body>
-<div id="wrapper">
+<div id="wrapper" ng-controller="siteConfig">
+<p ng-model="message">{{message}}</p>
        <!----->
         <nav class="navbar-default navbar-static-top" role="navigation">
              <div class="navbar-header">
