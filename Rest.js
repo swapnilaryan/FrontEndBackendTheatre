@@ -137,7 +137,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
 
                                 /*Adding to Database*/
                                 var query = "INSERT INTO ??(??,??,??,??) VALUES (?,?,?,?)";
-                                var table = ["upcomingmovies","upMovieId","upMovieName","upReleaseDate","upPosterPath",
+                                var table = ["admin_upcomingmovies","upMovieId","upMovieName","upReleaseDate","upPosterPath",
                                     JSON.parse(response).results[i].id,
                                     JSON.parse(response).results[i].title,
                                     JSON.parse(response).results[i].release_date,

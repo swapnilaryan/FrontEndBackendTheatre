@@ -3,11 +3,10 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 19, 2016 at 07:16 AM
+-- Generation Time: Sep 17, 2016 at 06:08 AM
 -- Server version: 5.7.9
 -- PHP Version: 5.6.16
-CREATE DATABASE IF NOT EXISTS movie_theatre;
-USE movie_theatre;
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
@@ -20,6 +19,389 @@ SET time_zone = "+00:00";
 --
 -- Database: `movie_theatre`
 --
+DROP DATABASE IF EXISTS `movie_theatre`;
+CREATE DATABASE IF NOT EXISTS  `movie_theatre`;
+
+USE `movie_theatre`;
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admin_movieinfo`
+--
+
+DROP TABLE IF EXISTS `admin_movieinfo`;
+CREATE TABLE IF NOT EXISTS `admin_movieinfo` (
+  `infoMovieID` int(11) NOT NULL,
+  `infoImdbID` varchar(10) NOT NULL,
+  `infoMovieName` varchar(50) NOT NULL,
+  `infoMovieInTheatres` varchar(50) DEFAULT NULL,
+  `infoMovieRuntime` varchar(10) DEFAULT NULL,
+  `infoMovieRated` varchar(15) DEFAULT NULL,
+  `infoMovieDirectedBy` varchar(200) DEFAULT NULL,
+  `infoMovieWrittenBy` varchar(500) DEFAULT NULL,
+  `infoMovieGenre` varchar(200) DEFAULT NULL,
+  `infoMovieImdbRating` varchar(10) DEFAULT NULL,
+  `infoMovieProduction` varchar(50) DEFAULT NULL,
+  `infoMovieWebsite` varchar(100) DEFAULT NULL,
+  `infoMovieDescription` varchar(2000) DEFAULT NULL,
+  `infoMoviePosterPath` varchar(100) DEFAULT NULL,
+  `infoMovieCasts` varchar(10000) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `infoMovieBoxOffice` varchar(15) DEFAULT 'N/A',
+  PRIMARY KEY (`infoMovieID`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `admin_movieinfo`
+--
+
+INSERT INTO `admin_movieinfo` (`infoMovieID`, `infoImdbID`, `infoMovieName`, `infoMovieInTheatres`, `infoMovieRuntime`, `infoMovieRated`, `infoMovieDirectedBy`, `infoMovieWrittenBy`, `infoMovieGenre`, `infoMovieImdbRating`, `infoMovieProduction`, `infoMovieWebsite`, `infoMovieDescription`, `infoMoviePosterPath`, `infoMovieCasts`, `infoMovieBoxOffice`) VALUES
+(293660, 'tt1431045', 'Deadpool', '12 Feb 2016', '108 min', 'R', 'Tim Miller', 'Rhett Reese, Paul Wernick, Fabian Nicieza (character), Rob Liefeld (character)', 'Action, Adventure, Comedy', '8.4', '20th Century Fox', 'http://www.foxmovies.com/deadpool', 'This is the origin story of former Special Forces operative turned mercenary Wade Wilson, who after being subjected to a rogue experiment that leaves him with accelerated healing powers, adopts the alter ego Deadpool. Armed with his new abilities and a dark, twisted sense of humor, Deadpool hunts down the man who nearly destroyed his life.', '/images/nowShowing/inVq3FRqcYIRl2la8iZikYYxFNR.jpg', '[{"cast_id":3,"character":"Vanessa Carlysle / Copycat","credit_id":"552426e29251417be20086d4","id":54882,"name":"Morena Baccarin","order":1,"profile_path":"/gUG9fnudV5Ev1MIr3adngn1GuZJ.jpg"},{"cast_id":4,"character":"Weasel","credit_id":"552426fbc3a3684dda009df0","id":51990,"name":"T.J. Miller","order":2,"profile_path":"/wkm8YvulYwuB4pxEvOAlwv8AWdr.jpg"},{"cast_id":5,"character":"Ajax","credit_id":"55242713c3a3680bb6003409","id":1047649,"name":"Ed Skrein","order":3,"profile_path":"/fUizTheH4edtYyk0gvVxKGCPTZa.jpg"},{"cast_id":20,"character":"Colossus","credit_id":"56c3be069251416bb300026c","id":80507,"name":"Stefan Kapičić","order":4,"profile_path":"/g981ogJt2DZiCQnHSl77cCiU96p.jpg"},{"cast_id":6,"character":"Ellie Phimister / Negasonic Teenage Warhead","credit_id":"55bfa63b9251413e55007694","id":1492326,"name":"Brianna Hildebrand","order":5,"profile_path":"/y2vQYFhx0zi16FgUK3eKiCUkIee.jpg"},{"cast_id":10,"character":"Blind Al","credit_id":"55bfa699c3a36838b0007652","id":122750,"name":"Leslie Uggams","order":6,"profile_path":"/fsnpJNTS6jYccZX853Io9BoBw44.jpg"},{"cast_id":2,"character":"Angel Dust","credit_id":"552426969251417096006bae","id":78452,"name":"Gina Carano","order":7,"profile_path":"/jAYNPdJYu35eoRdI25fYa5jtsbR.jpg"},{"cast_id":8,"character":"Meghan Orlovsky","credit_id":"55bfa673c3a3686540007783","id":1493223,"name":"Taylor Hickson","order":8,"profile_path":"/1qBQu6zkrQmBQxBqbw83YLdOPBr.jpg"},{"cast_id":7,"character":"Piotr Rasputin / Colossus","credit_id":"55bfa660c3a36838b0007648","id":1368836,"name":"Andre Tricoteux","order":9,"profile_path":"/nShgfUyxyFucJIxAWgPxGnaNY4L.jpg"},{"cast_id":9,"character":"The Recruiter","credit_id":"55bfa689c3a36839210053d8","id":15032,"name":"Jed Rees","order":10,"profile_path":"/u2zPeu9RguGzPagDjSPPxXFHxax.jpg"},{"cast_id":11,"character":"Dopinder","credit_id":"55bfa6adc3a36838b0007655","id":1109702,"name":"Karan Soni","order":11,"profile_path":"/hNHZe0L4mpWxMmloPJ6ju7P6Ylf.jpg"},{"cast_id":12,"character":"Flight Deck Guard","credit_id":"55bfa6c1c3a368652800623b","id":106951,"name":"Paul Lazenby","order":12,"profile_path":"/sLLnxaXC37hKRedJXMzlwHnQR0e.jpg"},{"cast_id":19,"character":"Strip Club DJ","credit_id":"56bb722cc3a3681ef20002e6","id":7624,"name":"Stan Lee","order":13,"profile_path":"/dTr2gJPL7jELKVkcjtoNx80uVKR.jpg"},{"cast_id":21,"character":"Jeremy (Pizza Guy)","credit_id":"56c4c4f5c3a3680d540004fe","id":1417031,"name":"Style Dayne","order":14,"profile_path":"/hbzsJtsTVXpkhKw9zbhkYjZ9M7X.jpg"},{"cast_id":22,"character":"Gavin Merchant","credit_id":"56c4c50c925141245b00057f","id":62915,"name":"Kyle Cassie","order":15,"profile_path":"/iCiduw4f82I06rtRVIYnFZZXfIZ.jpg"},{"cast_id":99,"character":"Deadpool","credit_id":"57169b95925141695b00046f","id":10859,"name":"Ryan Reynolds","order":16,"profile_path":"/3J19JiWqs4M75FFVqOdwn0DBU5q.jpg"}]', 'N/A'),
+(269149, 'tt2948356', 'Zootopia', '04 Mar 2016', '108 min', 'PG', 'Byron Howard, Rich Moore, Jared Bush', 'Byron Howard (story), Jared Bush (story), Rich Moore (story), Josie Trinidad (story), Jim Reardon (story), Phil Johnston (story), Jennifer Lee (story), Jared Bush (screenplay), Phil Johnston (screenplay), Dan Fogelman (additional story material)', 'Animation, Action, Adventure', '8.4', 'Walt Disney Animation Studios', 'http://movies.disney.com/zootopia', 'From the largest elephant to the smallest shrew, the city of Zootopia is a mammal metropolis where various animals live and thrive. When Judy Hopps becomes the first rabbit to join the police force, she quickly learns how tough it is to enforce the law. Determined to prove herself, Judy jumps at the opportunity to solve a mysterious case. Unfortunately, that means working with Nick Wilde, a wily fox who makes her job even harder.', '/images/nowShowing/sM33SANp9z6rXW8Itn7NnG1GOEs.jpg', '[{"cast_id":23,"character":"Lieutenant Judy Hopps (voice)","credit_id":"554d4779c3a3681a3b000a40","id":417,"name":"Ginnifer Goodwin","order":0,"profile_path":"/vAH6j1A0L88R4UD9QX1nM9OLoYw.jpg"},{"cast_id":25,"character":"Nick Wilde (voice)","credit_id":"554d4786c3a3685e4e0059cf","id":23532,"name":"Jason Bateman","order":1,"profile_path":"/ttzLpjvcLkvXyyTBpjmZw11tjlr.jpg"},{"cast_id":29,"character":"Gazelle (voice)","credit_id":"56539787c3a3685100001075","id":446511,"name":"Shakira","order":2,"profile_path":"/lvpKTDdWUv61sty299uC8DQzVTX.jpg"},{"cast_id":30,"character":"Chief Bogo (voice)","credit_id":"565397999251417010000fd8","id":17605,"name":"Idris Elba","order":3,"profile_path":"/4fuJRkT2TdfznRONUvQmdcayTTx.jpg"},{"cast_id":32,"character":"Mrs. Otterson (voice)","credit_id":"565397b9c3a36850f0000e75","id":6944,"name":"Octavia Spencer","order":4,"profile_path":"/aii7wrNglEH07xjQvtRBEGSUEvT.jpg"},{"cast_id":33,"character":"Mayor Lionheart (voice)","credit_id":"565397d69251417019000fb9","id":18999,"name":"J.K. Simmons","order":5,"profile_path":"/f2D5wGCqF9t4xsXuaUtIusVKDc1.jpg"},{"cast_id":37,"character":"Duke Weaselton (voice)","credit_id":"56831d0f9251412e52013e88","id":21088,"name":"Alan Tudyk","order":6,"profile_path":"/6QuMtbD8kmhpwWhFKfNzEvHRLOu.jpg"},{"cast_id":38,"character":"Bellwether (voice)","credit_id":"56831d1492514131df012e1f","id":213001,"name":"Jenny Slate","order":7,"profile_path":"/bKyUz4N566bXBEhj1TkFfMiNFyT.jpg"},{"cast_id":39,"character":"Bonnie Hopps (voice)","credit_id":"56831d19925141133400cd1e","id":5149,"name":"Bonnie Hunt","order":8,"profile_path":"/lwEvPd4SXprCLBnPzXUaH5pm33w.jpg"},{"cast_id":50,"character":"Stu Hopps (voice)","credit_id":"56ded55fc3a36803bf002afe","id":27530,"name":"Don Lake","order":9,"profile_path":"/zwm0HhAhxay84Co22rSkHwhJPBG.jpg"},{"cast_id":40,"character":"Finnick (voice)","credit_id":"56831d35c3a3684be9014ddf","id":8396,"name":"Tommy Lister","order":10,"profile_path":"/UY4xouwBs8p9QmcXbnP8iy2uYp.jpg"},{"cast_id":41,"character":"Yax (voice)","credit_id":"56831d48c3a3685f8900159f","id":63208,"name":"Tommy Chong","order":11,"profile_path":"/9wdlcc5JS36OYd05XBuo8r6F1aq.jpg"},{"cast_id":42,"character":"Priscilla (voice)","credit_id":"56c7b622c3a3684095000673","id":40462,"name":"Kristen Bell","order":12,"profile_path":"/vUq5fHs4eZAKmqeviJOVOAKf1jk.jpg"},{"cast_id":43,"character":"Dr. Madge Honey Badger (voice)","credit_id":"56c7b68f925141173800060f","id":108253,"name":"Katie Lowes","order":13,"profile_path":"/yn29ZcNXEyFewrrNtcCpyBfjXnR.jpg"},{"cast_id":44,"character":"Frantic Pig (voice)","credit_id":"56c7b6a4925141172d000618","id":77880,"name":"Josh Dallas","order":14,"profile_path":"/4DoeVyhq2DSIinBvb9AOj52OUrS.jpg"},{"cast_id":45,"character":"Jerry Jumbeaux Jr. (voice)","credit_id":"56c7b6b99251411742000621","id":31531,"name":"John DiMaggio","order":15,"profile_path":"/4gEy7tWkh95mgfsiHmTuFQkeRkx.jpg"},{"cast_id":46,"character":"Officer Clawhauser (voice)","credit_id":"56c7b6c8c3a368409700080d","id":41565,"name":"Nate Torrence","order":16,"profile_path":"/nQoVDAd3MeMEW740Z0Ie9sPTnx5.jpg"},{"cast_id":47,"character":"Mr. Big (voice)","credit_id":"56c7b6e1c3a36840910006d1","id":34521,"name":"Maurice LaMarche","order":17,"profile_path":"/zanuPXm0BYAsARbsrDMjLmct7Fq.jpg"},{"cast_id":48,"character":"Young Nick Wilde (voice)","credit_id":"56c7b6eec3a36840950006ba","id":60739,"name":"Kath Soucie","order":18,"profile_path":"/urLkA155Yc19TKyeCUYGwzEt2PO.jpg"},{"cast_id":49,"character":"Officer McHorn (voice)","credit_id":"56c7b708925141173c0006a8","id":1214974,"name":"Mark Smith","order":19,"profile_path":"/ghpZR17Z84Ck0HOmM3TrJCUInIx.jpg"},{"cast_id":52,"character":"Flash (voice)","credit_id":"56ded68092514122ac000ddc","id":1223658,"name":"Raymond S. Persi","order":21,"profile_path":null},{"cast_id":53,"character":"Doug (voice)","credit_id":"56f162369251417d5400196b","id":165787,"name":"Rich Moore","order":22,"profile_path":"/9KfA5vZiSk3dBvXHlKAjDTnwlxc.jpg"},{"cast_id":54,"character":"Bucky Oryx-Antlerson (voice)","credit_id":"56f1626d9251417d54001983","id":76595,"name":"Byron Howard","order":23,"profile_path":"/fFV0pdhOWSxUnAsQDVkzEzhXCfy.jpg"},{"cast_id":55,"character":"Pronk Oryx-Antlerson (voice)","credit_id":"56f1627ac3a3687186003934","id":1318201,"name":"Jared Bush","order":24,"profile_path":null}]', '$275.3M'),
+(209112, 'tt2975590', 'Batman v Superman: Dawn of Justice', '25 Mar 2016', '151 min', 'PG-13', 'Zack Snyder', 'Chris Terrio, David S. Goyer, Bob Kane (Batman created by), Bill Finger (Batman created by), Jerry Siegel (Superman created by), Joe Shuster (Superman created by)', 'Action, Adventure, Fantasy', '7.7', 'Warner Bros. Pictures', 'http://www.facebook.com/batmanvsuperman', 'Following his titanic struggle against General Zod, Metropolis has been razed to the ground and Superman is the most controversial figure in the world. While for many he is still an emblem of hope, a growing number of people consider him a threat to humanity, seeking justice for the chaos he has brought to Earth. As far as Bruce Wayne is concerned, Superman is clearly a danger to society. He fears for the future of the world with such a reckless power left ungoverned, and so he dons his mask and cape to right Superman''s wrongs. The rivalry between them is furious, fueled by bitterness and vengeance, and nothing can dissuade them from waging this war. However, a dark new threat arises in the form of a third man: one who has a power greater than either of them to endanger the world and cause total destruction!', '/images/nowShowing/6bCplVkhowCjTHXWv49UjRPn0eK.jpg', '[{"cast_id":18,"character":"Bruce Wayne / Batman","credit_id":"52fe4d5bc3a368484e1e4c65","id":880,"name":"Ben Affleck","order":0,"profile_path":"/yXtyygmSGtrwTfEmr6g2WgHFJIZ.jpg"},{"cast_id":14,"character":"Clark Kent / Superman","credit_id":"52fe4d5bc3a368484e1e4c55","id":73968,"name":"Henry Cavill","order":1,"profile_path":"/qDJ3TIIHnaE9x6GUt9QlDXi3KRZ.jpg"},{"cast_id":15,"character":"Lois Lane","credit_id":"52fe4d5bc3a368484e1e4c59","id":9273,"name":"Amy Adams","order":2,"profile_path":"/tk5eWJcOBr9uRefeUm9ntvehbLA.jpg"},{"cast_id":22,"character":"Lex Luthor","credit_id":"52fe4d5bc3a368484e1e4c79","id":44735,"name":"Jesse Eisenberg","order":3,"profile_path":"/c01G88eCpiLLmT4RIWGkr7nm31o.jpg"},{"cast_id":17,"character":"Martha Kent","credit_id":"52fe4d5bc3a368484e1e4c61","id":2882,"name":"Diane Lane","order":4,"profile_path":"/lAsVLA16pQ8DH7lzwFyIV4ZIlQ8.jpg"},{"cast_id":16,"character":"Perry White","credit_id":"52fe4d5bc3a368484e1e4c5d","id":2975,"name":"Laurence Fishburne","order":5,"profile_path":"/mh0lZ1XsT84FayMNiT6Erh91mVu.jpg"},{"cast_id":23,"character":"Alfred Pennyworth","credit_id":"52fe4d5bc3a368484e1e4c7d","id":16940,"name":"Jeremy Irons","order":6,"profile_path":"/9AWphjIgGX7JjTrwrx3tsTZlUgv.jpg"},{"cast_id":26,"character":"Senator Finch","credit_id":"533d9aeec3a36878ed0035ec","id":18686,"name":"Holly Hunter","order":7,"profile_path":"/35P7RI2XBTElKnUKgjJNtwHLpm3.jpg"},{"cast_id":19,"character":"Diana Prince / Wonder Woman","credit_id":"52fe4d5bc3a368484e1e4c69","id":90633,"name":"Gal Gadot","order":8,"profile_path":"/dgBjHEmGAXB5QIE5OiTNOLqORdz.jpg"},{"cast_id":33,"character":"Wallace Keefe","credit_id":"53ac7a9a0e0a26598600036e","id":59233,"name":"Scoot McNairy","order":9,"profile_path":"/5QovJj55flMlh4rZHauomSIrU1k.jpg"},{"cast_id":24,"character":"Anatoli Knyazev","credit_id":"533d9abdc3a36878e600358f","id":208296,"name":"Callan Mulvey","order":10,"profile_path":"/htTfBckaMml134A9lFKs6uij3yv.jpg"},{"cast_id":25,"character":"Mercy Graves","credit_id":"533d9acec3a36878e6003591","id":1156024,"name":"Tao Okamoto","order":11,"profile_path":"/ahbByaizp6xLkakmTWebPC57v06.jpg"},{"cast_id":61,"character":"Young Bruce Wayne","credit_id":"56f79273c3a3686a5e0065eb","id":1511243,"name":"Brandon Spink","order":12,"profile_path":null},{"cast_id":54,"character":"Martha Wayne","credit_id":"56a329f5c3a368389b0021d7","id":62220,"name":"Lauren Cohan","order":13,"profile_path":"/5W4AV3ZXn38NlEMqPy9QPjwRRz8.jpg"},{"cast_id":53,"character":"General Zod","credit_id":"5692a01fc3a3685c54000252","id":335,"name":"Michael Shannon","order":14,"profile_path":"/5yGCJ6znHM96zTfW2LNP6uPPDCZ.jpg"},{"cast_id":60,"character":"Jimmy Olsen","credit_id":"56f791fd9251412cc0002d12","id":56556,"name":"Michael Cassidy","order":15,"profile_path":"/x9jWnEivc0XhvlO8Xch0VCFu2m5.jpg"},{"cast_id":62,"character":"Jenny Jurwich","credit_id":"56f7934cc3a3686a670062e5","id":1272969,"name":"Rebecca Buller","order":16,"profile_path":"/2e4eLghYs2jXxnoy4gG0TOSsyVA.jpg"},{"cast_id":58,"character":"Barry Allen / The Flash","credit_id":"56f50fe6c3a368273e001d57","id":132157,"name":"Ezra Miller","order":17,"profile_path":"/swxGHWhm95cgQgwt7XNqAlnAUwF.jpg"},{"cast_id":32,"character":"Arthur Curry / Aquaman","credit_id":"539f1af4c3a368280b000344","id":117642,"name":"Jason Momoa","order":18,"profile_path":"/PSK6GmsVwdhqz9cd1lwzC6a7EA.jpg"},{"cast_id":27,"character":"Victor Stone / Cyborg","credit_id":"535a8513c3a368308a00003b","id":1313559,"name":"Ray Fisher","order":19,"profile_path":"/yodte4Vx6kNg5VFtLqsFMjWFX5I.jpg"},{"cast_id":49,"character":"Thomas Wayne","credit_id":"55c57fadc3a3682f21000cbe","id":47296,"name":"Jeffrey Dean Morgan","order":20,"profile_path":"/6ors2HGy8UdXm8kBx6on0HwRHB5.jpg"},{"cast_id":28,"character":"Metropolis Football Player","credit_id":"537d3897c3a36805a1000067","id":1322325,"name":"Tj Norris","order":21,"profile_path":null},{"cast_id":63,"character":"Swanwick","credit_id":"56f7938792514120f8000015","id":9464,"name":"Harry Lennix","order":22,"profile_path":"/uwpRytLjzz1IvjNanYNlplPVal9.jpg"},{"cast_id":64,"character":"Major Ferris","credit_id":"56f7939b92514120f800001a","id":1272970,"name":"Christina Wren","order":23,"profile_path":"/8nLwMjNuL9FU9lVGXZBBZpMWLGk.jpg"},{"cast_id":65,"character":"Himself","credit_id":"56f793e79251411a61003e24","id":1018992,"name":"Vikram Gandhi","order":24,"profile_path":null},{"cast_id":66,"character":"Himself","credit_id":"56f79416c3a3686a5e00662c","id":1236584,"name":"Andrew Sullivan","order":25,"profile_path":null},{"cast_id":67,"character":"Himself","credit_id":"56f7941f9251412fdd001ddc","id":70177,"name":"Charlie Rose","order":26,"profile_path":"/d1GqYzeF7PBwparbPZrbRhrKmBJ.jpg"},{"cast_id":68,"character":"Glen Woodburn","credit_id":"56f7943592514120f8000036","id":91403,"name":"Chad Krowchuk","order":27,"profile_path":null},{"cast_id":69,"character":"Himself","credit_id":"56f79445c3a3686a5c005e1b","id":550307,"name":"Neil deGrasse Tyson","order":28,"profile_path":"/bpW8flOlQVWRdPyZmzVWkQUrsuU.jpg"},{"cast_id":70,"character":"Herself","credit_id":"56f7945ec3a3686a61005b16","id":1227867,"name":"Soledad O''Brien","order":29,"profile_path":"/jeNXwjEkIrBcFh2t3Pi1ntil6kU.jpg"},{"cast_id":71,"character":"Herself","credit_id":"56f7947592514120f8000047","id":1596937,"name":"Dana Bash","order":30,"profile_path":null},{"cast_id":57,"character":"Kelor (voice)","credit_id":"56f33c499251415fc60001d8","id":17832,"name":"Carla Gugino","order":31,"profile_path":"/nnHNPqLUgrdu858FJoGaVP4eXco.jpg"},{"cast_id":56,"character":"Jonathan Kent","credit_id":"56f33c339251411a85000bd3","id":1269,"name":"Kevin Costner","order":32,"profile_path":"/ePo87kGyyY8JZ3z7Zm7Z2GYdmJ8.jpg"},{"cast_id":72,"character":"Herself","credit_id":"56f794b392514169e2003791","id":1514160,"name":"Nancy Grace","order":33,"profile_path":null},{"cast_id":59,"character":"Himself","credit_id":"56f725109251412fdd0009c0","id":1217309,"name":"Anderson Cooper","order":34,"profile_path":"/iOjPVShHF4EQfYhC02FZQSLDsTa.jpg"},{"cast_id":73,"character":"POTUS","credit_id":"56f794f692514120f8000056","id":17178,"name":"Patrick Wilson","order":35,"profile_path":"/ahsXtg0TMeNVsKD8I2TuTcVYAJB.jpg"},{"cast_id":74,"character":"Silas Stone","credit_id":"56f7952dc3a3686a5c005e3c","id":3977,"name":"Joe Morton","order":36,"profile_path":"/5adJxjbFX2GeuTTCNqc9dg4Twgx.jpg"}]', 'N/A'),
+(278927, 'tt3040964', 'The Jungle Book', '15 Apr 2016', '105 min', 'PG', 'Jon Favreau', 'Justin Marks (screenplay), Rudyard Kipling (book)', 'Adventure, Drama, Family', '8.1', 'Walt Disney Pictures', 'http://movies.disney.com/the-jungle-book-2016', 'The man-cub Mowgli flees the jungle after a threat from the tiger Shere Khan. Guided by Bagheera the panther and the bear Baloo, Mowgli embarks on a journey of self-discovery, though he also meets creatures who don''t have his best interests at heart.', '/images/nowShowing/vOipe2myi26UDwP978hsYOrnUWC.jpg', '[{"cast_id":12,"character":"Mowgli","credit_id":"54baea82c3a3686c6f0068ca","id":1414734,"name":"Neel Sethi","order":0,"profile_path":"/vqrw8aGurbekMcZGLtQU56GZMNd.jpg"},{"cast_id":3,"character":"Shere Khan (voice)","credit_id":"53ad9bd90e0a265986002399","id":17605,"name":"Idris Elba","order":1,"profile_path":"/4fuJRkT2TdfznRONUvQmdcayTTx.jpg"},{"cast_id":5,"character":"Bagheera (voice)","credit_id":"53ad9bfb0e0a26598600239c","id":2282,"name":"Ben Kingsley","order":2,"profile_path":"/2Eu3j31JDJek70ZXLY6xfeUaJoR.jpg"},{"cast_id":7,"character":"Baloo (voice)","credit_id":"5489469092514161c7000f65","id":1532,"name":"Bill Murray","order":3,"profile_path":"/lBXifSLzs1DuspaWkACjSfjlwbd.jpg"},{"cast_id":2,"character":"Kaa (voice)","credit_id":"53ad9bce0e0a265989002461","id":1245,"name":"Scarlett Johansson","order":4,"profile_path":"/8EueDe6rPF0jQU4LSpsH2Rmrqac.jpg"},{"cast_id":6,"character":"King Louie (voice)","credit_id":"54894680c3a3686f4a000ecc","id":4690,"name":"Christopher Walken","order":5,"profile_path":"/ysO1GwRzLT9OVAB9Y2SKHxomqDr.jpg"},{"cast_id":4,"character":"Rakcha (voice)","credit_id":"53ad9bee0e0a26597900245e","id":1267329,"name":"Lupita Nyong''o","order":6,"profile_path":"/y3p0OMzIuAmcNt700RayK5A0k6t.jpg"},{"cast_id":8,"character":"Akela (voice)","credit_id":"548946a392514161d0000ed0","id":4808,"name":"Giancarlo Esposito","order":7,"profile_path":"/d39hOi5lTfqekjFK4JKKPeuGNdW.jpg"}]', 'N/A'),
+(381890, 'tt4701660', 'The Mermaid', '08 Feb 2016', '94 min', 'R', 'Stephen Chow', 'Hing-Ka Chan, Stephen Chow, Chi Keung Fung, Miu-Kei Ho, Ivy Kong, Si-Cheun Lee, Zhengyu Lu, Kan-Cheung Tsang', 'Drama, Fantasy, Romance', '6.8', 'Sony Pictures', 'N/A', 'Xuan''s estate project involving reclamation of the sea threatens the livelihood of the mermaids who rely on the sea to survive. Shan is dispatched to stop Xuan and this leads them into falling for each other. Out of his love for Shan, Xuan plans to stop the reclamation. Unfortunately, Shan and the other mermaids are hunted by a hidden organisation and Xuan has to save Shan before it''s too late...', '/images/nowShowing/1yRISML18PqFypkfVl3ptSFjfFb.jpg', '[{"cast_id":0,"character":"Liu Xuan","credit_id":"56b9f1ce92514106a100245f","id":99689,"name":"Deng Chao","order":0,"profile_path":"/dz351d0VeDsExPMggWZaQfmyFAB.jpg"},{"cast_id":7,"character":"Shan","credit_id":"56b9f4d3c3a3681e5d0026be","id":1574909,"name":"Jelly Lin","order":1,"profile_path":null},{"cast_id":2,"character":"Octopus","credit_id":"56b9f1f6c3a3681e6d00257a","id":1245759,"name":"Show Luo","order":2,"profile_path":"/3CZrzAYIJQEHP60SZjuBcoKHK0o.jpg"},{"cast_id":3,"character":"Ruolan","credit_id":"56b9f213925141687200152d","id":74947,"name":"Kitty Zhang Yuqi","order":3,"profile_path":"/v4Yrou2UNgCMSrvIsAFfpMjk3Q1.jpg"}]', 'N/A'),
+(339984, 'tt4257926', 'Miracles from Heaven', '16 Mar 2016', '109 min', 'PG', 'Patricia Riggen', 'Christy Beam (book), Randy Brown (adaptation)', 'Drama', '6.3', 'Sony Pictures', 'http://www.miraclesfromheaven-movie.com/', 'MIRACLES FROM HEAVEN is based on the incredible true story of the Beam family. When Christy (Jennifer Garner) discovers her 10-year-old daughter Anna (Kylie Rogers) has a rare, incurable disease, she becomes a ferocious advocate for her daughter''s healing as she searches for a solution. After Anna has a freak accident, an extraordinary miracle unfolds in the wake of her dramatic rescue that leaves medical specialists mystified, her family restored and their community inspired.', '/images/nowShowing/3sPIq0Uqe8SN5T0Pq7vUOFLb2Bk.jpg', '[{"cast_id":6,"character":"Christy Beam","credit_id":"55528707c3a36834e1005c0e","id":9278,"name":"Jennifer Garner","order":1,"profile_path":"/470yA7ZOiyAG6HvwjfiJRj3P5dq.jpg"},{"cast_id":7,"character":"Kevin Beam","credit_id":"55938e869251416386000230","id":26291,"name":"Martin Henderson","order":2,"profile_path":"/8D2Megso0mqXnHKFyIsn2exhVgt.jpg"},{"cast_id":8,"character":"Adelyn","credit_id":"55938ea6c3a3686bad000a71","id":1483525,"name":"Courtney Fansler","order":3,"profile_path":"/ntXbBTP5FBRRnOW3EDYvSN8UwPP.jpg"},{"cast_id":9,"character":"Angela","credit_id":"55c58ddc9251417a27000da3","id":15758,"name":"Queen Latifah","order":4,"profile_path":"/ht52no1SMDhYBwRAmWL9a5YCss1.jpg"},{"cast_id":10,"character":"Abby Beam","credit_id":"55c58de5c3a3682f17000ea4","id":1367322,"name":"Brighton Sharbino","order":5,"profile_path":"/yhhFK5VzsYK6fZnR08hQNUTKk0A.jpg"},{"cast_id":11,"character":"Pastor Scott","credit_id":"55c58dee9251417a33000e86","id":3911,"name":"John Carroll Lynch","order":6,"profile_path":"/5eEGOANKnCCj7FLa3oV28gGYWkW.jpg"},{"cast_id":12,"character":"Haley","credit_id":"55c58e14c3a3682f31000dd9","id":1480643,"name":"Hannah Alligood","order":7,"profile_path":null},{"cast_id":13,"character":"Anna Beam","credit_id":"55fafe1e9251413d500001ab","id":1164259,"name":"Kylie Rogers","order":8,"profile_path":"/qO8FQqxGc8F18RvQzXkvwS1iLcs.jpg"},{"cast_id":14,"character":"Church Lady","credit_id":"55fafe1fc3a36826dd0001bb","id":51456,"name":"Rhoda Griffis","order":9,"profile_path":"/f4jlWaOllPPQXzNnNDapJ5mlLjI.jpg"},{"cast_id":15,"character":"Dr. Nurko","credit_id":"55fafe1f9251413d530001e8","id":239574,"name":"Eugenio Derbez","order":10,"profile_path":"/qbdFijrdgGKc4QKL6rL9eh6zJOP.jpg"},{"cast_id":16,"character":"Dr. Joe Hester","credit_id":"55fafe1fc3a36826f00001cc","id":37937,"name":"Gregory Alan Williams","order":11,"profile_path":"/2Sba6ptJ2aGgZOv53k2mD1FLj0U.jpg"},{"cast_id":17,"character":"Emmy","credit_id":"55fafe209251413d4b000203","id":1511242,"name":"Kelly Collins Lintz","order":12,"profile_path":null},{"cast_id":18,"character":"Chief Garvey","credit_id":"55fafe20c3a36826ed0001d3","id":156100,"name":"Kevin Sizemore","order":13,"profile_path":"/kQk9TORLiwXRBeF8zpBnwyQLHeK.jpg"},{"cast_id":19,"character":"Church Man","credit_id":"55fafe209251413d4b000207","id":990136,"name":"Judd Lormand","order":14,"profile_path":"/aCsSFZuik9bIJGpa7H3ELTC7fQi.jpg"},{"cast_id":20,"character":"Ben","credit_id":"55fafe21c3a36826e5000213","id":31528,"name":"Wayne Pére","order":15,"profile_path":"/5RzLxDMVPWjWLZeGXgjd5RbHJ0Y.jpg"},{"cast_id":21,"character":"Billy","credit_id":"55fafe219251413d500001ae","id":1511243,"name":"Brandon Spink","order":16,"profile_path":null},{"cast_id":22,"character":"BCH Nurse #2","credit_id":"55fafe22c3a36826f5000171","id":933545,"name":"Christina Bach","order":17,"profile_path":"/c8XTZr6POztuNvOjjTAWlzd3Rvy.jpg"},{"cast_id":23,"character":"Angry Ticket Line Passenger","credit_id":"55fafe229251413d5f0001da","id":1205623,"name":"Barbara Vincent","order":18,"profile_path":"/vlWse1Nuh7PO0eh43HoZNELB9GM.jpg"},{"cast_id":24,"character":"Dodgeball Player / Student","credit_id":"55fafe22c3a36826e5000216","id":1511244,"name":"Sierra Cheyenne Sizemore","order":19,"profile_path":null},{"cast_id":25,"character":"Fireman #3","credit_id":"55fafe239251413d500001b2","id":1358970,"name":"Preston Baker","order":20,"profile_path":null},{"cast_id":25,"character":"Girl #2","credit_id":"55fafe23c3a36826e30001b7","id":1511245,"name":"Summer Parker","order":21,"profile_path":null},{"cast_id":26,"character":"Church Girl","credit_id":"55fafe239251413d590001c7","id":1511246,"name":"Karolina Kennedy Durrence","order":22,"profile_path":null},{"cast_id":27,"character":"Daughter In Store","credit_id":"55fafe249251413d530001ea","id":1382839,"name":"Morgan Burch","order":23,"profile_path":null},{"cast_id":28,"character":"Church Boy","credit_id":"55fafe24c3a36826f00001cf","id":1511247,"name":"Sawyer Sharbino","order":24,"profile_path":null},{"cast_id":29,"character":"Nurse B.Petty","credit_id":"55fafe249251413d4b00020c","id":1511248,"name":"Carla Shinall","order":25,"profile_path":null},{"cast_id":30,"character":"Woman with Big Hair","credit_id":"55fafe249251413d560001a8","id":1511249,"name":"Emerald Robinson","order":26,"profile_path":null},{"cast_id":31,"character":"Dr. Dorsi","credit_id":"55fafe25c3a36826f5000173","id":1088939,"name":"Kenny Alfonso","order":27,"profile_path":"/eNWxCXO908YNdhFNQ3INyka5p4J.jpg"},{"cast_id":32,"character":"Dr. White","credit_id":"55fafe25c3a36826dd0001bf","id":1502998,"name":"Bradley Bowen","order":28,"profile_path":null},{"cast_id":33,"character":"Church Cowboy","credit_id":"55fafe259251413d500001b5","id":1511250,"name":"Blake Sewell","order":29,"profile_path":null},{"cast_id":34,"character":"Dr. Todd Blythe","credit_id":"55fafe26c3a36826e500021c","id":1046203,"name":"Zach Sale","order":30,"profile_path":null},{"cast_id":35,"character":"Fireman #1","credit_id":"55fafe26c3a36826dd0001c2","id":1511252,"name":"Scott Hunter","order":31,"profile_path":null},{"cast_id":35,"character":"Girl #1","credit_id":"55fafe269251413d5c0001ac","id":1511251,"name":"Shea McHugh","order":32,"profile_path":null},{"cast_id":36,"character":"Coffeeshop Patron","credit_id":"55fafe27c3a36826dd0001c7","id":1511253,"name":"Lindsey McCollough","order":33,"profile_path":null},{"cast_id":37,"character":"Church Girl","credit_id":"55fafe279251413d500001ba","id":1511254,"name":"Kylie Fansler","order":34,"profile_path":null}]', 'N/A'),
+(140300, 'tt2267968', 'Kung Fu Panda 3', '29 Jan 2016', '95 min', 'PG', 'Alessandro Carloni, Jennifer Yuh Nelson', 'Jonathan Aibel, Glenn Berger', 'Animation, Action, Adventure', '7.4', 'DreamWorks Animation', 'N/A', 'Continuing his "legendary adventures of awesomeness", Po must face two hugely epic, but different threats: one supernatural and the other a little closer to his home.', '/images/nowShowing/MZFPacfKzgisnPoJIPEFZUXBBT.jpg', '[{"cast_id":4,"character":"Po (voice)","credit_id":"52fe4a8b9251416c750e5a31","id":70851,"name":"Jack Black","order":0,"profile_path":"/vMXgtzMdt2jSAjOECFQ5F53blbr.jpg"},{"cast_id":9,"character":"Li (voice)","credit_id":"54894d48c3a3686f47001048","id":17419,"name":"Bryan Cranston","order":1,"profile_path":"/fnglrIFnI5cK4OAh66AZN86mkFq.jpg"},{"cast_id":6,"character":"Shifu (voice)","credit_id":"52fe4a8b9251416c750e5a39","id":4483,"name":"Dustin Hoffman","order":2,"profile_path":"/ffKPo8ATHVXME6cgA5BDyvy2df1.jpg"},{"cast_id":5,"character":"Tigress (voice)","credit_id":"52fe4a8b9251416c750e5a35","id":11701,"name":"Angelina Jolie","order":3,"profile_path":"/wdrSStdTmiSHhynCV5CtTJTuzY1.jpg"},{"cast_id":10,"character":"Crane (voice)","credit_id":"548d3f7e925141556800135f","id":212,"name":"David Cross","order":4,"profile_path":"/y2W2HvL5bK2Y6HpjotO2AN63NU8.jpg"},{"cast_id":7,"character":"Mr. Ping (voice)","credit_id":"54894d2a92514161dc000fd7","id":20904,"name":"James Hong","order":5,"profile_path":"/8k4RrDRsqkvJDePU8ciMOOx5Zso.jpg"},{"cast_id":11,"character":"Viper (voice)","credit_id":"548d3f90c3a36820b8003c48","id":140,"name":"Lucy Liu","order":6,"profile_path":"/cOSycUPBNi49YcPHo4Rf7ROHqCC.jpg"},{"cast_id":8,"character":"Mantis (voice)","credit_id":"54894d3992514161d5001003","id":19274,"name":"Seth Rogen","order":7,"profile_path":"/3U9s4dvXQuk1l3ZT3MqwqpmeRqI.jpg"},{"cast_id":37,"character":"Monkey (voice)","credit_id":"56afc5279251414d5400022d","id":18897,"name":"Jackie Chan","order":8,"profile_path":"/pmKJ4sGvPQ3imzXaFnjW4Vk5Gyc.jpg"},{"cast_id":12,"character":"","credit_id":"548d3fa192514122fc00352e","id":221581,"name":"Rebel Wilson","order":9,"profile_path":"/hwgTgqFLFwTBesbCAKtWa1ARrp7.jpg"},{"cast_id":14,"character":"","credit_id":"548d3fafc3a36820be00305a","id":1398834,"name":"Krasen Belev","order":10,"profile_path":null},{"cast_id":38,"character":"Kai (voice)","credit_id":"56b1443e925141264500057f","id":18999,"name":"J.K. Simmons","order":11,"profile_path":"/f2D5wGCqF9t4xsXuaUtIusVKDc1.jpg"},{"cast_id":39,"character":"Mei Mei (voice)","credit_id":"56b14482c3a36862090010a1","id":11661,"name":"Kate Hudson","order":12,"profile_path":"/uad1COv7cURSbRyjUfcw3o8v6y9.jpg"},{"cast_id":40,"character":"Oogway (voice)","credit_id":"56b144be92514126aa00052e","id":9462,"name":"Randall Duk Kim","order":13,"profile_path":"/9AWMELz25S915kaUr5OzHJN4Xtm.jpg"},{"cast_id":41,"character":"Bao (voice)","credit_id":"56b144d7c3a3686217001170","id":1382741,"name":"Steele Gagnon","order":14,"profile_path":"/yi1zt1Tz3aXtEF6prkaqMsuZnFE.jpg"},{"cast_id":42,"character":"Lei Lei (voice)","credit_id":"56b144ecc3a3686221001088","id":1453793,"name":"Liam Knight","order":15,"profile_path":null},{"cast_id":43,"character":"Big Fun / Hom-Lee (voice)","credit_id":"56b145069251411da00005ae","id":4201,"name":"Wayne Knight","order":16,"profile_path":"/oW9aeZwkz1S1IMjQGtd9mnvlEax.jpg"},{"cast_id":44,"character":"Grandma Panda (voice)","credit_id":"56b14516c3a3687e1800052d","id":1257847,"name":"Barbara Dirickson","order":17,"profile_path":null},{"cast_id":45,"character":"Sum (voice)","credit_id":"56b1452592514126450005e6","id":111875,"name":"Al Roker","order":18,"profile_path":"/gl113PsTnmLTAFCjNthTyXwZJyI.jpg"},{"cast_id":46,"character":"Dim (voice)","credit_id":"56b14536c3a36862090010d9","id":1491641,"name":"Willie Geist","order":19,"profile_path":null},{"cast_id":47,"character":"Master Bear (voice)","credit_id":"56b1454592514126ba00059a","id":60279,"name":"Fred Tatasciore","order":20,"profile_path":"/lNe4zn9fJ302GehQVaFk5BNcGGM.jpg"},{"cast_id":48,"character":"Yoo (voice)","credit_id":"56b1457c9251414074000ff8","id":1571792,"name":"Pax Jolie-Pitt","order":21,"profile_path":null},{"cast_id":49,"character":"Female Palace Goose (voice)","credit_id":"56b145dcc3a3687e36000603","id":1571793,"name":"Kelly Cooney","order":22,"profile_path":null},{"cast_id":50,"character":"Master Chicken (voice)","credit_id":"56b145ed9251411d6700065f","id":1448984,"name":"Stephen Kearin","order":23,"profile_path":"/bEMGAE4kdMmcF61kgYWHLM7EfsT.jpg"},{"cast_id":51,"character":"Farmer Goose / Farmer Rabbit (voice)","credit_id":"56b145fb925141268a000599","id":971877,"name":"Mick Wingert","order":24,"profile_path":null},{"cast_id":52,"character":"Ming (voice)","credit_id":"56b14611c3a3687e5100056d","id":1215502,"name":"Ming Tsai","order":25,"profile_path":null},{"cast_id":53,"character":"Mrs. Chow (voice)","credit_id":"56b1461f9251411d67000673","id":1453786,"name":"April Hong","order":26,"profile_path":null},{"cast_id":54,"character":"Ku Ku (voice)","credit_id":"56b14636c3a3687e18000581","id":1571794,"name":"Knox Jolie-Pitt","order":27,"profile_path":null},{"cast_id":55,"character":"Meng Meng (voice)","credit_id":"56b1464a9251411d67000680","id":1242871,"name":"Zahara Jolie-Pitt","order":28,"profile_path":null},{"cast_id":56,"character":"Shuai Shuai (voice)","credit_id":"56b14656c3a3687e51000584","id":1242866,"name":"Shiloh Jolie-Pitt","order":29,"profile_path":null},{"cast_id":57,"character":"Master Croc (voice)","credit_id":"56b14665925141407400102f","id":15111,"name":"Jean-Claude Van Damme","order":30,"profile_path":"/aqZ9RjL5j44HMlBMvTaawhHiGOH.jpg"},{"cast_id":58,"character":"Mi (voice)","credit_id":"56b14673c3a3687e51000590","id":1571795,"name":"Radzi Chinyanganya","order":31,"profile_path":null},{"cast_id":59,"character":"Peony (voice)","credit_id":"56b1467fc3a368622100111c","id":1571796,"name":"Lindsey Russell","order":32,"profile_path":null},{"cast_id":60,"character":"Dumpling Record Pig (voice)","credit_id":"56b1468dc3a3687e3600063c","id":1453790,"name":"Joseph Izzo","order":33,"profile_path":null},{"cast_id":61,"character":"Cheering Bunny (voice)","credit_id":"56b146a7c3a3686221001129","id":1453784,"name":"Lena Golia","order":34,"profile_path":null},{"cast_id":62,"character":"Panda Villager Kid (voice)","credit_id":"56b146c9c3a3687e180005bd","id":1571797,"name":"Gus Culligan","order":35,"profile_path":null}]', 'N/A'),
+(329833, 'tt1608290', 'Zoolander 2', '12 Feb 2016', '102 min', 'PG-13', 'Ben Stiller', 'Justin Theroux, Ben Stiller, Nicholas Stoller, John Hamburg, Drake Sather (character Derek Zoolander), Ben Stiller (character Derek Zoolander)', 'Comedy', '5.1', 'Paramount Pictures', 'http://www.zoolander.com/', 'Derek and Hansel are lured into modeling again, in Rome, where they find themselves the target of a sinister conspiracy.', '/images/nowShowing/u2s2WOskiEH71WbGCZehZ0shduO.jpg', '[{"cast_id":0,"character":"Derek Zoolander","credit_id":"54ff0b2ec3a368155f00183c","id":7399,"name":"Ben Stiller","order":0,"profile_path":"/umikKeCX3vEZoUcx2klxPG8571s.jpg"},{"cast_id":1,"character":"Hansel","credit_id":"54ff0b3f9251410e5a0018a8","id":887,"name":"Owen Wilson","order":1,"profile_path":"/j7oYgvfDiO34VcFdSB7GhM2CSle.jpg"},{"cast_id":2,"character":"Mugatu","credit_id":"54ff0cdf9251410e51001868","id":23659,"name":"Will Ferrell","order":2,"profile_path":"/dGxt3uGPlUJKIfHYiLasnEgR90e.jpg"},{"cast_id":10,"character":"Montana Grosso","credit_id":"55bfa3fd9251413e4f007412","id":955,"name":"Penélope Cruz","order":3,"profile_path":"/dcPSUfxMa791NZvrFiBc3ReDdpU.jpg"},{"cast_id":9,"character":"Alexanya Atoz","credit_id":"55bfa3f79251413e5100735e","id":41091,"name":"Kristen Wiig","order":4,"profile_path":"/eqHjl70yPVAYcpYnqKk62a3pzDd.jpg"},{"cast_id":19,"character":"All","credit_id":"564c8b7e925141594d001daa","id":71580,"name":"Benedict Cumberbatch","order":5,"profile_path":"/2NQH6clGUjJmVSOjWiVD54gurKE.jpg"},{"cast_id":7,"character":"","credit_id":"55bfa3ce9251413e5500761f","id":81364,"name":"Olivia Munn","order":6,"profile_path":"/bEaxBT4JSoab2OFSvQwrNAnoNsU.jpg"},{"cast_id":8,"character":"Matilda Jeffries","credit_id":"55bfa3eec3a36838b00075f6","id":15286,"name":"Christine Taylor","order":7,"profile_path":"/99OssnGmgGjduXFA7syxjNqt9tQ.jpg"},{"cast_id":12,"character":"","credit_id":"55bfa40fc3a36865280061e2","id":1954,"name":"Billy Zane","order":9,"profile_path":"/lkwvmo7vVL8TpMCDLRoHjZIkJQ4.jpg"},{"cast_id":13,"character":"","credit_id":"55bfa4239251413e51007366","id":4720,"name":"Kanye West","order":10,"profile_path":"/doy5fbV907464np9OfySoQySEAl.jpg"},{"cast_id":14,"character":"VIP","credit_id":"55bfa429c3a3686959007e5e","id":61110,"name":"Fred Armisen","order":11,"profile_path":"/d4RwMcYqEGsetnYsfWUZyG1ix3P.jpg"},{"cast_id":15,"character":"Derek Jr.","credit_id":"55bfa443c3a36865280061e6","id":1493218,"name":"Cyrus Arnold","order":12,"profile_path":null},{"cast_id":16,"character":"Himself","credit_id":"55bfa450c3a36838b0007602","id":150810,"name":"Justin Bieber","order":13,"profile_path":"/vG2872LXWnsCdmw592XJKk3elnW.jpg"},{"cast_id":17,"character":"Geoff Mille","credit_id":"55bfa4719251413bdc005c34","id":1180696,"name":"Beck Bennett","order":14,"profile_path":"/oblaqelpyBvtB5GaSgQpDrfka9M.jpg"},{"cast_id":18,"character":"Mujer exótica","credit_id":"562e4ac5c3a3681b5200ad49","id":1255247,"name":"Mădălina Diana Ghenea","order":15,"profile_path":"/g0zEsjdWY9ZQMDYfzT4vhsx9Wjg.jpg"},{"cast_id":20,"character":"Todd","credit_id":"564c8c8892514158f6002172","id":203809,"name":"Nathan Lee Graham","order":16,"profile_path":null},{"cast_id":24,"character":"Kim Kardashian","credit_id":"566e58be925141664f00e1ae","id":212225,"name":"Kim Kardashian","order":17,"profile_path":"/xUZiyy7GNAJIp69tTiKxDbFqOOq.jpg"},{"cast_id":25,"character":"Ariana Grande","credit_id":"56bc7f45c3a36860d9002d8e","id":226001,"name":"Ariana Grande","order":18,"profile_path":"/30A6cpHX7IwmbSbDaCCCFvLSv9P.jpg"},{"cast_id":26,"character":"Lenny Kravitz","credit_id":"56bc7f8fc3a36860d9002da8","id":77069,"name":"Lenny Kravitz","order":19,"profile_path":"/dGtP6VFtjHkvoDaEGktzTC7oDOQ.jpg"},{"cast_id":27,"character":"Demi Lovato","credit_id":"56bc83c0c3a36860ec002cbb","id":85138,"name":"Demi Lovato","order":20,"profile_path":"/okQ31qWfyYy3J3vGjOqE5t36lR6.jpg"},{"cast_id":31,"character":"","credit_id":"56bd8db2c3a36817f90025ae","id":982,"name":"Sting","order":21,"profile_path":"/6T1LrN9Hsn9pHpuzzC6LsKyf3Zx.jpg"},{"cast_id":32,"character":"","credit_id":"56c8fcdcc3a368409100451d","id":2628,"name":"Kiefer Sutherland","order":22,"profile_path":"/4YvDfOfD4TgyzDkLGoq76g5BZNe.jpg"},{"cast_id":33,"character":"","credit_id":"56c8fce6c3a368409500468c","id":111455,"name":"Katy Perry","order":23,"profile_path":"/qrQuxz0aVSppQimvbCcXo2JEW5i.jpg"},{"cast_id":34,"character":"Maury Ballstein","credit_id":"56c8fd0692514117350044a8","id":26042,"name":"Jerry Stiller","order":24,"profile_path":"/wyleNpBLMLZ9CNjl13hNB8zoFIa.jpg"},{"cast_id":35,"character":"Skip Taylor","credit_id":"56c8fd1a9251411ea8004565","id":6949,"name":"John Malkovich","order":25,"profile_path":"/j3KJURh51bOLb4WNqx4eGAbePV7.jpg"},{"cast_id":36,"character":"","credit_id":"56c8fd3c9251414ae4000138","id":85757,"name":"Joe Jonas","order":26,"profile_path":"/chP0tAO3UfgmyipvNNqlGD7ctID.jpg"},{"cast_id":37,"character":"","credit_id":"56c8fd4bc3a368409500469e","id":77069,"name":"Lenny Kravitz","order":27,"profile_path":"/dGtP6VFtjHkvoDaEGktzTC7oDOQ.jpg"},{"cast_id":38,"character":"","credit_id":"56c8fd54c3a3684091004528","id":89815,"name":"Anna Wintour","order":28,"profile_path":"/lded0oYuBBIJJq5RoN8NOQETPtq.jpg"},{"cast_id":39,"character":"","credit_id":"56c8fd72c3a3684097004df3","id":56367,"name":"Naomi Campbell","order":29,"profile_path":"/xEEqcwmkfjGWKP1QbShGxbJbYEg.jpg"},{"cast_id":40,"character":"","credit_id":"56c8fd7d9251416099003234","id":550307,"name":"Neil deGrasse Tyson","order":30,"profile_path":"/bpW8flOlQVWRdPyZmzVWkQUrsuU.jpg"},{"cast_id":41,"character":"","credit_id":"56c8fd8b9251411738004661","id":533007,"name":"Kate Moss","order":31,"profile_path":"/cyd06VQu5nXMew8RAA2p2CMpZzf.jpg"},{"cast_id":42,"character":"","credit_id":"56c8fd9f925141172f0043fd","id":216294,"name":"Lewis Hamilton","order":32,"profile_path":"/t5zm6EkUfTHgfpS4cVEtein4LLK.jpg"},{"cast_id":43,"character":"","credit_id":"56c8fdb3c3a368409c004246","id":930058,"name":"Susan Boyle","order":33,"profile_path":"/aZoI8in4jh0csFpdDiyHDqVZlKe.jpg"},{"cast_id":44,"character":"","credit_id":"56c8fdc4925141609900323d","id":77068,"name":"Tommy Hilfiger","order":34,"profile_path":"/sACghyt7NhURMXgnS1271iYzXzt.jpg"},{"cast_id":45,"character":"","credit_id":"56c8fdd4c3a3684089004770","id":1372421,"name":"M.C. Hammer","order":35,"profile_path":"/r2dHN5BKupMnXxtk8MFfLAmzeh2.jpg"}]', 'N/A'),
+(353069, 'tt4824302', 'Mother''s Day', '29 Apr 2016', '118 min', 'PG-13', 'Garry Marshall', 'Tom Hines, Lily Hollander, Anya Kochoff, Matthew Walker', 'Comedy', '6.5', 'Open Road Films', 'http://www.seemothersday.com/', 'Three generations come together in the week leading up to Mother''s Day.', '/images/nowShowing/apKhA6KDkBI8fa6Wr72XHyqsIF7.jpg', '[{"cast_id":0,"character":"Sandy","credit_id":"55c13edac3a3681a8f0006be","id":4491,"name":"Jennifer Aniston","order":0,"profile_path":"/4d4wvNyDuvN86DoneawbLOpr8gH.jpg"},{"cast_id":2,"character":"Miranda","credit_id":"55c13eeec3a3682379003394","id":1204,"name":"Julia Roberts","order":1,"profile_path":"/yzaIyUEKHSnEYDwltXs8gpF4SVC.jpg"},{"cast_id":1,"character":"Jesse","credit_id":"55c13ee1c3a36822fd002e15","id":11661,"name":"Kate Hudson","order":2,"profile_path":"/uad1COv7cURSbRyjUfcw3o8v6y9.jpg"},{"cast_id":11,"character":"Henry","credit_id":"568c6828c3a3680e01009681","id":18082,"name":"Timothy Olyphant","order":3,"profile_path":"/qPqm3mx3xzROFjlSGvh5dqR0XtV.jpg"},{"cast_id":3,"character":"Bradley","credit_id":"55c13ef5c3a368238c002ed0","id":58224,"name":"Jason Sudeikis","order":4,"profile_path":"/rrQCFUtlnJo1sy469RCmWdA3aS3.jpg"},{"cast_id":14,"character":"Gabi","credit_id":"568c684dc3a3685f8901982c","id":49001,"name":"Sarah Chalke","order":5,"profile_path":"/shIIZECDdU3Eg0em04FZF8w37O4.jpg"},{"cast_id":18,"character":"Flo","credit_id":"568c6880c3a3684bcc032129","id":452,"name":"Margo Martindale","order":6,"profile_path":"/cpY603oKxm3euQyXWhXhEh7FkCO.jpg"},{"cast_id":17,"character":"Jackie Burn","credit_id":"568c6874c3a368227b024da2","id":16165,"name":"Jon Lovitz","order":7,"profile_path":"/C18Sj9Tug4e3PraU6npOmoVgEq.jpg"},{"cast_id":10,"character":"Kristin","credit_id":"568c681e9251410ffb0046c1","id":52018,"name":"Britt Robertson","order":8,"profile_path":"/nejKHV0CBTmIAJrxeuxnMWszY8n.jpg"},{"cast_id":13,"character":"Tina","credit_id":"568c684292514131df02ca98","id":222088,"name":"Shay Mitchell","order":9,"profile_path":"/30v8Er4TM3NWHg51xXgYZsy9HtY.jpg"},{"cast_id":19,"character":"Zack","credit_id":"568c688bc3a36860750305cd","id":212285,"name":"Jack Whitehall","order":10,"profile_path":"/5LMEoJ8ttSj5pgPmHIIzv9tKVMk.jpg"},{"cast_id":26,"character":"Kimberly","credit_id":"568c68db92514132db02e097","id":183490,"name":"Loni Love","order":11,"profile_path":"/oSWlf4O5ySGsjwoOsR8PeUurybR.jpg"},{"cast_id":4,"character":"Val","credit_id":"55c13efdc3a36823f700354b","id":1386122,"name":"Gianna Simone","order":12,"profile_path":null},{"cast_id":24,"character":"Max","credit_id":"568c68c59251410ffb0046f4","id":1492327,"name":"Cameron Esposito","order":13,"profile_path":"/8qKl5CegJ0yGPTLkKYQGok7wX4n.jpg"},{"cast_id":20,"character":"Russell","credit_id":"568c68989251410ffb0046e6","id":20644,"name":"Aasif Mandvi","order":14,"profile_path":"/bwGodKf1CMfJqdj7D5BdUMmOky9.jpg"},{"cast_id":28,"character":"Jody","credit_id":"568c697592514169d001abdf","id":1240468,"name":"Lucy Walsh","order":15,"profile_path":null},{"cast_id":12,"character":"Lexi","credit_id":"568c683792514169d001ab7e","id":32291,"name":"Sandra Taylor","order":16,"profile_path":"/2PO8r6s8IgfzWHc2ajfDgdp95JR.jpg"},{"cast_id":15,"character":"Hostess","credit_id":"568c6859c3a3683628018dab","id":30882,"name":"Christine Lakin","order":17,"profile_path":"/gjhJYhtmVKRsn5hecrQIplSP8Dd.jpg"},{"cast_id":16,"character":"Charlie","credit_id":"568c68679251412e5202e5a2","id":1552636,"name":"Owen Vaccaro","order":18,"profile_path":null},{"cast_id":21,"character":"Vicky","credit_id":"568c68a592514113340262dd","id":933578,"name":"Ella Anderson","order":19,"profile_path":"/lYQ5wVXDcZZMYeh4coT2ehMAaz0.jpg"},{"cast_id":22,"character":"Evette","credit_id":"568c68b09251414ecb0215a4","id":1141877,"name":"Ariana Neal","order":20,"profile_path":null},{"cast_id":23,"character":"Tommy","credit_id":"568c68bcc3a36828f5026c48","id":111921,"name":"Grayson Russell","order":21,"profile_path":"/mgpxDDI7uqhdPgT0VoMSW28dh4y.jpg"},{"cast_id":27,"character":"Tiny","credit_id":"568c68f39251417c06008573","id":155403,"name":"Paul Vogt","order":22,"profile_path":null},{"cast_id":25,"character":"Bar Patron","credit_id":"568c68d19251410ffb0046f8","id":639817,"name":"Inder Kumar","order":23,"profile_path":null}]', 'N/A'),
+(290595, 'tt2381991', 'The Huntsman: Winter''s War', '22 Apr 2016', '114 min', 'PG-13', 'Cedric Nicolas-Troyan', 'Evan Spiliotopoulos, Craig Mazin, Evan Daugherty (characters)', 'Action, Adventure, Drama', '6.2', 'Universal Pictures', 'N/A', 'As a war between rival queen sisters Ravenna and Freya escalates, Eric and fellow warrior Sara, members of the Huntsmen army raised to protect Freya, try to conceal their forbidden love as they combat Ravenna''s wicked intentions.', '/images/nowShowing/b77l5vmp6PYsc98LE6Uf1mXtmHh.jpg', '[{"cast_id":0,"character":"The Huntsman","credit_id":"5409a39ec3a36812c30019a0","id":74568,"name":"Chris Hemsworth","order":1,"profile_path":"/eknQXvdsLkoCdF1wQ30f5qhbkXN.jpg"},{"cast_id":1,"character":"Ravenna","credit_id":"5409a3acc3a36812bf0019bd","id":6885,"name":"Charlize Theron","order":2,"profile_path":"/fG0mtmBm3OsvKFucvoQyqBnVwya.jpg"},{"cast_id":3,"character":"Freya","credit_id":"54d9eb979251410659000f10","id":5081,"name":"Emily Blunt","order":3,"profile_path":"/m6lrKvsHJHizkvuv7JqWj4zhOLg.jpg"},{"cast_id":4,"character":"Sara","credit_id":"54ee14f9c3a3686b9a001df7","id":83002,"name":"Jessica Chastain","order":4,"profile_path":"/eyv98YlnRuOOUNCD1U6w2yZDRA2.jpg"},{"cast_id":10,"character":"Nion","credit_id":"552f5e1a9251415be8001343","id":11109,"name":"Nick Frost","order":5,"profile_path":"/33zuHnAnM1aiUbDZX84GR7UQjTa.jpg"},{"cast_id":11,"character":"Mrs. Bromwyn","credit_id":"552f5e289251413838004a6f","id":110080,"name":"Sheridan Smith","order":6,"profile_path":"/cCd1KksU5zNoxOUds372zo35MjX.jpg"},{"cast_id":12,"character":"Gryff","credit_id":"552f5e31c3a3685951001b56","id":47632,"name":"Rob Brydon","order":7,"profile_path":"/cNXgoMllciglCr4QT8mdwvBjBN6.jpg"},{"cast_id":13,"character":"Doreena","credit_id":"552f5e3a9251415be8001348","id":237020,"name":"Alexandra Roach","order":8,"profile_path":"/jWJlrPYvdDN2kMCWKDkDnnFm1mP.jpg"},{"cast_id":16,"character":"William","credit_id":"564a6de6c3a3686037000e28","id":237455,"name":"Sam Claflin","order":9,"profile_path":"/uJds0AFjHpirDjxPPVZoflw39Ht.jpg"},{"cast_id":17,"character":"Duke of Blackwood","credit_id":"564a6e0a9251414dcb000df7","id":228866,"name":"Colin Morgan","order":10,"profile_path":"/p7Q7zx4e3auqfkPmXsjxtiqAYuz.jpg"},{"cast_id":18,"character":"Pippa","credit_id":"564a6e1c9251414dd1000d56","id":1282054,"name":"Sophie Cookson","order":11,"profile_path":"/gaHxEnDxiQnU1ioXTILwe93zZmb.jpg"},{"cast_id":19,"character":"Leifr","credit_id":"564c9e96c3a36860370074d8","id":563559,"name":"Sam Hazeldine","order":12,"profile_path":"/12ev9KVmZ1xF4FNeZFGYRHjvJkQ.jpg"},{"cast_id":20,"character":"Gryff Dwarf Double","credit_id":"564c9eafc3a3686024007b37","id":1278780,"name":"Edd Osmond","order":13,"profile_path":null},{"cast_id":21,"character":"Bar Wench","credit_id":"564c9ed4925141594d002089","id":1278497,"name":"Lynne Wilmot","order":14,"profile_path":null},{"cast_id":22,"character":"Voice and Music","credit_id":"56bfbef1925141699c000c17","id":1577027,"name":"Alejandro Cuello","order":15,"profile_path":null},{"cast_id":23,"character":"Narrator","credit_id":"5709ac19925141214c001132","id":3896,"name":"Liam Neeson","order":16,"profile_path":"/9mdAohLsDu36WaXV2N3SQ388bvz.jpg"}]', '$19.4M'),
+(342521, 'tt4139124', 'Keanu', '29 Apr 2016', '98 min', 'R', 'Peter Atencio', 'Jordan Peele, Alex Rubens', 'Comedy', '6.5', 'Warner Bros. Pictures', 'http://keanumovie.com/', 'Friends hatch a plot to retrieve a stolen kitten by posing as drug dealers for a street gang.', '/images/nowShowing/46RdI1XNmNm4me25oIvXf6Zizy5.jpg', '[{"cast_id":3,"character":"Clarence","credit_id":"556a6004c3a368254b000331","id":298410,"name":"Keegan-Michael Key","order":1,"profile_path":"/gqPRozx8ppAg2TSjW3ww56LnIZr.jpg"},{"cast_id":4,"character":"","credit_id":"556a600bc3a36826f80002f7","id":5384,"name":"Method Man","order":2,"profile_path":"/3LXIZTItw2fnA8gdBLJPLXg0DEC.jpg"},{"cast_id":5,"character":"Rell","credit_id":"556a601792514154080013af","id":291263,"name":"Jordan Peele","order":3,"profile_path":"/2ZJgEIgG31efrRO2mUFnXxDi47E.jpg"},{"cast_id":6,"character":"","credit_id":"55890456c3a3680545002509","id":9781,"name":"Nia Long","order":4,"profile_path":"/q01J3WgNd96GR7CcSxx56N8qwSZ.jpg"},{"cast_id":7,"character":"","credit_id":"5589193ac3a368053e0027bb","id":62831,"name":"Will Forte","order":5,"profile_path":"/7f1mhkjuV18FABD3pYKwQA45nUg.jpg"},{"cast_id":10,"character":"Bud","credit_id":"56ec9144c3a368225100404b","id":1115984,"name":"Jason Mitchell","order":6,"profile_path":"/eZBAmGqwG2q2bFWD3xLTLt69QAb.jpg"},{"cast_id":11,"character":"Bacon","credit_id":"56ec914c9251414dba0023e8","id":40481,"name":"Luis Guzmán","order":7,"profile_path":"/e6mIeGBDkNFZwFDoskcetgkU5oH.jpg"},{"cast_id":12,"character":"Spencer","credit_id":"56ec91559251415e62003a07","id":80595,"name":"Rob Huebel","order":8,"profile_path":"/6K920Xd0JcDoNcBZBOjn0WG4JP2.jpg"},{"cast_id":13,"character":"Hi-C","credit_id":"56ec916392514143fe003a3b","id":1230868,"name":"Tiffany Haddish","order":9,"profile_path":null},{"cast_id":14,"character":"King Diaz","credit_id":"56ec917292514143fe003a3f","id":1299674,"name":"Ian Casselberry","order":10,"profile_path":"/J9CYhZq7IZXRxLKCGjJZVNeDav.jpg"},{"cast_id":15,"character":"Alexis","credit_id":"56ec917fc3a368226e003d6e","id":1330999,"name":"Madison Wolfe","order":11,"profile_path":"/36reSfXpWWydQNAR1W9PlN4VL9i.jpg"}]', 'N/A');
+INSERT INTO `admin_movieinfo` (`infoMovieID`, `infoImdbID`, `infoMovieName`, `infoMovieInTheatres`, `infoMovieRuntime`, `infoMovieRated`, `infoMovieDirectedBy`, `infoMovieWrittenBy`, `infoMovieGenre`, `infoMovieImdbRating`, `infoMovieProduction`, `infoMovieWebsite`, `infoMovieDescription`, `infoMoviePosterPath`, `infoMovieCasts`, `infoMovieBoxOffice`) VALUES
+(346651, 'tt3774802', 'Pandemic', '01 Apr 2016', '91 min', 'N/A', 'John Suits', 'Dustin T. Benson', 'Action, Sci-Fi, Thriller', '5.2', 'Parkside Pictures', 'N/A', 'In the near future, a virus of epic proportions has overtaken the planet. There are more infected than uninfected, and humanity is losing its grip on survival. Its only hope is finding a cure and keeping the infected contained. Lauren is a doctor who, after the fall of New York, arrives in Los Angeles to lead the hunt for uncontaminated civilian survivors. But nothing can prepare her crack team for the blood-soaked mayhem they are about to witness as they head into the Californian mean streets where everything is considered a trap… From director John (THE SCRIBBLER) Suits, a boundary-crashing, game-changing science fiction thriller featuring non-stop action from a first person shooter perspective, putting the audience in the middle of every fight whilst feeling in control of every punch thrown and shot fired. Welcome to the new model of immersive action thriller for the hardcore video game generation.', '/images/nowShowing/o5Zt3nVlDJZLgeRgrhglgymDJym.jpg', '[{"cast_id":1,"character":"Lauren","credit_id":"5590a9209251414b8400036e","id":50347,"name":"Rachel Nichols","order":0,"profile_path":"/80d14kDiIzkrB40mSuINBQbdls6.jpg"},{"cast_id":2,"character":"Wheeler","credit_id":"5590a924c3a3687fcb001bc8","id":71586,"name":"Alfie Allen","order":1,"profile_path":"/4q6yzSMi8Q5XeIn5A1yUD1tEfwq.jpg"},{"cast_id":3,"character":"Denise","credit_id":"5590a92e925141338e001604","id":1294,"name":"Missi Pyle","order":2,"profile_path":"/rRVORUpcHPO9MqgK26H1JWwMZLn.jpg"},{"cast_id":4,"character":"Gunner","credit_id":"5590a936c3a3684349003deb","id":327,"name":"Mekhi Phifer","order":3,"profile_path":"/xrv9RDMPoTd9NsfpUzL81XglAmk.jpg"},{"cast_id":5,"character":"Megan","credit_id":"5590a940c3a3684349003ded","id":1457461,"name":"Danielle Rose Russell","order":4,"profile_path":"/wuCxOjWfG4asRjx2YhOUsDV19vq.jpg"},{"cast_id":6,"character":"Doctor Greer","credit_id":"5590a953c3a3684e6e002204","id":925,"name":"Paul Guilfoyle","order":5,"profile_path":"/vQRNg8D5jeUHGKeFzMuwFaAFnzZ.jpg"},{"cast_id":7,"character":"Infected","credit_id":"5590a969925141338e00160c","id":1482685,"name":"Nea Dune","order":6,"profile_path":null},{"cast_id":8,"character":"Mary","credit_id":"5590a9739251412c430016f3","id":1482686,"name":"Jamie Gallagher","order":7,"profile_path":null},{"cast_id":9,"character":"Sergeant O''Brien","credit_id":"5590a989c3a368686d006674","id":1122102,"name":"Dominic Bogart","order":8,"profile_path":null},{"cast_id":18,"character":"Ella","credit_id":"56bf2482c3a3681806007986","id":168707,"name":"Amanda Baker","order":9,"profile_path":null},{"cast_id":11,"character":"David Thomas","credit_id":"5590a9c1c3a3685d4500365f","id":139751,"name":"Robert Lewis Stephenson","order":10,"profile_path":null},{"cast_id":12,"character":"Infected / Taxi Driver","credit_id":"5590a9d1c3a3687fcb001bd6","id":1482687,"name":"Jonathan Buckhouse","order":11,"profile_path":null},{"cast_id":13,"character":"Infected","credit_id":"5590a9ddc3a3684349003dfe","id":1482688,"name":"Stephanie Langnas","order":12,"profile_path":"/iuXyzdbdZ1XWksZMqW66OFiGtqY.jpg"},{"cast_id":14,"character":"Infected","credit_id":"5590a9e7c3a368686d00667e","id":142792,"name":"Gina Lee","order":13,"profile_path":null},{"cast_id":15,"character":"Survivor","credit_id":"5590a9f69251415a260022c2","id":1482689,"name":"Britain Simons","order":14,"profile_path":null}]', 'N/A'),
+(259693, 'tt3065204', 'The Conjuring 2', '10 Jun 2016', '134 min', 'R', 'James Wan', 'Carey Hayes (screenplay), Chad Hayes (screenplay), James Wan (screenplay), David Leslie Johnson (screenplay), Carey Hayes (story), Chad Hayes (story), James Wan (story)', 'Horror', '8.2', 'Warner Bros. Pictures', 'N/A', 'Lorraine and Ed Warren travel to north London to help a single mother raising four children alone in a house plagued by malicious spirits.', '/images/nowShowing/8yUeC25Ho8ZwwwtiYrfBzDkFcdk.jpg', '[{"cast_id":1,"character":"Ed Warren","credit_id":"5327f4899251411a1e001afa","id":17178,"name":"Patrick Wilson","order":0,"profile_path":"/ahsXtg0TMeNVsKD8I2TuTcVYAJB.jpg"},{"cast_id":0,"character":"Lorraine Warren","credit_id":"5327f4819251411a11001b5d","id":21657,"name":"Vera Farmiga","order":1,"profile_path":"/c1SfQfvYZNyoO0XrDW9h239CemS.jpg"},{"cast_id":9,"character":"Janet Hodgson","credit_id":"56806d539251414d9800443d","id":1330999,"name":"Madison Wolfe","order":2,"profile_path":"/36reSfXpWWydQNAR1W9PlN4VL9i.jpg"},{"cast_id":3,"character":"Peggy Hodgson","credit_id":"56806d51c3a3684be900dc37","id":1518,"name":"Frances O''Connor","order":3,"profile_path":"/xLUO4E1lwkwOJ4uWmHuothCHah.jpg"},{"cast_id":4,"character":"Maurice Grosse","credit_id":"56806d51c3a3684be900dc39","id":16358,"name":"Simon McBurney","order":4,"profile_path":"/3SMFfBtmoDQncXBtICD61plB04W.jpg"},{"cast_id":5,"character":"Peggy Nottingham","credit_id":"56806d529251417def00ea55","id":33394,"name":"Maria Doyle Kennedy","order":5,"profile_path":"/t7wdC2MGTXEmvJ2LL42j6u6EIcG.jpg"},{"cast_id":14,"character":"Vic Nottingham","credit_id":"56806d549251412e5200c3b3","id":163545,"name":"Simon Delaney","order":6,"profile_path":"/x74QVhesWL0nM0EFIosl6awxcIu.jpg"},{"cast_id":78,"character":"Anita Gregory","credit_id":"57590c48c3a3683e910017f1","id":679,"name":"Franka Potente","order":7,"profile_path":"/9ES9W38WA8vIz6zMhlfpeJ29hrW.jpg"},{"cast_id":8,"character":"Bill (voice)","credit_id":"56806d52c3a3684be900dc3d","id":130081,"name":"Robin Atkin Downes","order":8,"profile_path":"/pCnIQMMgrFc4hBOE4LJDdebqRZ4.jpg"},{"cast_id":6,"character":"Crooked Man","credit_id":"56806d529251412e5200c3af","id":111090,"name":"Javier Botet","order":9,"profile_path":"/4u8ZkMMt5ipQgfpb81YudFW5rQG.jpg"},{"cast_id":7,"character":"Judy Warren","credit_id":"56806d52c3a36860e900dc51","id":1186840,"name":"Sterling Jerins","order":10,"profile_path":"/Yfls1AkMHuf1uS2D39bRqwrFdx.jpg"},{"cast_id":10,"character":"Drew","credit_id":"56806d539251412e5200c3b1","id":979807,"name":"Shannon Kook-Chun","order":11,"profile_path":"/xQWkQZ4yg881aOdekizXkkoaAOI.jpg"},{"cast_id":11,"character":"Father Gordon","credit_id":"56806d53c3a3684bcc00ef9a","id":80619,"name":"Steve Coulter","order":12,"profile_path":"/v1cwS9Ia89pO154Wje3m4IxuI3.jpg"},{"cast_id":12,"character":"Harry Whitmark","credit_id":"56806d549251414d9800443f","id":1324452,"name":"Abhi Sinha","order":13,"profile_path":"/fEw3JFbkxBLOi0hDjk8Zpgs2Ceo.jpg"},{"cast_id":13,"character":"Woman Walking Dog","credit_id":"56806d54c3a3684be900dc40","id":1554512,"name":"Nancy DeMars","order":14,"profile_path":null},{"cast_id":24,"character":"Louise","credit_id":"56806d579251412e5200c3b6","id":1554520,"name":"Jennifer Collins","order":15,"profile_path":null}]', 'N/A');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admin_movietomatoes`
+--
+
+DROP TABLE IF EXISTS `admin_movietomatoes`;
+CREATE TABLE IF NOT EXISTS `admin_movietomatoes` (
+  `mtImdbID` varchar(11) NOT NULL,
+  `mtMovieTitle` varchar(50) NOT NULL,
+  `mtAllCritics` varchar(500) DEFAULT NULL,
+  `mtTopCritics` varchar(500) DEFAULT NULL,
+  `mtAudienceScore` varchar(100) DEFAULT NULL,
+  `mtMovieDescription` varchar(3000) DEFAULT NULL,
+  `mtGenre` varchar(150) DEFAULT NULL,
+  PRIMARY KEY (`mtImdbID`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `admin_movietomatoes`
+--
+
+INSERT INTO `admin_movietomatoes` (`mtImdbID`, `mtMovieTitle`, `mtAllCritics`, `mtTopCritics`, `mtAudienceScore`, `mtMovieDescription`, `mtGenre`) VALUES
+('tt1608290', 'Zoolander 2', '{"freshness":"rotten","tomatometer":24,"averageRating":"4.5/10","reviewCount":182,"freshCount":43,"rottenCount":139,"criticsConsensus":"Zoolander No. 2 has more celebrity cameos than laughs -- and its meager handful of memorable gags outnumbers the few worthwhile ideas discernible in its scattershot rehash of a script."}', '{"freshness":"rotten","tomatometer":17,"averageRating":"4.8/10","reviewCount":41,"freshCount":7,"rottenCount":34,"criticsConsensus":"Zoolander No. 2 has more celebrity cameos than laughs -- and its meager handful of memorable gags outnumbers the few worthwhile ideas discernible in its scattershot rehash of a script."}', '{"tomatometer":"27","averageRating":"2.5/5","ratingCount":39039}', 'Ben Stiller returns both in front of and behind the camera for Zoolander 2, a comedy that finds the beloved model Derek Zoolander (Stiller) and his rival-turned-partner Hansel (Owen Wilson) facing a threat to their continued success.more', '["Comedy"]'),
+('tt2975590', 'Batman v Superman: Dawn of Justice', '{"freshness":"rotten","tomatometer":28,"averageRating":"4.9/10","reviewCount":320,"freshCount":89,"rottenCount":231,"criticsConsensus":"Batman v Superman: Dawn of Justice smothers a potentially powerful story -- and some of America''s most iconic superheroes -- in a grim whirlwind of effects-driven action."}', '{"freshness":"rotten","tomatometer":26,"averageRating":"4.9/10","reviewCount":47,"freshCount":12,"rottenCount":35,"criticsConsensus":"Batman v Superman: Dawn of Justice smothers a potentially powerful story -- and some of America''s most iconic superheroes -- in a grim whirlwind of effects-driven action."}', '{"tomatometer":"68","averageRating":"3.7/5","ratingCount":201550}', 'Batman (Ben Affleck) and Superman (Henry Cavill) share the screen in this Warner Bros./DC Entertainment co-production penned by David S. Goyer and Chris Terrio, and directed by Zack Snyder. Amy Adams and Diane Lane return as Lois Lane and Martha Kent, respectively.more', '["Action & Adventure","Science Fiction & Fantasy"]'),
+('tt2948356', 'Zootopia', '{"freshness":"rotten","tomatometer":98,"averageRating":"8.1/10","reviewCount":206,"freshCount":202,"rottenCount":4,"criticsConsensus":"The brilliantly well-rounded Zootopia offers a thoughtful, inclusive message that''s as rich and timely as its sumptuously state-of-the-art animation -- all while remaining fast and funny enough to keep younger viewers entertained."}', '{"freshness":"rotten","tomatometer":97,"averageRating":"8/10","reviewCount":39,"freshCount":38,"rottenCount":1,"criticsConsensus":"The brilliantly well-rounded Zootopia offers a thoughtful, inclusive message that''s as rich and timely as its sumptuously state-of-the-art animation -- all while remaining fast and funny enough to keep younger viewers entertained."}', '{"tomatometer":"95","averageRating":"4.5/5","ratingCount":61724}', 'The modern mammal metropolis of Zootopia is a city like no other. Comprised of habitat neighborhoods like ritzy Sahara Square and frigid Tundratown, it''s a melting pot where animals from every environment live together-a place where no matter what you are, from the biggest elephant to the smallest shrew, you can be anything. But when rookie Officer Judy Hopps (voice of Ginnifer Goodwin) arrives, she discovers that being the first bunny on a police force of big, tough animals isn''t so easy. Determined to prove herself, she jumps at the opportunity to crack a case, even if it means partnering with a fast-talking, scam-artist fox, Nick Wilde (voice of Jason Bateman), to solve the mystery. Walt Disney Animation Studios'' "Zootopia," a comedy-adventure directed by Byron Howard ("Tangled," "Bolt") and Rich Moore ("Wreck-It Ralph," "The Simpsons") and co-directed by Jared Bush ("Penn Zero: Part-Time Hero"), opens in theaters on March 4, 2016. Officer Judy Hopps (voice of Ginnifer Goodwin), the very first bunny on Zootopia''s police force, jumps at the opportunity to crack her first case-even if it means partnering with fast-talking, scam-artist fox Nick Wilde (voice of Jason Bateman) to solve the mystery.more', '["Action & Adventure","Animation","Comedy"]'),
+('tt4257926', 'Miracles from Heaven', '{"freshness":"rotten","tomatometer":47,"averageRating":"5.1/10","reviewCount":75,"freshCount":35,"rottenCount":40,"criticsConsensus":"Miracles from Heaven makes the most out of an outstanding performance from Jennifer Garner, but it isn''t quite enough to keep this faith-based drama from preaching to the choir."}', '{"freshness":"rotten","tomatometer":52,"averageRating":"4.7/10","reviewCount":21,"freshCount":11,"rottenCount":10,"criticsConsensus":"Miracles from Heaven makes the most out of an outstanding performance from Jennifer Garner, but it isn''t quite enough to keep this faith-based drama from preaching to the choir."}', '{"tomatometer":"83","averageRating":"4.2/5","ratingCount":15166}', 'When Christy discovers her 10-year-old daughter Anna has a rare, incurable disease, she becomes a ferocious advocate for her daughter''s healing as she searches for a solution. After Anna has a freak accident, an extraordinary miracle unfolds in the wake of her dramatic rescue that leaves medical specialists mystified, her family restored and their community inspired. Based on a true story.more', '["Drama"]'),
+('tt3040964', 'The Jungle Book', '{"freshness":"rotten","tomatometer":94,"averageRating":"7.8/10","reviewCount":204,"freshCount":192,"rottenCount":12,"criticsConsensus":"As lovely to behold as it is engrossing to watch, The Jungle Book is the rare remake that actually improves upon its predecessors -- all while setting a new standard for CGI."}', '{"freshness":"rotten","tomatometer":93,"averageRating":"7.9/10","reviewCount":42,"freshCount":39,"rottenCount":3,"criticsConsensus":"As lovely to behold as it is engrossing to watch, The Jungle Book is the rare remake that actually improves upon its predecessors -- all while setting a new standard for CGI."}', '{"tomatometer":"92","averageRating":"4.3/5","ratingCount":43163}', 'Rudyard Kipling''s beloved story returns to the screen in this Walt Disney Pictures production from director Jon Favreau (Elf, Iron Man). ~ Jason Buchanan, Rovimore', '["Action & Adventure","Kids & Family"]'),
+('tt4701660', 'Mei ren yu (The Mermaid)', '{"freshness":"fresh","tomatometer":91,"averageRating":"7/10","reviewCount":22,"freshCount":20,"rottenCount":2,"criticsConsensus":"The Mermaid requires a willingness to embrace the strange, but backs up its wacky flights of fancy with a big-hearted fairy tale and a resonant message."}', '{"freshness":"fresh","tomatometer":89,"averageRating":"6/10","reviewCount":9,"freshCount":8,"rottenCount":1,"criticsConsensus":"The Mermaid requires a willingness to embrace the strange, but backs up its wacky flights of fancy with a big-hearted fairy tale and a resonant message."}', '{"tomatometer":"74","averageRating":"3.8/5","ratingCount":2347}', 'Xuan''s real estate project involved reclamation of the sea, threatening the livelihood of the residents who relied on the sea to make a living. Bearing family secrets, Shan was dispatched to stop Xuan. During their encounters, they fall in love with each other. Even though Xuan stopped the reclamation plan out of his love for Shan, Shan got injured in an accident and vanished into the sea.more', '["Science Fiction & Fantasy","Comedy"]'),
+('tt1431045', 'Deadpool', '{"freshness":"rotten","tomatometer":83,"averageRating":"6.9/10","reviewCount":256,"freshCount":213,"rottenCount":43,"criticsConsensus":"Fast, funny, and gleefully profane, the fourth-wall-busting Deadpool subverts superhero film formula with wildly entertaining -- and decidedly non-family-friendly -- results."}', '{"freshness":"rotten","tomatometer":73,"averageRating":"6.6/10","reviewCount":40,"freshCount":29,"rottenCount":11,"criticsConsensus":"Fast, funny, and gleefully profane, the fourth-wall-busting Deadpool subverts superhero film formula with wildly entertaining -- and decidedly non-family-friendly -- results."}', '{"tomatometer":"92","averageRating":"4.4/5","ratingCount":161832}', 'Based upon Marvel Comics'' most unconventional anti-hero, DEADPOOL tells the origin story of former Special Forces operative turned mercenary Wade Wilson, who after being subjected to a rogue experiment that leaves him with accelerated healing powers, adopts the alter ego Deadpool. Armed with his new abilities and a dark, twisted sense of humor, Deadpool hunts down the man who nearly destroyed his life. (C) Foxmore', '["Action & Adventure","Science Fiction & Fantasy","Comedy"]'),
+('tt2267968', 'Kung Fu Panda 3', '{"freshness":"rotten","tomatometer":86,"averageRating":"6.8/10","reviewCount":143,"freshCount":123,"rottenCount":20,"criticsConsensus":"Kung Fu Panda 3 boasts the requisite visual splendor, but like its rotund protagonist, this sequel''s narrative is also surprisingly nimble, adding up to animated fun for the whole family."}', '{"freshness":"rotten","tomatometer":74,"averageRating":"6.4/10","reviewCount":31,"freshCount":23,"rottenCount":8,"criticsConsensus":"Kung Fu Panda 3 boasts the requisite visual splendor, but like its rotund protagonist, this sequel''s narrative is also surprisingly nimble, adding up to animated fun for the whole family."}', '{"tomatometer":"82","averageRating":"4/5","ratingCount":91629}', 'In 2016, one of the most successful animated franchises in the world returns with its biggest comedy adventure yet, KUNG FU PANDA 3. When Po''s long-lost panda father suddenly reappears, the reunited duo travels to a secret panda paradise to meet scores of hilarious new panda characters. But when the supernatural villain Kai begins to sweep across China defeating all the kung fu masters, Po must do the impossible-learn to train a village full of his fun-loving, clumsy brethren to become the ultimate band of Kung Fu Pandas! (C) Foxmore', '["Animation"]'),
+('tt4824302', 'Mother''s Day', '{"freshness":"rotten","tomatometer":8,"averageRating":"2.9/10","reviewCount":87,"freshCount":7,"rottenCount":80,"criticsConsensus":"Arguably well-intended yet thoroughly misguided, Mother''s Day is the cinematic equivalent of a last-minute gift that only underscores its embarrassing lack of effort."}', '{"freshness":"rotten","tomatometer":8,"averageRating":"2.9/10","reviewCount":26,"freshCount":2,"rottenCount":24,"criticsConsensus":"Arguably well-intended yet thoroughly misguided, Mother''s Day is the cinematic equivalent of a last-minute gift that only underscores its embarrassing lack of effort."}', '{"tomatometer":"54","averageRating":"3.2/5","ratingCount":7223}', '"Mother''s Day" is the latest star studded ensemble comedy from director Garry Marshall ("Pretty Woman," "Valentine''s Day"). Bringing together Jennifer Aniston, Kate Hudson and Julia Roberts along with Jason Sudeikis, it''s a celebration of mothers everywhere. This big-hearted comedy invites us all to enjoy the laughter, tears and love as three generations come together in the week leading up to Mother''s Day.more', '["Drama","Comedy"]'),
+('tt2381991', 'The Huntsman: Winter''s War', '{"freshness":"rotten","tomatometer":16,"averageRating":"4.2/10","reviewCount":171,"freshCount":28,"rottenCount":143,"criticsConsensus":"The Huntsman: Winter''s War is visually arresting and boasts a stellar cast, but neither are enough to recommend this entirely unnecessary sequel."}', '{"freshness":"rotten","tomatometer":9,"averageRating":"4/10","reviewCount":34,"freshCount":3,"rottenCount":31,"criticsConsensus":"The Huntsman: Winter''s War is visually arresting and boasts a stellar cast, but neither are enough to recommend this entirely unnecessary sequel."}', '{"tomatometer":"51","averageRating":"3.3/5","ratingCount":36976}', 'Freya the Ice Queen (Emily Blunt) brings her sister Ravenna (Charlize Theron) back to life, and the powerful evil siblings plan to conquer the Enchanted Forest. Only the Huntsman (Chris Hemsworth) and his secret lover Sara (Jessica Chastain) can stop them in this sequel continuing the inventive twist on the Snow White fable.more', '["Drama","Action & Adventure","Science Fiction & Fantasy"]'),
+('tt4139124', 'Keanu', '{"freshness":"rotten","tomatometer":76,"averageRating":"6.6/10","reviewCount":106,"freshCount":81,"rottenCount":25,"criticsConsensus":"Keanu''s absurd premise and compulsively watchable starring duo add up to an agreeably fast-paced comedy that hits more than enough targets to make up for the misses."}', '{"freshness":"rotten","tomatometer":77,"averageRating":"6.7/10","reviewCount":30,"freshCount":23,"rottenCount":7,"criticsConsensus":"Keanu''s absurd premise and compulsively watchable starring duo add up to an agreeably fast-paced comedy that hits more than enough targets to make up for the misses."}', '{"tomatometer":"70","averageRating":"3.6/5","ratingCount":11613}', 'Keegan-Michael Key and Jordan Peele star in this comedy as two friends posing as drug dealers to get back a stolen cat. Peter Atencio directed.more', '["Action & Adventure","Comedy"]'),
+('tt3774802', 'Pandemic', '{"freshness":"rotten","tomatometer":46,"averageRating":"4.7/10","reviewCount":13,"freshCount":6,"rottenCount":7,"criticsConsensus":"No consensus yet."}', '{"freshness":"rotten","tomatometer":46,"averageRating":"4.7/10","reviewCount":13,"freshCount":6,"rottenCount":7,"criticsConsensus":"No consensus yet."}', '{"tomatometer":"90","averageRating":"3.8/5","ratingCount":899}', 'Pandemic is set in the near future, where a virus of epic proportions has overtaken the planet. There are more infected than uninfected, and humanity is losing its grip on survival. Its only hope is finding a cure and keeping the infected contained. Lauren (Rachel Nichols) is a doctor, who, after the fall of New York, comes to Los Angeles to lead a team to hunt for and rescue uninfected survivors.more', '["Action & Adventure","Science Fiction & Fantasy"]'),
+('tt3498820', 'Captain America: Civil War', '{"freshness":"rotten","tomatometer":90,"averageRating":"7.6/10","reviewCount":307,"freshCount":275,"rottenCount":32,"criticsConsensus":"Captain America: Civil War begins the next wave of Marvel movies with an action-packed superhero blockbuster boasting a decidedly non-cartoonish plot and the courage to explore thought-provoking themes."}', '{"freshness":"rotten","tomatometer":88,"averageRating":"7.6/10","reviewCount":50,"freshCount":44,"rottenCount":6,"criticsConsensus":"Captain America: Civil War begins the next wave of Marvel movies with an action-packed superhero blockbuster boasting a decidedly non-cartoonish plot and the courage to explore thought-provoking themes."}', '{"tomatometer":"91","averageRating":"4.4/5","ratingCount":140350}', 'Marvel''s "Captain America: Civil War" finds Steve Rogers leading the newly formed team of Avengers in their continued efforts to safeguard humanity. But after another incident involving the Avengers results in collateral damage, political pressure mounts to install a system of accountability, headed by a governing body to oversee and direct the team. The new status quo fractures the Avengers, resulting in two camps-one led by Steve Rogers and his desire for the Avengers to remain free to defend humanity without government interference, and the other following Tony Stark''s surprising decision to support government oversight and accountability.more', '["Action & Adventure","Science Fiction & Fantasy"]'),
+('tt3065204', 'The Conjuring 2', '{"freshness":"rotten","tomatometer":75,"averageRating":"6.5/10","reviewCount":127,"freshCount":95,"rottenCount":32,"criticsConsensus":"The Conjuring 2 can''t help but lose a bit of its predecessor''s chilly sting through familiarity, but what remains is still a superior ghost story told with spine-tingling skill."}', '{"freshness":"rotten","tomatometer":75,"averageRating":"6.5/10","reviewCount":28,"freshCount":21,"rottenCount":7,"criticsConsensus":"The Conjuring 2 can''t help but lose a bit of its predecessor''s chilly sting through familiarity, but what remains is still a superior ghost story told with spine-tingling skill."}', '{"tomatometer":"88","averageRating":"4.2/5","ratingCount":34166}', 'Reprising their roles, Oscar nominee Vera Farmiga ("Up In the Air," TV''s "Bates Motel") and Patrick Wilson (the "Insidious" films), star as Lorraine and Ed Warren, who, in one of their most terrifying paranormal investigations, travel to north London to help a single mother raising four children alone in a house plagued by malicious spirits.more', '["Horror"]');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admin_setting_contact`
+--
+
+DROP TABLE IF EXISTS `admin_setting_contact`;
+CREATE TABLE IF NOT EXISTS `admin_setting_contact` (
+  `contactID` int(11) NOT NULL AUTO_INCREMENT,
+  `contactName` varchar(30) NOT NULL,
+  `contactEmail` varchar(30) NOT NULL,
+  `contactPhone` varchar(30) NOT NULL,
+  PRIMARY KEY (`contactID`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admin_setting_location`
+--
+
+DROP TABLE IF EXISTS `admin_setting_location`;
+CREATE TABLE IF NOT EXISTS `admin_setting_location` (
+  `locationID` int(11) NOT NULL,
+  `locationTheatreName` varchar(30) NOT NULL,
+  `locationPhysicalAddress` varchar(300) NOT NULL,
+  `locationMailingAddress` varchar(300) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admin_setting_screen`
+--
+
+DROP TABLE IF EXISTS `admin_setting_screen`;
+CREATE TABLE IF NOT EXISTS `admin_setting_screen` (
+  `movieScreenID` int(20) NOT NULL AUTO_INCREMENT,
+  `screenName` varchar(10) NOT NULL,
+  `screenType` varchar(10) NOT NULL,
+  `noOfSeats` int(10) NOT NULL,
+  PRIMARY KEY (`movieScreenID`)
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `admin_setting_screen`
+--
+
+INSERT INTO `admin_setting_screen` (`movieScreenID`, `screenName`, `screenType`, `noOfSeats`) VALUES
+(1, '1', '3D', 100),
+(2, '2', '2D, 3D', 100),
+(3, '3', '2D', 100),
+(4, '4', '3D', 100),
+(5, '5', '2D', 100),
+(6, '6', '3D', 100),
+(7, '7', '2D', 100),
+(8, '8', '3D', 100),
+(9, '9', '2D, 3D', 100),
+(10, '10', '3D', 100);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admin_setting_social`
+--
+
+DROP TABLE IF EXISTS `admin_setting_social`;
+CREATE TABLE IF NOT EXISTS `admin_setting_social` (
+  `socialID` int(11) NOT NULL AUTO_INCREMENT,
+  `socialFacebook` varchar(50) NOT NULL,
+  `socailTwitter` varchar(50) NOT NULL,
+  PRIMARY KEY (`socialID`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admin_setting_ticket`
+--
+
+DROP TABLE IF EXISTS `admin_setting_ticket`;
+CREATE TABLE IF NOT EXISTS `admin_setting_ticket` (
+  `ticketID` int(11) NOT NULL AUTO_INCREMENT,
+  `ticketName` varchar(30) NOT NULL,
+  `ticketType` varchar(10) NOT NULL,
+  `ticketPrice` varchar(10) NOT NULL,
+  `ticketGroup` varchar(10) NOT NULL,
+  `ticketDay` varchar(20) NOT NULL,
+  PRIMARY KEY (`ticketID`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admin_site_configuration`
+--
+
+DROP TABLE IF EXISTS `admin_site_configuration`;
+CREATE TABLE IF NOT EXISTS `admin_site_configuration` (
+  `siteAdminID` varchar(50) NOT NULL,
+  `theatreName` varchar(50) NOT NULL,
+  `theatreURL` varchar(50) NOT NULL,
+  `siteTimeZone` varchar(50) NOT NULL,
+  `day` varchar(30) NOT NULL,
+  `openTime` varchar(30) NOT NULL,
+  `closeTime` varchar(30) NOT NULL,
+  PRIMARY KEY (`theatreURL`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `admin_site_configuration`
+--
+
+INSERT INTO `admin_site_configuration` (`siteAdminID`, `theatreName`, `theatreURL`, `siteTimeZone`, `day`, `openTime`, `closeTime`) VALUES
+('userID_1', 'cinestar', 'cinex.press', 'UTC 5:30', '', '', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admin_upcomingmovies`
+--
+
+DROP TABLE IF EXISTS `admin_upcomingmovies`;
+CREATE TABLE IF NOT EXISTS `admin_upcomingmovies` (
+  `upMovieId` int(15) NOT NULL,
+  `upMovieName` varchar(50) NOT NULL,
+  `upReleaseDate` varchar(20) NOT NULL,
+  `upPosterPath` varchar(100) DEFAULT NULL,
+  `upDuration` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`upMovieId`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `admin_upcomingmovies`
+--
+
+INSERT INTO `admin_upcomingmovies` (`upMovieId`, `upMovieName`, `upReleaseDate`, `upPosterPath`, `upDuration`) VALUES
+(127380, 'Finding Dory', '2016-06-16', '/images/upcoming/cGgwvGRKanYbp15n9qX7TJy2lUX.jpg', NULL),
+(347031, 'Swiss Army Man', '2016-06-17', '/images/upcoming/9BdJz7b4WdJul0KVu42YFEgqzyp.jpg', NULL),
+(401593, 'Big Jay Oakerson: Live at Webster Hall', '2016-06-17', '/images/upcomingnull', NULL),
+(392506, 'A.C. Green: Iron Virgin', '2016-05-13', '/images/upcomingnull', NULL),
+(392820, 'Gimme Danger', '2016-05-14', '/images/upcomingnull', NULL),
+(392804, 'Beyond the Mountains and Hills', '2016-05-14', '/images/upcomingnull', NULL),
+(392817, 'The Student', '2016-05-14', '/images/upcomingnull', NULL),
+(392800, 'Hissein Habré, A Chadian Tragedy', '2016-05-14', '/images/upcomingnull', NULL),
+(392803, 'Le Cancre', '2016-05-14', '/images/upcomingnull', NULL),
+(392795, 'Harmonium', '2016-05-14', '/images/upcomingnull', NULL),
+(392809, 'Francisco Sanctis''s Long Night', '2016-05-14', '/images/upcomingnull', NULL),
+(392812, 'Dogs', '2016-05-14', '/images/upcomingnull', NULL),
+(311667, 'Manhattan Night', '2016-05-20', '/images/upcomingnull', NULL),
+(340945, 'USS Indianapolis: Men of Courage', '2016-05-30', '/images/upcomingnull', NULL),
+(388131, 'Wolf Creek', '2016-06-16', '/images/upcoming/qRrxX4LSwPaviznJmUhxlRTrQcV.jpg', NULL),
+(395982, 'Prevenge', '2016-05-15', '/images/upcomingnull', NULL),
+(393170, 'Kaptaan', '2016-05-20', '/images/upcomingnull', NULL),
+(328111, 'The Secret Life of Pets', '2016-06-24', '/images/upcoming/7V5wyODhVBH8DhWRXgKrRcsIutO.jpg', NULL),
+(382493, '2 Hours 2 Vegas', '2016-05-17', '/images/upcomingnull', NULL),
+(333386, 'The Duel', '2016-06-24', '/images/upcoming/At37CIrDRe4x3UxdA9NmArIMRFk.jpg', NULL),
+(393659, 'Ms. Matched', '2016-05-28', '/images/upcomingnull', NULL),
+(399747, 'Mother, May I Sleep with Danger?', '2016-06-18', '/images/upcomingnull', NULL),
+(394143, 'Wrong Elements', '2016-05-20', '/images/upcomingnull', NULL),
+(373072, 'Tickled', '2016-06-17', '/images/upcoming/uOLOPkD9rpubk9KfNv4gt6NS9ZU.jpg', NULL),
+(381035, 'Jean of the Joneses', '2016-06-01', '/images/upcomingnull', NULL),
+(278154, 'Ice Age: Collision Course', '2016-06-30', '/images/upcoming/1Rs4oQs5wONsWAZoqvOo1x9CjPC.jpg', NULL),
+(316727, 'The Purge: Election Year', '2016-06-29', '/images/upcoming/3O1ZpPdcOrvcqHXXynHCuj9e05g.jpg', NULL),
+(370994, 'Udanchhoo', '2016-05-20', '/images/upcomingnull', NULL),
+(394049, 'Almost Holy', '2016-05-20', '/images/upcomingnull', NULL),
+(399106, 'Piper', '2016-06-17', '/images/upcoming/v2xkFhXfZ3AACsmFXInuKPTvYZ5.jpg', NULL),
+(400623, 'The Peacemaker', '2016-06-14', '/images/upcomingnull', NULL),
+(394692, 'Paint It Black', '2016-06-01', '/images/upcomingnull', NULL),
+(391773, 'Kamp Holland', '2016-05-22', '/images/upcomingnull', NULL),
+(401927, 'WWE Money in the Bank 2016', '2016-06-19', '/images/upcoming/ooW1KVi6ohiREweqzK0PJl2FE1i.jpg', NULL),
+(396127, 'Where Have All the Good Men Gone', '2016-06-16', '/images/upcoming/1GT5a45yD8CE5l7SoKDpPjY8f6b.jpg', NULL),
+(313723, 'Deep Cover', '2016-06-01', '/images/upcomingnull', NULL),
+(396135, 'Gold Balls', '2016-05-21', '/images/upcomingnull', NULL),
+(394822, 'London Town', '2016-06-01', '/images/upcomingnull', NULL),
+(391775, 'Moos', '2016-05-29', '/images/upcomingnull', NULL),
+(396087, 'The IF Project', '2016-05-21', '/images/upcomingnull', NULL),
+(302699, 'Central Intelligence', '2016-06-15', '/images/upcoming/q7GOSxRsBLTJysmAEjFoQZfScsq.jpg', NULL),
+(381520, 'Alan Clarke: Out of His Own Light', '2016-05-23', '/images/upcomingnull', NULL),
+(396126, 'Sustainable', '2016-05-22', '/images/upcomingnull', NULL),
+(394047, 'The Dog Lover', '2016-05-22', '/images/upcomingnull', NULL),
+(400621, '#MyEscape', '2016-06-13', '/images/upcomingnull', NULL),
+(394697, 'Blood Stripe', '2016-06-02', '/images/upcomingnull', NULL),
+(396084, 'Hummus', '2016-05-24', '/images/upcomingnull', NULL),
+(341853, 'Seen and Not Seen', '2016-05-26', '/images/upcomingnull', NULL),
+(385933, 'Room Full of Spoons', '2016-07-09', '/images/upcoming/cfMwypX1RAFXa5jGLYN4SQOHtcP.jpg', NULL),
+(381047, 'Hit it Hard', '2016-07-12', '/images/upcoming/7ehkV4gfb7TpMndb7O2dRSjjxIk.jpg', NULL),
+(394770, '11:55', '2016-06-02', '/images/upcomingnull', NULL),
+(400624, 'Generation Revolution', '2016-06-14', '/images/upcoming/fPHNBFfDuFbgrmP4q9vnyt3srv6.jpg', NULL),
+(385439, 'Where Am I?: Beyond Girl And Woman', '2016-06-16', '/images/upcoming/f9pxuuCJ8XVL6vdZQY9BDbwRnR8.jpg', NULL),
+(396121, 'Tsukiji Wonderland', '2016-05-31', '/images/upcomingnull', NULL),
+(383145, 'HoneyBee', '2016-06-13', '/images/upcoming/p2Bn8phbIoJmANkbQCExBtQI1il.jpg', NULL),
+(373247, 'Down Under', '2016-06-15', '/images/upcoming/y0zkVn1qtXzBNfe3h3QcCIZk2LZ.jpg', NULL),
+(380623, 'Nocturama', '2016-05-31', '/images/upcomingnull', NULL),
+(325907, 'Docent', '2016-06-01', '/images/upcomingnull', NULL),
+(396099, 'Paralytic', '2016-06-03', '/images/upcomingnull', NULL),
+(387450, 'La terra promessa', '2016-06-13', '/images/upcomingnull', NULL),
+(367686, 'The Anthropologist', '2016-06-01', '/images/upcomingnull', NULL),
+(394711, 'Destined', '2016-06-03', '/images/upcomingnull', NULL),
+(366604, 'No Expectations the Murder of Brian Jones', '2016-07-12', '/images/upcomingnull', NULL),
+(392568, 'Todd Who?', '2016-07-09', '/images/upcoming/nZ2udJT0NCo4ZAIhW6fShfvUthK.jpg', NULL),
+(399128, 'UFC 200: Cormier vs. Jones 2', '2016-07-09', '/images/upcoming/mKS3mr6OTD63jY2vWkL2v02nOuu.jpg', NULL),
+(401704, 'Kidnap Ding Ding Don', '2016-06-23', '/images/upcomingnull', NULL),
+(392714, 'Spoke', '2016-07-09', '/images/upcoming/d0pUfV84BXhRZt4VLl8uuPpuMce.jpg', NULL),
+(334532, 'A Hundred Streets', '2016-06-02', '/images/upcomingnull', NULL),
+(393732, 'Mean Dreams', '2016-05-15', '/images/upcomingnull', NULL),
+(379624, 'Kitty', '2016-05-20', '/images/upcomingnull', NULL),
+(365941, 'The Darkness', '2016-05-13', '/images/upcomingnull', NULL),
+(258489, 'The Legend of Tarzan', '2016-06-30', '/images/upcoming/mNtM3k92P1VbExRvEv4uiRFOdZI.jpg', NULL),
+(47933, 'Independence Day: Resurgence', '2016-06-22', '/images/upcoming/9KQX22BeFzuNM66pBA6JbiaJ7Mi.jpg', NULL),
+(392796, 'Personal Affairs', '2016-05-14', '/images/upcomingnull', NULL),
+(399264, 'Growing Up Coy', '2016-06-16', '/images/upcomingnull', NULL),
+(392629, 'Murder She Baked: A Deadly Recipe', '2016-06-19', '/images/upcoming/zNdNiXGwZB6EZNdqFQsKkX4JVKV.jpg', NULL),
+(370765, 'Jessica Darling''s It List', '2016-06-21', '/images/upcoming/g71ffZ2tC3RhxHpY3ScqdspmuuQ.jpg', NULL),
+(267935, 'The BFG', '2016-06-30', '/images/upcoming/lGHoH7pHsiwPs96tM9nA42id7K0.jpg', NULL),
+(399127, 'WWE Money in the Bank 2016', '2016-06-19', '/images/upcoming/kwt0EImOUWlnHuyQezng8dWuW4S.jpg', NULL),
+(188927, 'Star Trek Beyond', '2016-07-07', '/images/upcoming/m6TUVDvOIz5ymBdtr68ZEzrml5z.jpg', NULL),
+(401406, 'I Can Dream, Can''t I?', '2016-06-16', '/images/upcoming/Afyodl3ARCDdeL90EwF1b4rlP62.jpg', NULL),
+(326094, 'Wiener-Dog', '2016-06-24', '/images/upcoming/p9qJTbNoDsO1GC63sDYd9yuTGgC.jpg', NULL),
+(332567, 'The Shallows', '2016-06-24', '/images/upcoming/6vuxwCfBejPfUjMxrPgk0ANmVFq.jpg', NULL),
+(300687, 'Same Kind of Different as Me', '2016-06-17', '/images/upcomingnull', NULL),
+(398579, 'Winter at Westbeth', '2016-06-17', '/images/upcoming/wAXdEXus3eyHmoWTSzcbX8GnyVj.jpg', NULL),
+(401016, 'PARADISE IN HEART - LAC GIOI', '2016-06-17', '/images/upcoming/iw8mLF8ffAhw34772zs0E6FQKRB.jpg', NULL),
+(372411, 'Absolutely Fabulous: The Movie', '2016-07-01', '/images/upcoming/sw16HzPiPWvyY9qkpofSfNkwLUu.jpg', NULL),
+(360606, 'Adventures in Babysitting', '2016-06-24', '/images/upcoming/tsMjEc64oCRKH9HinFUJ4caSIeA.jpg', NULL),
+(399372, 'Red Christmas', '2016-06-17', '/images/upcomingnull', NULL),
+(399220, 'Away', '2016-06-22', '/images/upcomingnull', NULL),
+(399226, 'Brakes', '2016-06-17', '/images/upcoming/4R53zxr0Q84N93IT4244tzwjoq4.jpg', NULL),
+(401271, 'Thoughtless', '2016-06-17', '/images/upcoming/tkyBepRKdwH7Wwr9IAJsmcqS2Eu.jpg', NULL),
+(371645, 'Hunt for the Wilderpeople', '2016-06-24', '/images/upcoming/2wxvvnHKdZRB31Drf7PbRzPb0mR.jpg', NULL),
+(316023, 'Mike & Dave Need Wedding Dates', '2016-07-07', '/images/upcoming/zfY92ye2kdLjzj70bd9WGs1EFT0.jpg', NULL),
+(396394, 'The Convenient Groom', '2016-06-18', '/images/upcoming/7WYnvYdI2KTeHlpdmdIMbfzv2Hr.jpg', NULL),
+(398356, 'Flower Shop Mystery: Dearly Depotted', '2016-06-26', '/images/upcoming/vEboKhx8iT1bCZTrTXmDfXOuwD9.jpg', NULL),
+(318121, 'The Fundamentals of Caring', '2016-06-24', '/images/upcomingnull', NULL),
+(399635, 'Bruising for Besos', '2016-06-19', '/images/upcoming/wWnPnUCPs6LC6OBBkj5c6NSEhZK.jpg', NULL),
+(393834, 'Goldstone', '2016-06-30', '/images/upcoming/rxo1E9mcNZ2cA5jjf4qTKi6j9vk.jpg', NULL),
+(388617, 'Codename: Sky Harbor', '2016-06-20', '/images/upcoming/w6dYwhTSUtEYuUCyoRyOZPzgNEX.jpg', NULL),
+(396237, 'Seattle Road', '2016-06-24', '/images/upcoming/eZSeeNzYtbtR9jRGQl8NqbtvS6s.jpg', NULL),
+(334533, 'Captain Fantastic', '2016-07-08', '/images/upcoming/1rq4KwIj66RDt5mmO5X4IEtZMcf.jpg', NULL),
+(400841, 'ROH Best in the World 2016', '2016-06-24', '/images/upcoming/o85Jjvp3AGvlQnZjRnyS5eMVGJC.jpg', NULL),
+(400912, 'The Abundance Code', '2016-06-21', '/images/upcomingnull', NULL),
+(399636, 'Retake', '2016-06-21', '/images/upcomingnull', NULL),
+(345924, 'The Night Stalker', '2016-07-01', '/images/upcomingnull', NULL),
+(401234, 'NJPW Dominion 6.19 in Osaka-jo Hall', '2016-06-19', '/images/upcoming/qeXkdJoywj2zFipXs7f3w8jLQqV.jpg', NULL),
+(305642, 'Ithaca', '2016-06-30', '/images/upcomingnull', NULL),
+(399223, 'Bliss!', '2016-06-19', '/images/upcomingnull', NULL),
+(399231, 'The Carer', '2016-06-20', '/images/upcomingnull', NULL),
+(253343, 'Dear Eleanor', '2016-07-05', '/images/upcomingnull', NULL),
+(380372, 'The Asylum', '2016-07-04', '/images/upcoming/g82txwO7LF6fojeDT4D7DzmRtZM.jpg', NULL),
+(396395, 'The Wedding March', '2016-06-25', '/images/upcomingnull', NULL),
+(277848, 'Anaganaga Oka Ashokavanam', '2016-06-25', '/images/upcomingnull', NULL),
+(387396, 'Shark Exorcist', '2016-06-24', '/images/upcoming/hz46a728jVXyBSfPkbsm58qCnK4.jpg', NULL),
+(353415, 'Wagah', '2016-07-08', '/images/upcoming/oGFKUbsTLJD7lCgvOl65PmlhDvI.jpg', NULL),
+(398359, 'Gladiator Wars', '2016-07-01', '/images/upcoming/h1IoZCFYbp2NIBQ8WwocYMsXF2t.jpg', NULL),
+(390512, 'The Phenom', '2016-06-24', '/images/upcoming/z14xlAtrseaz7mSAsoWkQDv8oA4.jpg', NULL),
+(399947, 'Quietus', '2016-06-29', '/images/upcoming/yT6rsHYc4FcCeHvUASJMLO6noIT.jpg', NULL),
+(389201, 'A Chinese Odyssey: Part Three', '2016-07-07', '/images/upcoming/a2LoD45jzbKBqA9Cexrt8J6mUrH.jpg', NULL),
+(400885, 'Kako: My Sullen Past', '2016-06-25', '/images/upcoming/hCh7YoT5D2ijnwN2LDnN4x4AWDR.jpg', NULL),
+(400539, 'She Sang of Destruction', '2016-06-29', '/images/upcoming/xRUlza4vWh0BE0mZhLCweIAZXA6.jpg', NULL),
+(397204, 'Six Gun Savior', '2016-07-05', '/images/upcoming/roNmticgzy6IN4K0Z0Ui88EAmw6.jpg', NULL),
+(378441, 'Notes on Blindness', '2016-07-01', '/images/upcoming/tm1zNtI27tgYfNHKlIXH2knbEgN.jpg', NULL),
+(401442, 'Internet Famous', '2016-06-21', '/images/upcomingnull', NULL),
+(401444, 'Rising Tides', '2016-06-21', '/images/upcomingnull', NULL),
+(387889, 'Buddymoon', '2016-07-01', '/images/upcoming/lZ23HmZRNymJCheWZ72PBxjTmub.jpg', NULL),
+(380808, 'Zero Days', '2016-07-08', '/images/upcoming/sCTIo9rLdphNPFAJQcdNhbO2jAd.jpg', NULL),
+(278390, 'Keeravani', '2016-07-02', '/images/upcomingnull', NULL),
+(399218, 'Whisky Galore', '2016-06-26', '/images/upcomingnull', NULL),
+(401408, 'Leslie Caron: The Reluctant Star', '2016-06-28', '/images/upcomingnull', NULL),
+(398891, 'My Bakery in Brooklyn', '2016-06-30', '/images/upcoming/76NAKvvLDG4tBdN5hDY8tt08qKk.jpg', NULL),
+(390592, 'Adult Life Skills', '2016-07-08', '/images/upcomingnull', NULL),
+(399126, 'Living on a Razor''s Edge - The Scott Hall Story', '2016-07-05', '/images/upcoming/b3NcWi6lUr9gYIEDWf0OoEszaS9.jpg', NULL),
+(339967, 'Colossal', '2016-07-01', '/images/upcomingnull', NULL),
+(391978, 'Sawaal 700 Crore Dollar Ka', '2016-07-07', '/images/upcoming/hFJpVW0pvgQg4zHfqvBUSn8DC6D.jpg', NULL),
+(391725, 'Abe VR', '2016-06-30', '/images/upcoming/hXIpBBGQ3lDEy6qn8ztG5cfk0wh.jpg', NULL),
+(389694, 'Mr. Rudolpho''s Jubilee', '2016-07-01', '/images/upcomingnull', NULL),
+(400899, 'A Reykjavik Porno', '2016-06-23', '/images/upcoming/rXNiqUYGFE1kRlIsytCjiCXKN1m.jpg', NULL),
+(400901, 'Pale Star', '2016-06-23', '/images/upcoming/ux8s4GoMsa33xn6NswtBIVJsdex.jpg', NULL),
+(391973, 'Dobara Phir Se', '2016-07-07', '/images/upcoming/pv3VA8soqaPmbG2RF3czb0gMK5m.jpg', NULL),
+(400329, 'FirstBorn', '2016-06-19', '/images/upcoming/8YCmpsjAdvUKqgsCIkjpclmAiTf.jpg', NULL),
+(402010, 'Where You''re Meant to Be', '2016-06-17', '/images/upcoming/k11zHCb0O2eSWCUjc4W3mfREfHW.jpg', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admin_user`
+--
+
+DROP TABLE IF EXISTS `admin_user`;
+CREATE TABLE IF NOT EXISTS `admin_user` (
+  `adminUserID` int(11) NOT NULL AUTO_INCREMENT,
+  `adminUserEmail` varchar(30) NOT NULL,
+  `adminUserPassword` varchar(30) NOT NULL,
+  PRIMARY KEY (`adminUserID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -2540,6 +2922,35 @@ INSERT INTO `movietomatoes` (`mtImdbID`, `mtMovieTitle`, `mtAllCritics`, `mtTopC
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `movieuser`
+--
+
+DROP TABLE IF EXISTS `movieuser`;
+CREATE TABLE IF NOT EXISTS `movieuser` (
+  `movieUserId` varchar(36) NOT NULL,
+  `movieUserFirstName` varchar(20) NOT NULL,
+  `movieUserLastName` varchar(20) NOT NULL,
+  `movieUserEmailId` varchar(50) NOT NULL,
+  `movieUserPassword` varchar(100) NOT NULL,
+  PRIMARY KEY (`movieUserId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `movieuser`
+--
+
+INSERT INTO `movieuser` (`movieUserId`, `movieUserFirstName`, `movieUserLastName`, `movieUserEmailId`, `movieUserPassword`) VALUES
+('BJWydLH_', 'Swapnil', 'Kumar', 'swapnil@india.com', '$2a$10$.k.bMXUEMj7oAIYDLoM3gORFQUN2IcOPqLzfvBL4IkjmFKGK6.wle'),
+('BkOvdUHu', 'Swapnil', 'Kumar', 'swapnil1@india.comm', '$2a$10$iOT8Xs3BMthoW8mWRB9IL.e2TmefG0K7/zCc79Ue5wPONcMV.QpdG'),
+('HymC_LB_', 'Swapnil', 'Kumar', 'swapnil2@india.com', '$2a$10$fWmUsq3f7yem6NXH8dqZUeKWQsnNKAH0CxYwAksC4yBa8YM6yGJCi'),
+('rJ0cSjDd', 'Swapnil', 'Kumar', 'swapnil6@india.com', '$2a$10$Pc9TQsbGhaqfwUPpaFCXb.E5MOzoldjquKuPz0tJc3h5lEIzKhycy'),
+('rJe0FLB_', 'Swapnil', 'Kumar', 'swapnil3@india.com', '$2a$10$NlR6hT90dONiqdNbLVtDN.CRl4nTVcj/j3jwB8lTa45eiZWIutn.u'),
+('Sk4G_8HO', 'Swapnil', 'Kumar', 'swapnil@india.comm', '$2a$10$vHY0szEx3nH4zBMJ6PRYLuX/5WBEO7yqkPkCFf4CD0Ct63TRCFwWS'),
+('SylqiIHd', 'Swapnil', 'Kumar', 'swapnil4@india.com', '$2a$10$OyQe0FYKLjHaJohueozMaeodI7nGqb0wDX/gBwjCftFHREL5C875q');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `movie_schedule`
 --
 
@@ -2549,40 +2960,10 @@ CREATE TABLE IF NOT EXISTS `movie_schedule` (
   `movieImdbID` varchar(10) NOT NULL,
   `movieTypeID` int(11) DEFAULT NULL,
   `movieShowDate` date NOT NULL,
-  `movieStartTime` varchar(10) NOT NULL,
-  `movieEndTime` varchar(10) NOT NULL,
+  `movieStartTime` time(6) NOT NULL,
+  `movieEndTime` time(6) NOT NULL,
   PRIMARY KEY (`scheduleID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `movie_screen`
---
-
-DROP TABLE IF EXISTS `movie_screen`;
-CREATE TABLE IF NOT EXISTS `movie_screen` (
-  `movieScreenID` int(20) NOT NULL AUTO_INCREMENT,
-  `screenName` varchar(10) NOT NULL,
-  `noOfSeats` int(10) NOT NULL,
-  PRIMARY KEY (`movieScreenID`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `movie_screen`
---
-
-INSERT INTO `movie_screen` (`movieScreenID`, `screenName`, `noOfSeats`) VALUES
-(1, '1', 100),
-(2, '2', 100),
-(3, '3', 100),
-(4, '4', 100),
-(5, '5', 100),
-(6, '6', 100),
-(7, '7', 100),
-(8, '8', 100),
-(9, '9', 100),
-(10, '10', 100);
 
 -- --------------------------------------------------------
 
