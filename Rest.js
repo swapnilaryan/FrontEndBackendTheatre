@@ -945,24 +945,209 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
     /******************************login logout***********************************/
 
     /******************************Admin Panel************************************/
-    router.get("/db/setting/site_config", function(req, res){
-        pool.getConnection(function(err,connection){
-            if(err){
-                console.log("Error happened :- ",err);
-                res.json(err);
-            }else{
-                connection.query("SELECT * from ?? where ?? = 'userID_1'",
-                    ["siteconfiguration","siteAdminID"],function(err, rows){
-                        console.log("Something happening");
-                        if(err){
-                            res.json({ Error: 'here line proof of concept An error occured'+err });
-                        }else{
-                            res.json(rows);
-                        }
-                    });
-            }
-            connection.release();
-        });
+    /*Admin Setting :- Site Configuration*/
+    // GET and UPDATE site_config
+    router.get("/db/admin/setting/site_config", function(req, res){
+      pool.getConnection(function(err,connection){
+        if(err){
+          console.log("Error happened :- ",err);
+          res.json(err);
+        }else{
+          connection.query("SELECT * from ?? where ?? = 'userID_1'",
+            ["admin_site_configuration","siteAdminID"],function(err, rows){
+              console.log("Something happening");
+              if(err){
+                res.json({ Error: 'here line proof of concept An error occured'+err });
+              }else{
+                res.json(rows);
+              }
+            });
+        }
+        connection.release();
+      });
+    });
+    router.put("/db/admin/setting/site_config", function(req, res){
+      pool.getConnection(function(err,connection){
+        if(err){
+          console.log("Error happened :- ",err);
+          res.json(err);
+        }else{
+          connection.query("UPDATE ?? SET siteAdminID=?, theatreName=?, theatreURL=?, siteTimeZone=?, day=?, openTime=?, closeTime=? where ?? = 'userID_1'",
+            ["admin_site_configuration",req.body.siteAdminID, req.body.theatreName, req.body.theatreURL,req.body.siteTimeZone,req.body.day,req.body.openTime, req.body.closeTime, "siteAdminID"],function(err, rows){
+              console.log("Something happening");
+              if(err){
+                res.json({ Error: 'here line proof of concept An error occured'+err });
+              }else{
+                res.json(rows);
+              }
+            });
+        }
+        connection.release();
+      });
+    });
+
+    /*Admin Setting :- Contact Settings*/
+    // GET and UPDATE settings/contact-settings
+    router.get("/db/admin/setting/contact-setting", function(req, res){
+      pool.getConnection(function(err,connection){
+        if(err){
+          console.log("Error happened :- ",err);
+          res.json(err);
+        }else{
+          connection.query("SELECT * FROM ??",
+            ["admin_setting_contact"],function(err, rows){
+              console.log("Something happening");
+              if(err){
+                res.json({ Error: 'here line proof of concept An error occurred'+err });
+              }else{
+                res.json(rows);
+              }
+            });
+        }
+        connection.release();
+      });
+    });
+    router.put("/db/admin/setting/contact-setting", function(req, res){
+      pool.getConnection(function(err,connection){
+        if(err){
+          console.log("Error happened :- ",err);
+          res.json(err);
+        }else{
+          connection.query("UPDATE ?? SET contactName=?, contactEmail=?, contactPhone=?",
+            ["admin_setting_contact",req.body.contactName, req.body.contactEmail, req.body.contactPhone],function(err, rows){
+              console.log("Something happening");
+              if(err){
+                res.json({ Error: 'here line proof of concept An error occured'+err });
+              }else{
+                res.json(rows);
+              }
+            });
+        }
+        connection.release();
+      });
+    });
+
+    /*Admin Setting :- Location Settings*/
+    // GET and UPDATE settings/location-settings
+    router.get("/db/admin/setting/location-setting", function(req, res){
+      pool.getConnection(function(err,connection){
+        if(err){
+          console.log("Error happened :- ",err);
+          res.json(err);
+        }else{
+          connection.query("SELECT * FROM ??",
+            ["admin_setting_location"],function(err, rows){
+              console.log("Something happening");
+              if(err){
+                res.json({ Error: 'here line proof of concept An error occurred'+err });
+              }else{
+                res.json(rows);
+              }
+            });
+        }
+        connection.release();
+      });
+    });
+    router.put("/db/admin/setting/location-setting", function(req, res){
+      pool.getConnection(function(err,connection){
+        if(err){
+          console.log("Error happened :- ",err);
+          res.json(err);
+        }else{
+          connection.query("UPDATE ?? SET locationTheatreName=?, locationPhysicalAddress=?, locationMailingAddress=?",
+            ["admin_setting_location",req.body.locationTheatreName, req.body.locationPhysicalAddress, req.body.locationMailingAddress],function(err, rows){
+              console.log("Something happening");
+              if(err){
+                res.json({ Error: 'here line proof of concept An error occured'+err });
+              }else{
+                res.json(rows);
+              }
+            });
+        }
+        connection.release();
+      });
+    });
+
+    /*Admin Setting :- Social Settings*/
+    // GET and UPDATE settings/social-settings
+    router.get("/db/admin/setting/social-setting", function(req, res){
+      pool.getConnection(function(err,connection){
+        if(err){
+          console.log("Error happened :- ",err);
+          res.json(err);
+        }else{
+          connection.query("SELECT * FROM ??",
+            ["admin_setting_social"],function(err, rows){
+              console.log("Something happening");
+              if(err){
+                res.json({ Error: 'here line proof of concept An error occurred'+err });
+              }else{
+                res.json(rows);
+              }
+            });
+        }
+        connection.release();
+      });
+    });
+    router.put("/db/admin/setting/social-setting", function(req, res){
+      pool.getConnection(function(err,connection){
+        if(err){
+          console.log("Error happened :- ",err);
+          res.json(err);
+        }else{
+          connection.query("UPDATE ?? SET socialFacebook=?, socialTwitter=?",
+            ["admin_setting_social",req.body.socialFacebook, req.body.socialTwitter],function(err, rows){
+              console.log("Something happening");
+              if(err){
+                res.json({ Error: 'here line proof of concept An error occured'+err });
+              }else{
+                res.json(rows);
+              }
+            });
+        }
+        connection.release();
+      });
+    });
+
+    /*Admin Setting :- Screen Settings*/
+    // GET and UPDATE settings/screen-settings
+    router.get("/db/admin/setting/screen-setting", function(req, res){
+      pool.getConnection(function(err,connection){
+        if(err){
+          console.log("Error happened :- ",err);
+          res.json(err);
+        }else{
+          connection.query("SELECT * FROM ??",
+            ["admin_setting_screen"],function(err, rows){
+              console.log("Something happening");
+              if(err){
+                res.json({ Error: 'here line proof of concept An error occurred'+err });
+              }else{
+                res.json(rows);
+              }
+            });
+        }
+        connection.release();
+      });
+    });
+    router.put("/db/admin/setting/screen-setting", function(req, res){
+      pool.getConnection(function(err,connection){
+        if(err){
+          console.log("Error happened :- ",err);
+          res.json(err);
+        }else{
+          connection.query("UPDATE ?? SET screenName=?, screenType=?, noOfSeats=? where ??=?",
+            ["admin_setting_screen",req.body.screenName, req.body.screenType, req.body.noOfSeats, "screenName", req.body.screenName],function(err, rows){
+              console.log("Something happening");
+              if(err){
+                res.json({ Error: 'here line proof of concept An error occured'+err });
+              }else{
+                res.json(rows);
+              }
+            });
+        }
+        connection.release();
+      });
     });
     /****************************End Admin Panel**********************************/
 
