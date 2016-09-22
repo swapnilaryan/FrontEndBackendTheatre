@@ -1149,6 +1149,47 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
         connection.release();
       });
     });
+
+    /*Admin Setting :- Ticket Settings*/
+    // GET and UPDATE settings/ticket-settings
+    router.get("/db/admin/setting/ticket-setting", function(req, res){
+      pool.getConnection(function(err,connection){
+        if(err){
+          console.log("Error happened :- ",err);
+          res.json(err);
+        }else{
+          connection.query("SELECT * FROM ??",
+            ["admin_setting_ticket"],function(err, rows){
+              console.log("Something happening");
+              if(err){
+                res.json({ Error: 'here line proof of concept An error occurred'+err });
+              }else{
+                res.json(rows);
+              }
+            });
+        }
+        connection.release();
+      });
+    });
+    router.put("/db/admin/setting/ticket-setting", function(req, res){
+      pool.getConnection(function(err,connection){
+        if(err){
+          console.log("Error happened :- ",err);
+          res.json(err);
+        }else{
+          connection.query("UPDATE ?? SET ticketName=?, ticketType=?, ticketPrice=?, ticketGroup=?, ticketDay=? where ??=?",
+            ["admin_setting_ticket",req.body.ticketName, req.body.ticketType, req.body.ticketPrice, req.body.ticketGroup, req.body.ticketDay, "ticketID", req.body.ticketID],function(err, rows){
+              console.log("Something happening");
+              if(err){
+                res.json({ Error: 'here line proof of concept An error occured'+err });
+              }else{
+                res.json(rows);
+              }
+            });
+        }
+        connection.release();
+      });
+    });
     /****************************End Admin Panel**********************************/
 
 };
