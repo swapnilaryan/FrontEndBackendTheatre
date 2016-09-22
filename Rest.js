@@ -945,6 +945,69 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
     /******************************login logout***********************************/
 
     /******************************Admin Panel************************************/
+    /*Admin Setting :- Admin User*/
+    // GET and POST Admin User
+    router.post("/db/admin/register-admin",function (req, res){
+    // Step 1: Check if user already exists
+    console.log(req.body);
+    var userExists = 0;
+    var query = 'SELECT COUNT(*) as UserExists FROM ?? WHERE adminUserEmail = ?';
+    var table = ["admin_user",(req.body.adminUserEmail).toLowerCase()];
+    query = mysql.format(query,table);
+    pool.getConnection(function(err,connection){
+      if(err){
+        console.log("Error happened :- ",err);
+        res.json({"Message":"Error occurred", "Status":"Fail"});
+        //self.connectMysql();
+      }else {
+        connection.query(query, function (err, rows) {
+          if (err) {
+            res.json({"Error":"Error Occurred", "Status":"Fail"});
+            console.log("====Here line 114 Error", err);
+          } else {
+            userExists = rows[0].UserExists;
+            if(userExists == 0){
+              var passwords_match = false;
+              var salt = bcrypt.genSaltSync(10);
+              var hashPassword = bcrypt.hashSync(req.body.password, salt);
+              req.body.adminUserID = shortid.generate();
+              req.body.password = hashPassword;
+              passwords_match = bcrypt.compareSync(req.body.confirm_password, hashPassword);
+              if(passwords_match == false){
+                res.json({"Message":"Passwords don't match", "Status":"Fail"});
+              }else{
+                query = "INSERT INTO ??(??,??,??,??) VALUES (?,?,?,?)";
+                table = ["admin_user","adminUserID", "adminUserName","adminUserEmail","adminUserPassword",
+                  req.body.adminUserID, req.body.adminUserName, (req.body.adminUserEmail).toLowerCase(), req.body.password];
+                query = mysql.format(query,table);
+                pool.getConnection(function(err,connection){
+                  if(err){
+                    console.log("Error happened :- ",err);
+                    res.json({"Message":"Error occured", "Status":"Fail"});
+                  }else {
+                    connection.query(query, function (err, rows) {
+                      if (err) {
+                        console.log("Here line 114 Error", err);
+                      } else {
+                        res.json({"Message":"User created Successfully", "Details":sess, "Status":"Success"});
+                        console.log("Success");
+                      }
+                    });
+                  }
+                  connection.release();
+                });
+              }
+            }
+            else{
+              res.json({"Error":"User "+(req.body.emailId).toLowerCase()+" already exists please login to continue", "Status":"Fail"});
+            }
+          }
+        });
+      }
+      connection.release();
+    });
+  });
+
     /*Admin Setting :- Site Configuration*/
     // GET and UPDATE site_config
     router.get("/db/admin/setting/site_config", function(req, res){
