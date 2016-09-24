@@ -1053,6 +1053,34 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
       });
     }
   });
+
+    /*Admin Setting :- Movies - Upcoming Movies*/
+    // Elastic Search when admin types for a movie name
+    router.get("/db/admin/search-upcoming-movies/:movie_name", function (req,res){
+      /*Searching from Database*/
+      var query = "SELECT * FROM ?? WHERE ?? LIKE ?";
+      var like_cond = "'%"+req.params.movie_name+"%'";
+      console.log(like_cond);
+      var table = ["admin_upcomingmovies","upMovieName","%"+req.params.movie_name+"%"];
+      query = mysql.format(query,table);
+      pool.getConnection(function(err,connection){
+        if(err){
+          console.log("Error happened :- ",err);
+          res.json(err);
+        }else {
+          connection.query(query, function (err, rows) {
+            if (err) {
+              console.log("Here line 114 Error", err);
+            } else {
+              res.json(rows);
+              console.log("Success");
+            }
+          });
+        }
+        connection.release();
+      });
+      /*End searching*/
+    });
     /*Admin Setting :- Site Configuration*/
     // GET and UPDATE site_config
     router.get("/db/admin/setting/site_config", function(req, res){
