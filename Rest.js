@@ -16,9 +16,6 @@ var conn="";
 var pool="";
 var sess;
 function REST_ROUTER(router,connection,pool) {
-
-
-
     var self = this;
     conn = connection;
     console.log("this pool", this.pool);
@@ -90,7 +87,6 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
             else{
                 console.log("All Upcoming Movies Fetched");
                 async.eachSeries(totPage, function(item, callback) {
-
                     // Perform operation on file here.
                     var url = "http://api.themoviedb.org/3/movie/upcoming?api_key="+apiKey+"&page=" + item + "&language=en";
                     reqPro(url).then(function(response){
@@ -108,7 +104,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                                 "page":""
                             };
                             if(JSON.parse(response).results[i].original_language=='en'){
-                                async.series([
+                                /*async.series([
                                     function(callback){
                                     // do some stuff ...
                                         var date = new Date();
@@ -127,7 +123,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                                 ],
                                 function(err, results){
                                     // results is now equal to ['one', 'two']
-                                });
+                                });*/
                                 upC["id"] = JSON.parse(response).results[i].id;
                                 upC["page"] = JSON.parse(response).page;
                                 upC["title"] = JSON.parse(response).results[i].title;
@@ -148,12 +144,8 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                                     if(err){
                                         console.log("Error happened :- ",err);
                                         res.json(err);
-                                        //self.connectMysql();
                                     }else {
                                         connection.query(query, function (err, rows) {
-                                            //if(pool._freeConnections.indexOf(conn) == -1){
-                                            //    conn.release();
-                                            //}
                                             if (err) {
                                                 console.log("Here line 114 Error", err);
                                             } else {
@@ -201,20 +193,19 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                         callback();
                     });
                 }, function(err){
-                    // if any of the file processing produced an error, err would equal that error
+                    // if any of the file  processing produced an error, err would equal that error
                     if( err ) {
                         // One of the iterations produced an error.
                         // All processing will now stop.
                         console.log('A file failed to process',err);
                     } else {
-                        console.log('All files have been processed successfully');
+                        console.log('All files have been processed successfully *****', totPage);
                         res.json(ret);
                     }
                 });
             }
         });
     });
-
     router.get("/rt/:movie_name", function (req,res) {
         var rc = new RottenCrawler();
         rc.getMovieInfo()
@@ -946,7 +937,8 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
 
     /******************************Admin Panel************************************/
     /*Admin Setting :- Admin User*/
-    // GET and POST Admin User
+    // GET and POST Admin User Login and Registration
+    // 1. Registration
     router.post("/db/admin/register-admin",function (req, res){
     // Step 1: Check if user already exists
     console.log(req.body);
@@ -999,7 +991,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
               }
             }
             else{
-              res.json({"Error":"User "+(req.body.emailId).toLowerCase()+" already exists please login to continue", "Status":"Fail"});
+              res.json({"Error":"User "+(req.body.adminUserEmail).toLowerCase()+" already exists please login to continue", "Status":"Fail"});
             }
           }
         });
@@ -1007,7 +999,60 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
       connection.release();
     });
   });
+    // 2. Admin Login
+    router.post("/db/admin/login-admin", function (req, res){
+    var matchPassword;
+    sess=req.session;
+    sess.email=req.body.adminUserEmail;
+    sess.password=req.body.password;
+    // Fetch the details from the db of given email
+    var query = 'SELECT * FROM ?? WHERE adminUserEmail = ?';
+    var table = ["admin_user",(req.body.adminUserEmail).toLowerCase()];
+    query = mysql.format(query,table);
+    pool.getConnection(function(err,connection){
+      if(err){
+        console.log("Error happened :- ",err);
+        res.json({"Message":'Error occured'+err, "Status":"Fail"});
+        //self.connectMysql();
+      }else {
+        connection.query(query, function (err, rows) {
+          if (err) {
+            console.log("Here line 114 Error", err);
+          } else {
+            if(rows.length>0){
+              matchPassword = rows[0].adminUserPassword;
+              var isMatch = bcrypt.compareSync(sess.password, matchPassword);
+              if(isMatch){
+                res.json({"Message":"Logged in Successfully","Details":sess, "Status":"Success"});
+              }else{
+                res.json({"Message":"Wrong Password", "Status":"Fail"});
+              }
+              console.log("Success");
+            }else {
+              res.json({"Message":"No such email "+req.body.emailId+". Please SignUp to continue", "Status":"Fail"});
+            }
 
+          }
+        });
+      }
+      connection.release();
+    });
+  });
+    // 3. Admin Logout
+    router.get("/db/admin/logout-admin", function (req, res){
+    req.session = sess;
+    if(sess == undefined){
+      res.json({"Message":"No user is logged in.","status":"Fail"});
+    }else {
+      req.session.destroy(function(err){
+        if(err){
+          res.json({"Error":err});
+        }else {
+          res.json({"Message":"Successfully "+sess.email+" logged out"});
+        }
+      });
+    }
+  });
     /*Admin Setting :- Site Configuration*/
     // GET and UPDATE site_config
     router.get("/db/admin/setting/site_config", function(req, res){
