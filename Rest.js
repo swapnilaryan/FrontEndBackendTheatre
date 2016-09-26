@@ -530,7 +530,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
         });
     });
 
-    //4. Get all from upcomingmovies for upcoming
+    //4. Get all from upcoming movies for upcoming
     router.get("/db/upcoming", function (req,res) {
         pool.getConnection(function(err,connection){
             if(err){
@@ -1081,9 +1081,31 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
       });
       /*End searching*/
     });
+    // Check the movies which are added by the admin.
+    router.put("/db/admin/add-upcoming-movies/:movie_id", function (req, res){
+      var query = "UPDATE ?? SET ?? = ? WHERE ??=?";
+      var table = ["admin_upcomingmovies","upAddByAdmin",1,"upMovieId", req.params.movie_id];
+      query = mysql.format(query,table);
+      pool.getConnection(function(err,connection){
+        if(err){
+          console.log("Error happened :- ",err);
+          res.json(err);
+        }else {
+          connection.query(query, function (err, rows) {
+            if (err) {
+              console.log("Here line 114 Error", err);
+            } else {
+              res.json(rows);
+              console.log("Success");
+            }
+          });
+        }
+        connection.release();
+      });
+    });
     /*Admin Setting :- Site Configuration*/
     // GET and UPDATE site_config
-    router.get("/db/admin/setting/site_config", function(req, res){
+    router.get("/db/admin/setting/site-config", function(req, res){
       pool.getConnection(function(err,connection){
         if(err){
           console.log("Error happened :- ",err);
@@ -1102,7 +1124,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
         connection.release();
       });
     });
-    router.put("/db/admin/setting/site_config", function(req, res){
+    router.put("/db/admin/setting/site-config", function(req, res){
       pool.getConnection(function(err,connection){
         if(err){
           console.log("Error happened :- ",err);
