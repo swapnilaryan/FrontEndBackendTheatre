@@ -1053,7 +1053,82 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
       });
     }
   });
-
+    // 4. Get Admin User Details
+    router.get("/db/admin/get-admin-user", function (req, res){
+    var matchPassword;
+    req.session = sess;
+    // Fetch the details from the db of given email
+    var query = 'SELECT * FROM ?? WHERE adminUserEmail = ?';
+    var table = ["admin_user",(req.session.email).toLowerCase()];
+    query = mysql.format(query,table);
+    pool.getConnection(function(err,connection){
+      if(err){
+        console.log("Error happened :- ",err);
+        res.json({"Message":'Error occured'+err, "Status":"Fail"});
+        //self.connectMysql();
+      }else {
+        connection.query(query, function (err, rows) {
+          if (err) {
+            console.log("Here line 114 Error", err);
+          } else {
+            if(rows.length>0){
+              matchPassword = rows[0].adminUserPassword;
+              var isMatch = bcrypt.compareSync(sess.password, matchPassword);
+              if(isMatch){
+                res.json({"Message":rows[0], "Status":"Success"});
+              }else{
+                res.json({"Message":"Passwords do not match. Please login to continue", "Status":"Fail"});
+              }
+              console.log("Success");
+            }else {
+              res.json({"Message":"No such email "+req.session.email+". Please SignUp to continue", "Status":"Fail"});
+            }
+          }
+        });
+      }
+      connection.release();
+    });
+  });
+    // 5. Update Admin User Details
+    router.put("/db/admin/update-admin-user",function (req, res){
+      req.session = sess;
+      if(sess == undefined){
+        res.json({"Message":"No user is logged in.","status":"Fail"});
+      }else {
+        var passwords_match = false;
+        var salt = bcrypt.genSaltSync(10);
+        var hashPassword = bcrypt.hashSync(req.body.password, salt);
+        req.body.password = hashPassword;
+        passwords_match = bcrypt.compareSync(req.body.confirm_password, hashPassword);
+        if(passwords_match == false){
+          res.json({"Message":"Passwords don't match", "Status":"Fail"});
+        }else{
+          query = "UPDATE ?? SET ??=?, ??=?, ??=?, ??=? WHERE ??=?";
+          table = ["admin_user","adminUserID",req.body.adminUserID, "adminUserName",req.body.adminUserName,
+            "adminUserEmail",(req.body.adminUserEmail).toLowerCase(), "adminUserPassword", req.body.password,
+            "adminUserEmail",(req.body.adminUserEmail).toLowerCase()];
+          query = mysql.format(query,table);
+          pool.getConnection(function(err,connection){
+            if(err){
+              console.log("Error happened :- ",err);
+              res.json({"Message":"Error occured", "Status":"Fail"});
+            }else {
+              connection.query(query, function (err, rows) {
+                if (err) {
+                  console.log("Here line 114 Error", err);
+                } else {
+                  sess=req.session;
+                  sess.email=req.body.adminUserEmail;
+                  sess.password=req.body.password;
+                  res.json({"Message":"User updated Successfully", "Details":rows[0], "Status":"Success"});
+                }
+              });
+            }
+            connection.release();
+          });
+      }
+    }
+  });
     /*Admin Setting :- Movies - Upcoming Movies*/
     // Elastic Search when admin types for a movie name
     router.get("/db/admin/search-upcoming-movies/:movie_name", function (req,res){
