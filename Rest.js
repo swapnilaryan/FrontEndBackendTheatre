@@ -1205,8 +1205,10 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
           console.log("Error happened :- ",err);
           res.json(err);
         }else{
-          connection.query("UPDATE ?? SET siteAdminID=?, theatreName=?, theatreURL=?, siteTimeZone=?, day=?, openTime=?, closeTime=? where ?? = 'userID_1'",
-            ["admin_site_configuration",req.body.siteAdminID, req.body.theatreName, req.body.theatreURL,req.body.siteTimeZone,req.body.day,req.body.openTime, req.body.closeTime, "siteAdminID"],function(err, rows){
+          connection.query("UPDATE ?? SET siteAdminID=?, theatreName=?, theatreURL=?, siteTimeZone=?, day=?, " +
+            "openTime=?, closeTime=? where ?? = ? and day=?",
+            ["admin_site_configuration",req.body.siteAdminID, req.body.theatreName, req.body.theatreURL,req.body.siteTimeZone,req.body.day,
+              req.body.openTime, req.body.closeTime, "site_config_ID", req.body.site_config_ID, req.body.day,],function(err, rows){
               console.log("Something happening");
               if(err){
                 res.json({ Error: 'here line proof of concept An error occured'+err });
@@ -1233,7 +1235,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
               if(err){
                 res.json({ Error: 'here line proof of concept An error occurred'+err });
               }else{
-                res.json(rows);
+                res.json(rows[0]);
               }
             });
         }
@@ -1246,13 +1248,22 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
           console.log("Error happened :- ",err);
           res.json(err);
         }else{
-          connection.query("UPDATE ?? SET contactName=?, contactEmail=?, contactPhone=?",
-            ["admin_setting_contact",req.body.contactName, req.body.contactEmail, req.body.contactPhone],function(err, rows){
+          connection.query("UPDATE ?? SET contactName=?, contactEmail=?, contactPhone=? WHERE ??=?",
+            ["admin_setting_contact",req.body.contactName, req.body.contactEmail, req.body.contactPhone, "contactID",
+              req.body.contactID],function(err, rows){
               console.log("Something happening");
               if(err){
                 res.json({ Error: 'here line proof of concept An error occured'+err });
               }else{
-                res.json(rows);
+                connection.query("SELECT * FROM ??",
+                  ["admin_setting_contact"],function(err, rows){
+                    console.log("Something happening");
+                    if(err){
+                      res.json({ Error: 'here line proof of concept An error occurred'+err });
+                    }else{
+                      res.json(rows[0]);
+                    }
+                  });
               }
             });
         }
@@ -1274,7 +1285,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
               if(err){
                 res.json({ Error: 'here line proof of concept An error occurred'+err });
               }else{
-                res.json(rows);
+                res.json(rows[0]);
               }
             });
         }
@@ -1287,13 +1298,23 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
           console.log("Error happened :- ",err);
           res.json(err);
         }else{
-          connection.query("UPDATE ?? SET locationTheatreName=?, locationPhysicalAddress=?, locationMailingAddress=?",
-            ["admin_setting_location",req.body.locationTheatreName, req.body.locationPhysicalAddress, req.body.locationMailingAddress],function(err, rows){
+          connection.query("UPDATE ?? SET locationTheatreName=?, locationPhysicalAddress=?, locationMailingAddress=? WHERE ??=?",
+            ["admin_setting_location",req.body.locationTheatreName, req.body.locationPhysicalAddress, req.body.locationMailingAddress,
+            "locationID", req.body.locationID],function(err, rows){
               console.log("Something happening");
               if(err){
                 res.json({ Error: 'here line proof of concept An error occured'+err });
               }else{
-                res.json(rows);
+                // res.json(rows);
+                connection.query("SELECT * FROM ??",
+                  ["admin_setting_location"],function(err, rows){
+                    console.log("Something happening");
+                    if(err){
+                      res.json({ Error: 'here line proof of concept An error occurred'+err });
+                    }else{
+                      res.json(rows[0]);
+                    }
+                  });
               }
             });
         }
@@ -1315,7 +1336,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
               if(err){
                 res.json({ Error: 'here line proof of concept An error occurred'+err });
               }else{
-                res.json(rows);
+                res.json(rows[0]);
               }
             });
         }
@@ -1328,13 +1349,22 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
           console.log("Error happened :- ",err);
           res.json(err);
         }else{
-          connection.query("UPDATE ?? SET socialFacebook=?, socialTwitter=?",
-            ["admin_setting_social",req.body.socialFacebook, req.body.socialTwitter],function(err, rows){
+          connection.query("UPDATE ?? SET socialFacebook=?, socialTwitter=? WHERE ??=?",
+            ["admin_setting_social",req.body.socialFacebook, req.body.socialTwitter, "socialID", req.body.socialID],function(err, rows){
               console.log("Something happening");
               if(err){
                 res.json({ Error: 'here line proof of concept An error occured'+err });
               }else{
-                res.json(rows);
+                connection.query("SELECT * FROM ??",
+                  ["admin_setting_social"],function(err, rows){
+                    console.log("Something happening");
+                    if(err){
+                      res.json({ Error: 'here line proof of concept An error occurred'+err });
+                    }else{
+                      res.json(rows[0]);
+                    }
+                  });
+                // res.json(rows);
               }
             });
         }
@@ -1343,7 +1373,37 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
     });
 
     /*Admin Setting :- Screen Settings*/
-    // GET and UPDATE settings/screen-settings
+    // POST, GET and UPDATE settings/screen-settings
+    router.post("/db/admin/setting/screen-setting", function(req, res){
+      pool.getConnection(function(err,connection){
+        if(err){
+          console.log("Error happened :- ",err);
+          res.json(err);
+        }else{
+          connection.query("INSERT INTO ?? (??, ??, ??) " +
+            "VALUES (?, ?, ?)",
+            ["admin_setting_screen","screenName","screenType","noOfSeats",
+              req.body.screenName, req.body.screenType, req.body.noOfSeats],function(err, rows){
+              console.log("Something happening");
+              if(err){
+                res.json({ Error: 'here line proof of concept An error occurred'+err });
+              }else{
+                connection.query("SELECT * FROM ??",
+                  ["admin_setting_screen"],function(err, rows){
+                    console.log("Something happening");
+                    if(err){
+                      res.json({ Error: 'here line proof of concept An error occurred'+err });
+                    }else{
+                      res.json(rows);
+                    }
+                  });
+                // res.json(rows);
+              }
+            });
+        }
+        connection.release();
+      });
+    });
     router.get("/db/admin/setting/screen-setting", function(req, res){
       pool.getConnection(function(err,connection){
         if(err){
@@ -1375,7 +1435,16 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
               if(err){
                 res.json({ Error: 'here line proof of concept An error occured'+err });
               }else{
-                res.json(rows);
+                connection.query("SELECT * FROM ??",
+                  ["admin_setting_screen"],function(err, rows){
+                    console.log("Something happening");
+                    if(err){
+                      res.json({ Error: 'here line proof of concept An error occurred'+err });
+                    }else{
+                      res.json(rows);
+                    }
+                  });
+                // res.json(rows);
               }
             });
         }
@@ -1391,13 +1460,43 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
           console.log("Error happened :- ",err);
           res.json(err);
         }else{
-          connection.query("SELECT * FROM ??",
-            ["admin_setting_ticket"],function(err, rows){
+          connection.query("SELECT  a.*  FROM ?? a JOIN ?? b " +
+            "ON a.ticketType = b.ticketType " +
+            "WHERE a.ticketDay=b.ticketDay " +
+            "GROUP BY a.ticketID",
+            ["admin_setting_ticket", "admin_setting_ticket"],function(err, rows){
               console.log("Something happening");
               if(err){
                 res.json({ Error: 'here line proof of concept An error occurred'+err });
               }else{
-                res.json(rows);
+                var structAppend = [];
+                for(var i=0;i<=rows.length-5;i++){
+                  var struct ={
+                    day:rows[i].ticketDay,
+                    ticketDetails:[{
+                      ticketGroup:rows[i].ticketGroup,
+                      ticketName:rows[i].ticketName,
+                      ticketPrice2D:rows[i].ticketPrice,
+                      ticketPrice3D:rows[++i].ticketPrice
+                    },
+                      {
+                        ticketGroup:rows[++i].ticketGroup,
+                        ticketName:rows[i].ticketName,
+                        ticketPrice2D:rows[i].ticketPrice,
+                        ticketPrice3D:rows[++i].ticketPrice
+                      },
+                      {
+                        ticketGroup:rows[++i].ticketGroup,
+                        ticketName:rows[i].ticketName,
+                        ticketPrice2D:rows[i].ticketPrice,
+                        ticketPrice3D:rows[++i].ticketPrice
+                      }
+                    ]
+                  };
+                  structAppend.push(struct);
+                }
+                // res.json(rows);
+                res.json(structAppend);
               }
             });
         }
@@ -1410,13 +1509,55 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
           console.log("Error happened :- ",err);
           res.json(err);
         }else{
-          connection.query("UPDATE ?? SET ticketName=?, ticketType=?, ticketPrice=?, ticketGroup=?, ticketDay=? where ??=?",
-            ["admin_setting_ticket",req.body.ticketName, req.body.ticketType, req.body.ticketPrice, req.body.ticketGroup, req.body.ticketDay, "ticketID", req.body.ticketID],function(err, rows){
+          connection.query("UPDATE ?? SET ticketName=?, ticketType=?, ticketPrice=?, ticketGroup=?, ticketDay=? " +
+            "where ??=? AND ??=? AND ??=?",
+            ["admin_setting_ticket",req.body.ticketName, req.body.ticketType, req.body.ticketPrice, req.body.ticketGroup,
+              req.body.ticketDay, "ticketGroup",req.body.ticketGroup,"ticketType",req.body.ticketType,"ticketDay",req.body.ticketDay],
+            function(err, rows){
               console.log("Something happening");
               if(err){
                 res.json({ Error: 'here line proof of concept An error occured'+err });
               }else{
-                res.json(rows);
+                // res.json(rows);
+                connection.query("SELECT  a.*  FROM ?? a JOIN ?? b " +
+                  "ON a.ticketType = b.ticketType " +
+                  "WHERE a.ticketDay=b.ticketDay " +
+                  "GROUP BY a.ticketID",
+                  ["admin_setting_ticket", "admin_setting_ticket"],function(err, rows){
+                    console.log("Something happening");
+                    if(err){
+                      res.json({ Error: 'here line proof of concept An error occurred'+err });
+                    }else{
+                      var structAppend = [];
+                      for(var i=0;i<=rows.length-5;i++){
+                        var struct ={
+                          day:rows[i].ticketDay,
+                          ticketDetails:[{
+                            ticketGroup:rows[i].ticketGroup,
+                            ticketName:rows[i].ticketName,
+                            ticketPrice2D:rows[i].ticketPrice,
+                            ticketPrice3D:rows[++i].ticketPrice
+                          },
+                            {
+                              ticketGroup:rows[++i].ticketGroup,
+                              ticketName:rows[i].ticketName,
+                              ticketPrice2D:rows[i].ticketPrice,
+                              ticketPrice3D:rows[++i].ticketPrice
+                            },
+                            {
+                              ticketGroup:rows[++i].ticketGroup,
+                              ticketName:rows[i].ticketName,
+                              ticketPrice2D:rows[i].ticketPrice,
+                              ticketPrice3D:rows[++i].ticketPrice
+                            }
+                          ]
+                        };
+                        structAppend.push(struct);
+                      }
+                      // res.json(rows);
+                      res.json(structAppend);
+                    }
+                  });
               }
             });
         }
