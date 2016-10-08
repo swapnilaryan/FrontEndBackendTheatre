@@ -1133,9 +1133,9 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
     // Elastic Search when admin types for a movie name
     router.get("/db/admin/search-upcoming-movies/:movie_name", function (req,res){
       /*Searching from Database*/
-      var query = "SELECT * FROM ?? WHERE ?? LIKE ?";
-      var like_cond = "'%"+req.params.movie_name+"%'";
-      console.log(like_cond);
+      // for time being using this
+      var query = "SELECT * FROM ?? WHERE ?? LIKE ? AND  `upReleaseDate` BETWEEN (CURDATE()) AND (DATE_SUB( CURDATE() ,INTERVAL -20 DAY))";
+      //var query = "SELECT * FROM ?? WHERE ?? LIKE ? AND ";
       var table = ["admin_upcomingmovies","upMovieName","%"+req.params.movie_name+"%"];
       query = mysql.format(query,table);
       pool.getConnection(function(err,connection){
