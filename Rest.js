@@ -1130,11 +1130,63 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
     }
   });
     /*Admin Setting :- Movies - Upcoming Movies*/
+    // Get quick recommendations
+    router.get("/db/admin/recommended-upcoming-movies", function (req,res){
+    /*Searching from Database*/
+    // for time being using this..
+    var query = "SELECT * FROM ?? WHERE ??=0 AND `upReleaseDate` BETWEEN (CURDATE()) AND (DATE_SUB( CURDATE() ,INTERVAL -20 DAY))";
+    //var query = "SELECT * FROM ?? WHERE ?? LIKE ? AND ";
+    var table = ["admin_upcomingmovies","upAddByAdmin"];
+    query = mysql.format(query,table);
+    pool.getConnection(function(err,connection){
+      if(err){
+        console.log("Error happened :- ",err);
+        res.json(err);
+      }else {
+        connection.query(query, function (err, rows) {
+          if (err) {
+            console.log("Here line 114 Error", err);
+          } else {
+            res.json(rows);
+            console.log("Success");
+          }
+        });
+      }
+      connection.release();
+    });
+    /*End searching*/
+  });
+    router.get("/db/admin/added-upcoming-movies", function (req,res){
+    /*Searching from Database*/
+    // for time being using this..
+    var query = "SELECT * FROM ?? WHERE ??=1";
+    //var query = "SELECT * FROM ?? WHERE ?? LIKE ? AND ";
+    var table = ["admin_upcomingmovies","upAddByAdmin"];
+    query = mysql.format(query,table);
+    pool.getConnection(function(err,connection){
+      if(err){
+        console.log("Error happened :- ",err);
+        res.json(err);
+      }else {
+        connection.query(query, function (err, rows) {
+          if (err) {
+            console.log("Here line 114 Error", err);
+          } else {
+            res.json(rows);
+            console.log("Success");
+          }
+        });
+      }
+      connection.release();
+    });
+    /*End searching*/
+  });
+
     // Elastic Search when admin types for a movie name
     router.get("/db/admin/search-upcoming-movies/:movie_name", function (req,res){
       /*Searching from Database*/
       // for time being using this
-      var query = "SELECT * FROM ?? WHERE ?? LIKE ? AND  `upReleaseDate` BETWEEN (CURDATE()) AND (DATE_SUB( CURDATE() ,INTERVAL -20 DAY))";
+      var query = "SELECT * FROM ?? WHERE ?? LIKE ? AND `upReleaseDate` BETWEEN (CURDATE()) AND (DATE_SUB( CURDATE() ,INTERVAL -20 DAY))";
       //var query = "SELECT * FROM ?? WHERE ?? LIKE ? AND ";
       var table = ["admin_upcomingmovies","upMovieName","%"+req.params.movie_name+"%"];
       query = mysql.format(query,table);
