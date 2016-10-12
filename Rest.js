@@ -9,12 +9,13 @@ var apiKey = "2c9306d42037dfb0de0fc3f153819054";
 var fs = require('fs'),
     request = require('request'),
     cheerio = require('cheerio');
-
+var configJson = JSON.parse(fs.readFileSync('config.json', 'utf8'));
 var shortid = require('shortid');
 var bcrypt = require('bcryptjs');
 var conn="";
 var pool="";
 var sess;
+var rottenTomatoesURL="";
 function REST_ROUTER(router,connection,pool) {
     var self = this;
     conn = connection;
@@ -339,10 +340,6 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
             },
             //Now we are ready to save them to database
             function(toBeSaved,callback){
-                //for(var k = 0;k<toBeSaved.credits.cast.length;k++){
-                //    console.log("---",toBeSaved.omdbData);
-                //}
-                /*Beautifying our data*/
 
                 toBeSaved.movieDetails.id = (toBeSaved.movieDetails.id)?toBeSaved.movieDetails.id:"N/A";
                 toBeSaved.movieDetails.imdb_id = (toBeSaved.movieDetails.imdb_id)?toBeSaved.movieDetails.imdb_id:"N/A";
@@ -361,10 +358,10 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                 toBeSaved.omdbData.Plot = (toBeSaved.movieDetails.overview)?toBeSaved.movieDetails.overview:"N/A";
                 toBeSaved.movieDetails.poster_path = (toBeSaved.movieDetails.poster_path)?toBeSaved.movieDetails.poster_path:"N/A";
                 toBeSaved.omdbData.BoxOffice = (toBeSaved.omdbData.BoxOffice)?toBeSaved.omdbData.BoxOffice:"N/A";
-
+                rottenTomatoesURL = toBeSaved.omdbData.tomatoURL;
                 /*End Beautifying data*/
                 /*Adding to Database*/
-                var query = "INSERT INTO movieinfo " +
+                var query = "INSERT INTO admin_movieinfo " +
                     "(infoMovieID, " +
                     "infoImdbID, " +
                     "infoMovieName," +
@@ -1181,7 +1178,6 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
     });
     /*End searching*/
   });
-
     // Elastic Search when admin types for a movie name
     router.get("/db/admin/search-upcoming-movies/:movie_name", function (req,res){
       /*Searching from Database*/
@@ -1222,14 +1218,67 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
             if (err) {
               console.log("Here line 114 Error", err);
             } else {
+              var query = "SELECT * FROM ?? WHERE ??=?";
+              //var query = "SELECT * FROM ?? WHERE ?? LIKE ? AND ";
+              var table = ["admin_upcomingmovies","upMovieId",req.params.movie_id];
+              query = mysql.format(query,table);
+              pool.getConnection(function(err,connection){
+                if(err){
+                  console.log("Error happened :- ",err);
+                  res.json(err);
+                }else {
+                  connection.query(query, function (err, rowws) {
+                    if (err) {
+                      console.log("Here line 114 Error", err);
+                    } else {
+                      console.log("@nd -------------------------------------------------",rowws[0].upMovieName);
+                      reqPro('http://'+configJson.localhost+':'+configJson.sitePort+'/api/the_movie_db/'+rowws[0].upMovieName).then(function(response){
+                        console.log('============================================================================================================================================================================================cron job completed',response);
+                      });
+                      console.log("-*/*/-*/-//*-/-*/-*/-*/*-/-*/-*///////////Success-------------------------------------");
+                    }
+                  });
+                }
+                connection.release();
+              });
               res.json(rows);
-              console.log("Success");
+              // console.log("Success");
             }
           });
         }
         connection.release();
       });
     });
+
+    /*Admin Setting :- Current Movies*/
+    // GET and UPDATE showtime
+    router.get("/db/admin/get-current-movies", function (req,res){
+    /*Searching from Database*/
+    // for time being using this
+    var query = "SELECT * FROM ?? WHERE ??=? AND `upReleaseDate` BETWEEN (CURDATE()) AND (DATE_SUB( CURDATE() ,INTERVAL -20 DAY))";
+    //var query = "SELECT * FROM ?? WHERE ?? LIKE ? AND ";
+    var table = ["admin_upcomingmovies","upAddByAdmin",1];
+    query = mysql.format(query,table);
+    pool.getConnection(function(err,connection){
+      if(err){
+        console.log("Error happened :- ",err);
+        res.json(err);
+      }else {
+        connection.query(query, function (err, rows) {
+          if (err) {
+            console.log("Here line 114 Error", err);
+          } else {
+            res.json(rows);
+            console.log("Success");
+          }
+        });
+      }
+      connection.release();
+    });
+    /*End searching*/
+  });
+
+
     /*Admin Setting :- Site Configuration*/
     // GET and UPDATE site_config
     router.get("/db/admin/setting/site-config", function(req, res){
@@ -1616,6 +1665,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
         connection.release();
       });
     });
+
     /****************************End Admin Panel**********************************/
 
 };
