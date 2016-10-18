@@ -106,7 +106,7 @@ RottenCrawler.prototype.getMovieInfo = function() {
             //console.log(rc.crawlTomato,imdb_id);
             /*Here We will add the tomato data to the database*/
             var query = "INSERT INTO ?? (??, ??, ??, ??, ??, ??, ??) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            var table = [   "movietomatoes",
+            var table = [   "admin_movietomatoes",
                 "mtImdbID", "mtMovieTitle","mtAllCritics","mtTopCritics",
                 "mtAudienceScore","mtMovieDescription","mtGenre",
                 imdb_id,rc.crawlTomato["movieTitle"],JSON.stringify(rc.crawlTomato["allCritics"]),
