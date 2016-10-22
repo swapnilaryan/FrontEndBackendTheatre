@@ -229,6 +229,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
         var crawlTomatoData = "";
         async.series([
             function(callback){
+              // callback();
                 rc.theMovieDB()
                     .then(function() {
                         //console.log(rc.movieResponse["movieInfo"]);
@@ -241,6 +242,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
             },
             function(callback){
                 var rc = new RottenCrawler(tomatoURL);
+              // callback();
                 rc.getMovieInfo()
                     .then(function() {
                         crawlTomatoData = rc.crawlTomato;
@@ -493,7 +495,10 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
             }
             else {
                 //connection.query("SELECT * from movieinfo where infoImdbID = ?",
-                connection.query("SELECT mi.* , kim.* FROM movieinfo as mi JOIN moviekidsinmind as kim ON kim.movieKIM_IMDB = mi.infoImdbID WHERE mi.infoImdbID = ?",
+                connection.query("SELECT mi.* , kim.* FROM movieinfo as mi " +
+                  "LEFT JOIN moviekidsinmind as kim " +
+                  "ON kim.movieKIM_IMDB = mi.infoImdbID " +
+                  "WHERE mi.infoImdbID = ?",
                     [req.params.imdbID], function (err, rows) {
                         console.log("Something happening");
                         if (err) {
@@ -536,8 +541,9 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                 res.json(err);
                 //self.connectMysql();
             }else{
-                connection.query("SELECT * from ?? where ?? != '/images/upcomingnull' ORDER BY ?? ",
-                    ["upcomingmovies","upPosterPath","upReleaseDate"],function(err, rows){
+                connection.query("SELECT * from ?? where ?? != '/images/upcomingnull' " +
+                  "AND ?? BETWEEN ((DATE_SUB( CURDATE() ,INTERVAL -1 DAY))) AND (DATE_SUB( CURDATE() ,INTERVAL -20 DAY))  ORDER BY ?? ",
+                    ["upcomingmovies","upPosterPath","upReleaseDate","upReleaseDate"],function(err, rows){
                         console.log("Something happening");
                         if(err){
                             res.json({ Error: 'here line 470 An error occured' });
@@ -1232,17 +1238,18 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                     if (err) {
                       console.log("Here line 114 Error", err);
                     } else {
-                      console.log("@nd -------------------------------------------------",rowws[0].upMovieName);
                       reqPro('http://'+configJson.localhost+':'+configJson.sitePort+'/api/the_movie_db/'+rowws[0].upMovieName)
                         .then(function(response){
-                        console.log('============================================================================================================================================================================================cron job completed',response);
                         //rottenTomatoesURL.replace("http://www.rottentomatoes.com/m/","")
                         reqPro('http://'+configJson.localhost+':'+configJson.sitePort+'/api/rotten_tomatoes/'+rowws[0].upMovieName)
                           .then(function (response) {
-                            console.log("Rotten Tomatoes --------------==--=-=-=--===-=--==-----------=-=-=-=-+++++",response);
                           });
                       });
-                      console.log("-*/*/-*/-//*-/-*/-*/-*/*-/-*/-*///////////Success-------------------------------------");
+
+                      reqPro('http://'+configJson.localhost+':'+configJson.sitePort+'/api/db/copy/upcomingmovies/')
+                        .then(function (response) {
+                          // res.json(response);
+                        });
                     }
                   });
                 }
@@ -1306,8 +1313,9 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
       });
     });
     router.get("/db/admin/get-movie-schedule", function(req,res){
-      var query = "SELECT * FROM ?? ";
-      var table = ["movie_schedule"];
+      var query = "SELECT m_s.*,a_m.* FROM ?? as m_s " +
+        "JOIN  ?? as a_m ON m_s.movieImdbID = a_m.infoImdbID";
+      var table = ["movie_schedule","admin_movieinfo"];
       query = mysql.format(query,table);
       pool.getConnection(function(err,connection){
         if(err){
@@ -1318,10 +1326,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
             if (err) {
               console.log("Here line 114 Error", err);
             } else {
-              for(var i=0;i<rows.length;i++){
-                
-              }
-              res.json(rows.length);
+              res.json(rows);
             }
           });
         }
@@ -1329,17 +1334,69 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
       });
     });
     router.post("/db/admin/post-movie-schedule", function(req,res){
-      pool.getConnection(function(err,connection){
-        if(err){
-          console.log("Error happened :- ",err);
-          res.json(err);
-        }else {
-          connection.query("INSERT INTO ?? (??,??,??,??,??,??) " +
-            "VALUES (?,?,?,?,?,?) ",["movie_schedule", "movieImdbID", "movieType", "movieScreen",
+    pool.getConnection(function(err,connection){
+      if(err){
+        console.log("Error happened :- ",err);
+        res.json(err);
+      }else {
+        connection.query("INSERT INTO ?? (??,??,??,??,??,??) " +
+          "VALUES (?,?,?,?,?,?) ",["movie_schedule", "movieImdbID", "movieType", "movieScreen",
             "movieShowDate","movieStartTime","movieEndTime",
             req.body.movieImdbID, req.body.movieType, req.body.movieScreen,req.body.movieShowDate,
-              req.body.movieStartTime,req.body.movieEndTime],
-            function (err, rows) {
+            req.body.movieStartTime,req.body.movieEndTime],
+          function (err, rows) {
+            if (err) {
+              console.log("Here line 114 Error", err);
+            } else {
+              reqPro('http://'+configJson.localhost+':'+configJson.sitePort+'/api/db/viewer/add-movies/'+req.body.movieImdbID)
+                .then(function (response) {
+                  // res.json(response);
+                });
+              reqPro('http://'+configJson.localhost+':'+configJson.sitePort+'/api/db/viewer/add-movie-tomatoes/'+req.body.movieImdbID)
+                .then(function (response) {
+                  // res.json(response);
+                });
+
+              res.json(rows);
+            }
+          });
+      }
+      connection.release();
+    });
+  });
+    router.delete("/db/admin/delete-movie-schedule", function(req,res){
+      console.log(req.body);
+    pool.getConnection(function(err,connection){
+      if(err){
+        console.log("Error happened :- ",err);
+        res.json(err);
+      }else {
+        connection.query("DELETE FROM ?? WHERE (??=?) AND (??=?)  AND (??=?)  AND (??=?)  AND (??=?) ",
+          ["movie_schedule",  "movieType",req.body.movieType, "movieScreen",req.body.movieScreen,
+            "movieShowDate",req.body.movieShowDate,"movieStartTime",req.body.movieStartTime,"movieEndTime",req.body.movieEndTime],
+          function (err, rows) {
+            if (err) {
+              console.log("Here line 114 Error", err);
+            } else {
+              res.json(rows);
+            }
+          });
+      }
+      connection.release();
+    });
+  });
+    //Update movie schedule info
+    router.put("/db/admin/put-movie-schedule", function(req,res){
+    pool.getConnection(function(err,connection){
+      if(err){
+        console.log("Error happened :- ",err);
+        res.json(err);
+      }else {
+        connection.query("UPDATE ?? SET  ??=?,??=?,??=?,??=?,??=?,??=?" +
+          ["movie_schedule", "movieImdbID",req.body.movieImdbID, "movieType",req.body.movieType,
+            "movieScreen",req.body.movieScreen, "movieShowDate",req.body.movieShowDate,
+            "movieStartTime",req.body.movieStartTime,"movieEndTime",req.body.movieEndTime],
+          function (err, rows) {
             if (err) {
               console.log("Here line 114 Error", err);
             } else {
@@ -1350,9 +1407,9 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
               //   });
             }
           });
-        }
-        connection.release();
-      });
+      }
+      connection.release();
+    });
   });
 
   /*Admin Setting :- Site Configuration*/
@@ -1743,6 +1800,69 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
     });
 
     /****************************End Admin Panel**********************************/
+
+
+    /*Insert into customer view */
+  router.get("/db/viewer/add-movies/:infoImdbID", function(req,res){
+    pool.getConnection(function(err,connection){
+      if(err){
+        console.log("Error happened :- ",err);
+        res.json(err);
+      }else {
+        connection.query("INSERT INTO ?? (SELECT * FROM ?? WHERE ??=?)",
+          ["movieinfo","admin_movieinfo","infoImdbID", req.params.infoImdbID],
+          function (err, rows) {
+            if (err) {
+              console.log("Here line 114 Error", err);
+            } else {
+              res.json(rows);
+            }
+          });
+      }
+      connection.release();
+    });
+  });
+
+  router.get("/db/viewer/add-movie-tomatoes/:infoImdbID", function(req,res){
+    pool.getConnection(function(err,connection){
+      if(err){
+        console.log("Error happened :- ",err);
+        res.json(err);
+      }else {
+        connection.query(  "INSERT INTO ?? (SELECT * FROM ?? WHERE ??=?)",
+          ["movietomatoes","admin_movietomatoes","mtImdbID", req.params.infoImdbID],
+          function (err, rows) {
+            if (err) {
+              console.log("Here line 114 Error", err);
+            } else {
+              res.json(rows);
+            }
+          });
+      }
+      connection.release();
+    });
+  });
+
+  router.get("/db/copy/upcomingmovies", function(req,res){
+    pool.getConnection(function(err,connection){
+      if(err){
+        console.log("Error happened :- ",err);
+        res.json(err);
+      }else {
+        connection.query("INSERT INTO ?? (SELECT `upMovieId`,`upMovieName`,`upReleaseDate`,`upPosterPath`," +
+          "`upDuration` FROM ?? WHERE NOT EXISTS ( SELECT * FROM ??))",
+          ["upcomingmovies","admin_upcomingmovies","upcomingmovies"],
+          function (err, rows) {
+            if (err) {
+              console.log("Here line 114 Error", err);
+            } else {
+              res.json(rows);
+            }
+          });
+      }
+      connection.release();
+    });
+  });
 
 };
 
