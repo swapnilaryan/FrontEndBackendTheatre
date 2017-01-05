@@ -1849,9 +1849,9 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
         console.log("Error happened :- ",err);
         res.json(err);
       }else {
-        connection.query("INSERT INTO ?? (SELECT `upMovieId`,`upMovieName`,`upReleaseDate`,`upPosterPath`," +
-          "`upDuration` FROM ?? WHERE NOT EXISTS ( SELECT * FROM ??))",
-          ["upcomingmovies","admin_upcomingmovies","upcomingmovies"],
+        connection.query("INSERT INTO ??  (`upMovieId`,`upMovieName`,`upReleaseDate`,`upPosterPath`,`upDuration`) SELECT DISTINCT a.`upMovieId`,a.`upMovieName`,a.`upReleaseDate`,a.`upPosterPath`," +
+          "a.`upDuration` FROM ?? a LEFT JOIN ?? u ON u.`upMovieId`!=a.`upMovieId` WHERE a.`upMovieId` NOT IN (SELECT `upMovieId` FROM ??) AND a.`upAddByAdmin`=1",
+          ["upcomingmovies","admin_upcomingmovies","upcomingmovies","upcomingmovies"],
           function (err, rows) {
             if (err) {
               console.log("Here line 114 Error", err);
