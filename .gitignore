@@ -1,7 +1,9 @@
 .idea/
 node_modules/
 bower_components/
- 
-/config.json 
+
+/config.json
 .DS_Store
 .tmp/
+app/images/
+dist/images/
