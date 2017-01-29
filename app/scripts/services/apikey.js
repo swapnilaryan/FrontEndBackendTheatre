@@ -8,10 +8,11 @@
  * Service in the backendTheatreApp.
  */
 angular.module('backendTheatreApp')
-  .service('apiKey', function ($location) {
+  .service('apiKey', function ($location, $http) {
     // AngularJS will instantiate a singleton by calling "new" on this function
       var apiUrl = "";
-      return {
+      var image = "";
+    return {
           key: '2c9306d42037dfb0de0fc3f153819054',
           movieApiUrl: 'http://api.themoviedb.org/3/',
           apiUrlFn: function(){
@@ -24,6 +25,16 @@ angular.module('backendTheatreApp')
                   apiUrl = "http://www.cinex.press:8080/api/";
               }
               return apiUrl;
+          },
+          imagePath: function () {
+            if($location.host()=='localhost')
+            {
+              image = "http://127.0.0.5/";
+            }
+            else {
+              image = "http://cinex.press:8002/";
+            }
+            return image;
           }
       };
   });

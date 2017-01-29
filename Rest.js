@@ -162,7 +162,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                                     var ll =[i];
                                     async.eachSeries(ll, function(i, callback) {
                                         download('http://image.tmdb.org/t/p/w500'+JSON.parse(response).results[i].poster_path
-                                            , './app/images/upcoming'+JSON.parse(response).results[i].poster_path, function(){
+                                            , ''+configJson.imageLocation+'/images/upcoming/'+JSON.parse(response).results[i].poster_path, function(){
                                                 console.log('image downloaded');
                                             });
                                         callback();
@@ -276,7 +276,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                     if( JSON.parse(response).total_results!=0){
                         if(ret[0].poster_path!=null){
                             download('http://image.tmdb.org/t/p/w500'+ret[0].poster_path
-                                , './app/images/nowShowing'+ret[0].poster_path, function(){
+                                , ''+configJson.imageLocation+'/images/nowShowing'+ret[0].poster_path, function(){
                                     console.log('saved image');
                                 });
                         }
@@ -319,7 +319,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                     async.eachSeries(times2iterate, function(i, callback) {
                             if(re.credits.cast[i].profile_path != null){
                                 download('http://image.tmdb.org/t/p/w500'+re.credits.cast[i].profile_path
-                                    , './app/images/credits'+re.credits.cast[i].profile_path, function(){
+                                    , ''+configJson.imageLocation+'/images/credits'+re.credits.cast[i].profile_path, function(){
                                         console.log('saved image');
                                     });
                             }
@@ -616,7 +616,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
         }
         async.eachSeries(combine, function(url, callback) {
             download(url
-                , './app/images/kidsinmind'+url.replace("http://www.kids-in-mind.com/images/ratings",""), function(){
+                , ''+configJson.imageLocation+'/images/kidsinmind'+url.replace("http://www.kids-in-mind.com/images/ratings",""), function(){
                     console.log('image downloaded');
                 });
             callback();
@@ -1246,7 +1246,7 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
                           });
                       });
 
-                      reqPro('http://'+configJson.localhost+':'+configJson.sitePort+'/api/db/copy/upcomingmovies/')
+                      reqPro('http://'+configJson.localhost+':'+configJson.sitePort+'/api/db/copy/upcomingmovies/'+rowws[0].upMovieName)
                         .then(function (response) {
                           // res.json(response);
                         });
@@ -1843,15 +1843,20 @@ REST_ROUTER.prototype.handleRoutes= function(router,connection,pool) {
     });
   });
 
-  router.get("/db/copy/upcomingmovies", function(req,res){
+  router.get("/db/copy/upcomingmovies/:upMovieName", function(req,res){
     pool.getConnection(function(err,connection){
       if(err){
         console.log("Error happened :- ",err);
         res.json(err);
       }else {
-        connection.query("INSERT INTO ??  (`upMovieId`,`upMovieName`,`upReleaseDate`,`upPosterPath`,`upDuration`) SELECT DISTINCT a.`upMovieId`,a.`upMovieName`,a.`upReleaseDate`,a.`upPosterPath`," +
-          "a.`upDuration` FROM ?? a LEFT JOIN ?? u ON u.`upMovieId`!=a.`upMovieId` WHERE a.`upMovieId` NOT IN (SELECT `upMovieId` FROM ??) AND a.`upAddByAdmin`=1",
-          ["upcomingmovies","admin_upcomingmovies","upcomingmovies","upcomingmovies"],
+        // connection.query("INSERT INTO ??  (`upMovieId`,`upMovieName`,`upReleaseDate`,`upPosterPath`,`upDuration`) SELECT DISTINCT a.`upMovieId`,a.`upMovieName`,a.`upReleaseDate`,a.`upPosterPath`," +
+        //   "a.`upDuration` FROM ?? a LEFT JOIN ?? u ON u.`upMovieId`!=a.`upMovieId` WHERE a.`upMovieId` NOT IN (SELECT `upMovieId` FROM ??) AND a.`upAddByAdmin`=1",
+        //   ["upcomingmovies","admin_upcomingmovies","upcomingmovies","upcomingmovies"],
+        // ["upcomingmovies","admin_upcomingmovies","upcomingmovies","upcomingmovies"],
+        connection.query("INSERT INTO ??  (`upMovieId`,`upMovieName`,`upReleaseDate`,`upPosterPath`,`upDuration`) " +
+          "SELECT DISTINCT a.`upMovieId`,a.`upMovieName`,a.`upReleaseDate`,a.`upPosterPath`," +
+          "a.`upDuration` FROM ?? a WHERE a.`upMovieName`=? AND a.`upAddByAdmin`=1",
+          ["upcomingmovies","admin_upcomingmovies",req.params.upMovieName],
           function (err, rows) {
             if (err) {
               console.log("Here line 114 Error", err);

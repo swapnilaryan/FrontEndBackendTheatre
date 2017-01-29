@@ -8,10 +8,11 @@
  * Controller of the backendTheatreApp
  */
 angular.module('backendTheatreApp')
-  .controller('MainCtrl', function ($scope,$location,searchMovieText,nowShowingInTheatres,upcomingMovies) {
+  .controller('MainCtrl', function ($scope,$location,apiKey,searchMovieText,nowShowingInTheatres,upcomingMovies) {
       console.log(nowShowingInTheatres);
       console.log(upcomingMovies);
-
+      $scope.imagePath = apiKey.imagePath();
+      console.log(apiKey.imagePath());
       for(var i=0;i<upcomingMovies.length;i++){
           var tempDate = new Date(upcomingMovies[i].upReleaseDate).toDateString();
           tempDate = tempDate.split(" ");

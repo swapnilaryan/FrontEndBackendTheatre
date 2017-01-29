@@ -36,6 +36,7 @@ RottenCrawler.prototype.theMovieDB = function() {
             return rp('http://api.themoviedb.org/3/movie/'+rc.response+'?api_key='+rc.apiKey)
             .then(function(res){
                 rc.movieResponse["movieInfo"].push(JSON.parse(res));
+              console.log(rc.movieResponse["movieInfo"]);
                 imdb_id = JSON.parse(res).imdb_id;
                 //console.log("--",JSON.parse(res).imdb_id);
                 return rp('http://api.themoviedb.org/3/movie/'+rc.response+'/credits?api_key='+rc.apiKey)
@@ -112,25 +113,25 @@ RottenCrawler.prototype.getMovieInfo = function(data) {
                 imdb_id,rc.crawlTomato["movieTitle"],JSON.stringify(rc.crawlTomato["allCritics"]),
                 JSON.stringify(rc.crawlTomato["topCritics"]),JSON.stringify(rc.crawlTomato["audienceScore"]),
                 rc.crawlTomato["movieDes"],JSON.stringify(rc.crawlTomato["genre"])];
-            pool.getConnection(function(err,connection) {
-                if (err) {
-                    console.log("Error happened :- ", err);
-                    self.connectMysql();
-                } else {
-                    query = mysql.format(query, table);
-                    connection.query(query, function (err, rows) {
-                        if (pool._freeConnections.indexOf(connection) == -1) {
-                            connection.release();
-                        }
-                        if (err) {
-                            console.log("Error executing MySQL query", err);
-                        } else {
-                            console.log("Success", "Data Inserted");
-                        }
-                    });
-                }
-                connection.release();
-            });
+            // pool.getConnection(function(err,connection) {
+            //     if (err) {
+            //         console.log("Error happened :- ", err);
+            //         self.connectMysql();
+            //     } else {
+            //         query = mysql.format(query, table);
+            //         connection.query(query, function (err, rows) {
+            //             if (pool._freeConnections.indexOf(connection) == -1) {
+            //                 connection.release();
+            //             }
+            //             if (err) {
+            //                 console.log("Error executing MySQL query", err);
+            //             } else {
+            //                 console.log("Success", "Data Inserted");
+            //             }
+            //         });
+            //     }
+            //     connection.release();
+            // });
             /*End Adding tomato data to the database*/
             console.log("After everything");
         })

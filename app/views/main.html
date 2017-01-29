@@ -18,18 +18,18 @@
             <div class="container" id="show_list">
                 <div class="col-md-3 container list_now_showing" ng-repeat="mvs in movieNowShowing">
                     <div class="wrap_all">
-                        <img class="images" ng-src="{{mvs.infoMoviePosterPath}}" >
+                        <img class="images" ng-src="{{imagePath}}{{mvs.infoMoviePosterPath}}" >
                         <div class="all_timings">
                             <div class="list-show-none">
                                 <span ng-repeat="list_show in mvs.list_show_none">{{list_show}}</span>
                             </div>
                             <div class="list-show-3d">
-                                <span><img ng-src="{{mvs.list_show_3d_image}}"> </span>
+                                <span><img ng-src="{{imagePath}}{{mvs.list_show_3d_image}}"> </span>
                                 <span ng-repeat="list_show in mvs.list_show_3d">{{list_show}}</span>
                             </div>
                             <div class="list-show-2d">
                                 <!--<img ng-src="">-->
-                                <span><img ng-src="{{mvs.list_show_2d_image}}"></span>
+                                <span><img ng-src="{{imagePath}}{{mvs.list_show_2d_image}}"></span>
                                 <span ng-repeat="list_show in mvs.list_show_2d">{{list_show}}</span>
                             </div>
                         </div>
@@ -63,7 +63,7 @@
                             </div>
                             <img class="coming_soon_circle" src="/images/circle.png">
                         <!--</div>-->
-                        <img class="coming_soon_images" ng-src="{{mcs.upPosterPath}}">
+                        <img class="coming_soon_images" ng-src="{{imagePath}}{{mcs.upPosterPath}}">
                     </div>
                 </div>
             </div>

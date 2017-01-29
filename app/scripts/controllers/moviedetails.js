@@ -12,6 +12,8 @@ angular.module('backendTheatreApp')
                                             $q,$scope,movieTomatoDetails,movieInfoDetails) {
       console.log("---------",movieTomatoDetails);
       console.log("++++++++++++",movieInfoDetails);
+      $scope.imagePath = apiKey.imagePath();
+      console.log(apiKey.imagePath());
       //var movieTomatoDetails = localStorageService.set();
       //$http.get('http://cinestar.affpc.com:8080/api/')
       //    .then(function(response) {
