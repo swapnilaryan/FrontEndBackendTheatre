@@ -30,9 +30,9 @@ angular
       localStorageServiceProvider
       .setPrefix('backendTheatreApp')
       .setStorageType('sessionStorage');
-      IdleProvider.idle(5); // to be changed
+      IdleProvider.idle(15 * 60); // to be changed
       IdleProvider.timeout(5); // to be changed
-      KeepaliveProvider.interval(10); // to be changed
+      KeepaliveProvider.interval(10*60); // to be changed
       // For any unmatched url, redirect to /
       //$urlRouterProvider.otherwise("/");
       //$stateProvider
