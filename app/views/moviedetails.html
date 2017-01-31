@@ -169,7 +169,7 @@
 
                     <div class="col-md-8 movieTopic">
                         <div>{{displayMovieDetails.infoMovieProduction}}:
-                            <span><a ng-href={{displayMovieDetails.infoMovieWebsite}}>Official Site</a> </span>
+                            <span><a ng-href={{displayMovieDetails.infoMovieWebsite}} target="_blank">Official Site</a> </span>
                         </div>
                     </div>
                 </div>
@@ -188,11 +188,11 @@
             <button type="button" class="btn btn-default tickTrailerSocial">
                 SHARE ON
                 <a ng-href="http://www.facebook.com">
-                    <img class="shareSocial" src="/images/shareOnFacebook.png">
+                    <img class="shareSocial" ng-src="{{imagePath}}/images/shareOnFacebook.png">
                 </a>
                 <span>
                     <a ng-href="http://www.twitter.com">
-                        <img class="shareSocial" src="/images/shareOnTwitter.png">
+                        <img class="shareSocial" ng-src="{{imagePath}}/images/shareOnTwitter.png">
                     </a>
                 </span>
             </button>

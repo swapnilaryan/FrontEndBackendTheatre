@@ -9,7 +9,8 @@
  */
 angular.module('backendTheatreApp')
   .controller('HeaderCtrl', function ($scope, $timeout, $cookieStore, $rootScope, userLogInStatus, $uibModal, signout
-                                      ,Idle) {
+                                      ,Idle, apiKey) {
+    $scope.imagePath = apiKey.imagePath();
     $scope.showUser = false;
     $scope.userDetails = $cookieStore.get('userLogin');
     console.log("-------in side header js",$scope.userDetails);

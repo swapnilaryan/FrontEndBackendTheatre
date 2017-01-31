@@ -8,6 +8,8 @@
  * Controller of the backendTheatreApp
  */
 angular.module('backendTheatreApp')
-  .controller('FooterCtrl', function ($scope) {
+  .controller('FooterCtrl', function ($scope, apiKey) {
     $scope.currentYear = new Date().getFullYear();
+    $scope.imagePath = apiKey.imagePath();
+
   });
