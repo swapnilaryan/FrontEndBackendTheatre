@@ -14,7 +14,7 @@ var RottenCrawler = function(movieURL) {
         "movieCredits": [],
         "omdbData": []
     };
-    console.log(movieURL,rc.apiKey);
+    console.log("API Key",movieURL,rc.apiKey);
     return rc;
 };
 

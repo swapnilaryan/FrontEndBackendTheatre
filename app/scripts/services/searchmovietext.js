@@ -111,19 +111,19 @@ angular.module('backendTheatreApp')
     }
   })
   .factory('nowShowing', function ($q, $http, apiKey){
-      return {
-          nowShowingMovies: function(){
-              var deferred = $q.defer();
-              console.log("api is ",apiKey.apiUrlFn());
-              $http.get(""+apiKey.apiUrlFn() + "db/nowShowing")
-                  .success(function (data){
-                      deferred.resolve(data);
-                  }).error(function (data){
-                      deferred.reject(data);
-              });
-              return deferred.promise;
-          }
+    return {
+      nowShowingMovies: function(){
+        var deferred = $q.defer();
+        console.log("api is ",apiKey.apiUrlFn());
+        $http.get(""+apiKey.apiUrlFn() + "db/nowShowing")
+          .success(function (data){
+            deferred.resolve(data);
+          }).error(function (data){
+          deferred.reject(data);
+        });
+        return deferred.promise;
       }
+    }
   })
   .factory('movieDetails', function ($q,localStorageService,$http,apiKey,searchMovieText) {
       var id ="";
@@ -155,6 +155,17 @@ angular.module('backendTheatreApp')
               $http.get("" + apiKey.apiUrlFn() + "/db/movieinfo/"+id)
                   .success(function (data) {
                       deferred.resolve(data);
+                  }).error(function (data){
+                  deferred.reject(data);
+              });
+              return deferred.promise;
+          },
+          movieShowTime: function () {
+              var deferred = $q.defer();
+              //$http.get("" + apiKey.apiUrlFn() + "/db/movieinfo/zootopia")
+              $http.get("" + apiKey.apiUrlFn() + "/db/admin/get-movie-schedule/"+id)
+                  .success(function (data) {
+                    deferred.resolve(data);
                   }).error(function (data){
                   deferred.reject(data);
               });

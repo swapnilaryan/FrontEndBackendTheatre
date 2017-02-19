@@ -15,14 +15,12 @@ var kill = require("killport");
 function REST(){
     var self = this;
     self.connectMysql();
-    console.log("-------------------------------------------");
 }
 // Read the configuration file
 var mysqlConfig = JSON.parse(fs.readFileSync('config.json', 'utf8'));
 //console.log(mysqlConfig.mysql);
 // End Reading configuration files
 REST.prototype.connectMysql = function() {
-    console.log('-----------------------------------------------------------');
     var self = this;
     pool = mysql.createPool({
         connectionLimit : 1000,
@@ -40,7 +38,7 @@ REST.prototype.connectMysql = function() {
         if(err) {
             self.stop(err);
             server.close();
-            console.log("Going to start a new REST");
+            // console.log("Going to start a new REST");
             connection.destroy();
             self.connectMysql();
         } else {
@@ -85,7 +83,7 @@ REST.prototype.startServer = function() {
             .catch(function(err){
                 console.log(err);
             });
-        console.log("qweqwter", err);
+        console.log("Error-", err);
         server.close();
     });
 };

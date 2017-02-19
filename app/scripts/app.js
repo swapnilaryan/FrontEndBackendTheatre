@@ -82,6 +82,9 @@ angular
               },
               movieInfoDetails: function (movieDetails) {
                   return movieDetails.getMovieInfo();
+              },
+              movieShowTime: function (movieDetails) {
+                  return movieDetails.movieShowTime();
               }
           }
       })

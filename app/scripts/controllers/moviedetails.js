@@ -9,13 +9,15 @@
  */
 angular.module('backendTheatreApp')
   .controller('MoviedetailsCtrl', function ($sce, localStorageService, $http,$route,$uibModal,$location,apiKey,
-                                            $q,$scope,movieTomatoDetails,movieInfoDetails) {
+                                            $q,$scope,movieTomatoDetails,movieInfoDetails, movieShowTime) {
       console.log("---------",movieTomatoDetails);
       console.log("++++++++++++",movieInfoDetails);
+      console.log("///////////////////////////",movieShowTime);
+      $scope.movieShowTime = movieShowTime;
       $scope.imagePath = apiKey.imagePath();
       console.log(apiKey.imagePath());
       //var movieTomatoDetails = localStorageService.set();
-      //$http.get('http://cinestar.affpc.com:8080/api/')
+      //$http.get('http://cinestar.affpc.com:8080/api/')x
       //    .then(function(response) {
       //        console.log(response);
       //    });

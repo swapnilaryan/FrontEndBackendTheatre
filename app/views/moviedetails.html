@@ -67,41 +67,14 @@
             <div class="container" ng-model="displayMovieDetails">
                 <div class="col-md-4">
                     <p id="showtime">Showtimes</p>
-                    <div class="col-md-4 showtimeRow2">Timing</div>
-                    <div class="col-md-4 showtimeRow2">Adults</div>
-                    <div class="col-md-4 showtimeRow2">Kids</div>
-
                     <div class="col-md-4 showtimeRow1">Timing</div>
                     <div class="col-md-4 showtimeRow1">Adults</div>
                     <div class="col-md-4 showtimeRow1">Kids</div>
-
-                    <div class="col-md-4 showtimeRow2">Timing</div>
-                    <div class="col-md-4 showtimeRow2">Adults</div>
-                    <div class="col-md-4 showtimeRow2">Kids</div>
-
-                    <div class="col-md-4 showtimeRow1">Timing</div>
-                    <div class="col-md-4 showtimeRow1">Adults</div>
-                    <div class="col-md-4 showtimeRow1">Kids</div>
-
-                    <div class="col-md-4 showtimeRow2">Timing</div>
-                    <div class="col-md-4 showtimeRow2">Adults</div>
-                    <div class="col-md-4 showtimeRow2">Kids</div>
-                    <div class="col-md-4 showtimeRow1">Timing</div>
-                    <div class="col-md-4 showtimeRow1">Adults</div>
-                    <div class="col-md-4 showtimeRow1">Kids</div>
-
-                    <div class="col-md-4 showtimeRow2">Timing</div>
-                    <div class="col-md-4 showtimeRow2">Adults</div>
-                    <div class="col-md-4 showtimeRow2">Kids</div>
-
-                    <div class="col-md-4 showtimeRow1">Timing</div>
-                    <div class="col-md-4 showtimeRow1">Adults</div>
-                    <div class="col-md-4 showtimeRow1">Kids</div>
-
-                    <div class="col-md-4 showtimeRow2">Timing</div>
-                    <div class="col-md-4 showtimeRow2">Adults</div>
-                    <div class="col-md-4 showtimeRow2">Kids</div>
-
+                    <div ng-repeat="showTime in movieShowTime">
+                      <div class="col-md-4 showtimeRow2">{{showTime.movieStartTime}}</div>
+                      <div class="col-md-4 showtimeRow2">7$</div>
+                      <div class="col-md-4 showtimeRow2">1$</div>
+                    </div>
                 </div>
                 <div class="col-md-8">
                     <div class="movieDes">{{displayMovieDetails.infoMovieDescription}}</div>
@@ -155,17 +128,17 @@
                         <div>{{displayMovieDetails.infoMovieRuntime}}</div>
                     </div>
 
-                    <div class="col-md-4 movieTopic" ng-if="kidsinmind">
-                        <br><br><br>
-                        <div>Parents Rating:</div>
-                    </div>
-                    <div class="col-md-8 movieDetails" ng-if="kidsinmind">
-                        <!--<div><b>SEX & NUDITY</b></div>-->
-                        <div><img class="kim_sex_nudity" ng-src="{{imagePath}}{{displayMovieDetails.s_n}}"></div>
-                        <div><img class="kim_violence_gore" ng-src="{{imagePath}}{{displayMovieDetails.v_g}}"></div>
-                        <div><img class="kim_profanity" ng-src="{{imagePath}}{{displayMovieDetails.prof}}"></div>
-                        <div><img class="kim_one2ten" ng-src="{{imagePath}}{{displayMovieDetails.one_ten}}"></div>
-                    </div>
+                    <!--<div class="col-md-4 movieTopic" ng-if="kidsinmind">-->
+                        <!--<br><br><br>-->
+                        <!--<div>Parents Rating:</div>-->
+                    <!--</div>-->
+                    <!--<div class="col-md-8 movieDetails" ng-if="kidsinmind">-->
+                        <!--&lt;!&ndash;<div><b>SEX & NUDITY</b></div>&ndash;&gt;-->
+                        <!--<div><img class="kim_sex_nudity" ng-src="{{imagePath}}{{displayMovieDetails.s_n}}"></div>-->
+                        <!--<div><img class="kim_violence_gore" ng-src="{{imagePath}}{{displayMovieDetails.v_g}}"></div>-->
+                        <!--<div><img class="kim_profanity" ng-src="{{imagePath}}{{displayMovieDetails.prof}}"></div>-->
+                        <!--<div><img class="kim_one2ten" ng-src="{{imagePath}}{{displayMovieDetails.one_ten}}"></div>-->
+                    <!--</div>-->
 
                     <div class="col-md-8 movieTopic">
                         <div>{{displayMovieDetails.infoMovieProduction}}:
@@ -199,6 +172,14 @@
         </div>
         <div class="buttonShadow">
             <button type="button" class="btn btn-default tickTrailerSocial" data-toggle = "modal" data-target = "#myModal">WATCH TRAILER</button>
+        </div>
+        <div ng-if="kidsinmind">
+          <h4>Parents Rating</h4>
+          <!--<div><b>SEX & NUDITY</b></div>-->
+          <div><img class="kim_sex_nudity" ng-src="{{imagePath}}{{displayMovieDetails.s_n}}"></div>
+          <div><img class="kim_violence_gore" ng-src="{{imagePath}}{{displayMovieDetails.v_g}}"></div>
+          <div><img class="kim_profanity" ng-src="{{imagePath}}{{displayMovieDetails.prof}}"></div>
+          <div><img class="kim_one2ten" ng-src="{{imagePath}}{{displayMovieDetails.one_ten}}"></div>
         </div>
     </div>
 </div>
