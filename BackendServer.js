@@ -8,6 +8,8 @@ var fs = require('fs');
 var session	= require('express-session');
 var rest = require("./Rest.js");
 var app  = express();
+var passport = require('passport')
+  , FacebookStrategy = require('passport-facebook').Strategy;
 var server ="";
 var router = null;
 var pool = null;
@@ -51,6 +53,8 @@ REST.prototype.configureExpress = function(connection,pool) {
     var self = this;
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
+    app.use(passport.initialize());
+    app.use(passport.session());
     // app.use(session({secret: 'swapnil',saveUninitialized: true,resave: true}));
     //handle cors issue
     app.use(function(req, res, next) {

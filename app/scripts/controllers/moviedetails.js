@@ -127,13 +127,13 @@ angular.module('backendTheatreApp')
       }
       $scope.show6CastsFunction = function show6CastsFunction() {
           $scope.show6Casts = {};
-          for(var k=0;k<6;k++){
+          for(var k=0;k<8;k++){
               $scope.show6Casts[k] = $scope.totalCasts[k];
           }
       };
       $scope.show6CastsFunction();
       $scope.show6Casts = {};
-      for(var k=0;k<6;k++){
+      for(var k=0;k<8;k++){
           $scope.show6Casts[k] = $scope.totalCasts[k];
       }
       /*Show All Casts*/

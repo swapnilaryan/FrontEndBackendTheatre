@@ -173,7 +173,7 @@
         <div class="buttonShadow">
             <button type="button" class="btn btn-default tickTrailerSocial" data-toggle = "modal" data-target = "#myModal">WATCH TRAILER</button>
         </div>
-        <div ng-if="kidsinmind">
+        <div ng-show="kidsinmind">
           <h4>Parents Rating</h4>
           <!--<div><b>SEX & NUDITY</b></div>-->
           <div><img class="kim_sex_nudity" ng-src="{{imagePath}}{{displayMovieDetails.s_n}}"></div>
@@ -181,6 +181,81 @@
           <div><img class="kim_profanity" ng-src="{{imagePath}}{{displayMovieDetails.prof}}"></div>
           <div><img class="kim_one2ten" ng-src="{{imagePath}}{{displayMovieDetails.one_ten}}"></div>
         </div>
+      <!--Comments-->
+      <div class="actionBox">
+        <ul class="commentList">
+          <li>
+            <div class="commenterImage">
+              <img src="http://placekitten.com/50/50" />
+            </div>
+            <div class="commentText">
+              <p class="">Hello this is a test comment.</p> <span class="date sub-text">on March 5th, 2014</span>
+            </div>
+          </li>
+          <li>
+            <div class="commenterImage">
+              <img src="http://placekitten.com/45/45" />
+            </div>
+            <div class="commentText">
+              <p class="">Hello this is a test comment and this comment is particularly very long and it goes on and on and on.</p> <span class="date sub-text">on March 5th, 2014</span>
+            </div>
+          </li>
+          <li>
+            <div class="commenterImage">
+              <img src="http://placekitten.com/45/45" />
+            </div>
+            <div class="commentText">
+              <p class="">Hello this is a test comment and this comment is particularly very long and it goes on and on and on.</p> <span class="date sub-text">on March 5th, 2014</span>
+            </div>
+          </li>
+          <li>
+            <div class="commenterImage">
+              <img src="http://placekitten.com/45/45" />
+            </div>
+            <div class="commentText">
+              <p class="">Hello this is a test comment and this comment is particularly very long and it goes on and on and on.</p> <span class="date sub-text">on March 5th, 2014</span>
+            </div>
+          </li>
+          <li>
+            <div class="commenterImage">
+              <img src="http://placekitten.com/45/45" />
+            </div>
+            <div class="commentText">
+              <p class="">Hello this is a test comment and this comment is particularly very long and it goes on and on and on.</p> <span class="date sub-text">on March 5th, 2014</span>
+            </div>
+          </li>
+          <li>
+            <div class="commenterImage">
+              <img src="http://placekitten.com/45/45" />
+            </div>
+            <div class="commentText">
+              <p class="">Hello this is a test comment and this comment is particularly very long and it goes on and on and on.</p> <span class="date sub-text">on March 5th, 2014</span>
+            </div>
+          </li>
+          <li>
+            <div class="commenterImage">
+              <img src="http://placekitten.com/45/45" />
+            </div>
+            <div class="commentText">
+              <p class="">Hello this is a test comment and this comment is particularly very long and it goes on and on and on.</p> <span class="date sub-text">on March 5th, 2014</span>
+            </div>
+          </li>
+          <li>
+            <div class="commenterImage">
+              <img src="http://placekitten.com/40/40" />
+            </div>
+            <div class="commentText">
+              <p class="">Hello this is a test comment.</p> <span class="date sub-text">on March 5th, 2014</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="comments">
+        <h4 class="pull-left">Comment As:- {{UserName}}</h4> <span><button  type="button" class="btn bg-primary pull-right"> Post </button></span>
+        <div><textarea class="pull-left form-control" rows="4" cols="50" name="comment"></textarea></div>
+      </div>
+
+      <!--End Comments-->
     </div>
 </div>
     <div class="container">
@@ -189,8 +264,8 @@
         </div>
         <br>
         <div class="col-md-12">
-            <div class="col-md-9" data-ng-model="casts">
-                <div class="col-md-4 casts" ng-repeat="casts in show6Casts">
+            <div class="col-md-12" data-ng-model="casts">
+                <div class="col-md-3 casts" ng-repeat="casts in show6Casts">
                     <div class="col-md-4 castsImage">
                         <img ng-src="{{imagePath}}{{casts.profile_path}}">
                     </div>

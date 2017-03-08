@@ -12,10 +12,13 @@ var fs = require('fs'),
 var configJson = JSON.parse(fs.readFileSync('config.json', 'utf8'));
 var shortid = require('shortid');
 var bcrypt = require('bcryptjs');
+var localstorage = require('node-localstorage');
 var conn = "";
 var pool = "";
 var sess;
 var rottenTomatoesURL = "";
+var passport = require('passport')
+  , FacebookStrategy = require('passport-facebook').Strategy;
 function REST_ROUTER(router, connection, pool) {
   var self = this;
   conn = connection;
@@ -65,6 +68,90 @@ var cronJob2 = cron.job("* * * * * *", function () {
 //cronJob2.start();
 
 REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
+
+  /*Test Logging Via Facebook */
+  var global_email = null;
+  var global_password = null;
+
+
+  passport.use(new FacebookStrategy({
+      clientID: "126030407918627",
+      clientSecret: "b939974333f8a79344c8974767554a12",
+      callbackURL: "http://localhost:8000/api/auth/facebook/callback",
+      profileFields: ['id', 'emails', 'name'] //This
+    },
+    function(accessToken, refreshToken, profile, done) {
+      var fb_result = {
+        "accessToken":accessToken,
+        "profile":profile._json
+      };
+      console.log(fb_result);
+      pool.getConnection(function (err, connection) {
+        if (err) {
+          console.log("Error happened :- ", err);
+          res.json(err);
+        } else {
+          var salt = bcrypt.genSaltSync(10);
+          var hashPassword = bcrypt.hashSync(fb_result.profile.email, salt); //here password is same as fb email id
+          var query = null;
+          query = "INSERT INTO ??(??,??,??,??,??,??) VALUES (?,?,?,?,?,?)";
+          table = ["movieuser", "movieUserId", "movieUserFirstName", "movieUserLastName",
+            "movieUserEmailId","movieUserPassword", "movieUserAccessToken",
+            shortid.generate(), fb_result.profile.first_name, fb_result.profile.last_name,
+            (fb_result.profile.email).toLowerCase(), hashPassword, fb_result.accessToken];
+          query = mysql.format(query, table);
+          connection.query(query, function (err, rows) {
+              console.log("Something happening");
+              if (err) {
+                return "Error: 'here line proof of concept An error occured'" + err;
+              } else {
+                process.nextTick(function () {
+                  global_password = (fb_result.profile.email).toLowerCase();
+                  global_email = (fb_result.profile.email).toLowerCase();
+                  return done(null, profile);
+                });
+              }
+            });
+        }
+        connection.release();
+      });
+    }
+  ));
+  passport.serializeUser(function(user, done) {
+    console.log("Serializer------",user);
+    done(null, user);
+  });
+
+  passport.deserializeUser(function(user, done) {
+    console.log("DE--Serializer------",user);
+
+    done(null, user);
+  });
+  router.get('/auth/facebook', passport.authenticate('facebook',  { authType: 'rerequest', scope: ['email'] }));
+  router.get('/auth/facebook/callback',
+    passport.authenticate('facebook', { failureRedirect: '/db/nowShowing' }),
+    function (req, res) {
+      var url = 'http://' + configJson.localhost + ':' + configJson.sitePort + '/api/db/userLogin';
+
+      request({
+        url: url,
+        method: "POST",
+        json: true,   // <--Very important!!!
+        body: {emailId:global_email, password: global_password}
+      }, function (error, response, body){
+        console.log(response);
+      });
+
+      // reqPro.post( url,)
+      //   .then(function (response) {
+      //     console.log(response);
+      //   })  ;
+      res.redirect('http://localhost:9000/#/');
+      // res.json("Yo Bro")
+    }
+  );
+
+
   router.get("/upcoming", function (req, res) {
     var items = [1];
     var totPage = [];
@@ -878,6 +965,7 @@ REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
   });
   //2: Login
   router.post("/db/userLogin", function (req, res) {
+    console.log(req);
     var matchPassword;
     sess = req.session;
     sess.email = req.body.emailId;
