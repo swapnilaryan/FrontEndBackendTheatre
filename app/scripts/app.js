@@ -21,7 +21,8 @@ angular
     'ui.bootstrap',
     'ui.router',
     'ngIdle',
-    'LocalStorageModule'
+    'LocalStorageModule',
+    'jkAngularRatingStars'
   ])
   // .run(['Idle', function(Idle) {
   //   Idle.watch();
@@ -85,6 +86,9 @@ angular
               },
               movieShowTime: function (movieDetails) {
                   return movieDetails.movieShowTime();
+              },
+              getComments: function (movieDetails) {
+                return movieDetails.getComments();
               }
           }
       })

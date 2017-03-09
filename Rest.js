@@ -127,6 +127,38 @@ REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
 
     done(null, user);
   });
+
+  router.post('/db/fblogin', function(req, res){
+    var fb_result = req.body;
+    console.log("fb_result",fb_result);
+    pool.getConnection(function (err, connection) {
+      if (err) {
+        console.log("Error happened :- ", err);
+        res.json(err);
+      } else {
+        var salt = bcrypt.genSaltSync(10);
+        var hashPassword = bcrypt.hashSync(fb_result.email, salt); //here password is same as fb email id
+        var query = null;
+        query = "INSERT INTO ??(??,??,??,??,??,??, ??) VALUES (?,?,?,?,?,?, ?)" +
+          "ON DUPLICATE KEY UPDATE ?? = ?";
+        table = ["movieuser", "movieUserId", "movieUserFirstName", "movieUserLastName",
+          "movieUserEmailId","movieUserPassword", "movieUserAccessToken","movieUserFBID",
+          shortid.generate(), fb_result.first_name, fb_result.last_name,
+          (fb_result.email).toLowerCase(), hashPassword, fb_result.accessToken, fb_result.id,
+          "movieUserAccessToken",fb_result.accessToken];
+        query = mysql.format(query, table);
+        connection.query(query, function (err, rows) {
+          console.log("Something happening");
+          if (err) {
+            return "Error: 'here line proof of concept An error occured'" + err;
+          } else {console.log("Rows",rows);
+              res.json(rows);
+          }
+        });
+      }
+      connection.release();
+    });
+  });
   router.get('/auth/facebook', passport.authenticate('facebook',  { authType: 'rerequest', scope: ['email'] }));
   router.get('/auth/facebook/callback',
     passport.authenticate('facebook', { failureRedirect: '/db/nowShowing' }),
@@ -1971,6 +2003,51 @@ REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
       connection.release();
     });
   });
+  /*Movie Comments*/
+  router.get("/db/getComments/:imdbID", function (req, res) {
+    var imdbID = req.params.imdbID;
+    pool.getConnection(function (err, connection) {
+      if (err) {
+        console.log("Error happened :- ", err);
+        res.json(err);
+        //self.connectMysql();
+      } else {
+        connection.query("SELECT * from ?? where ?? = ?",
+          ["movie_comments","m_c_movie_imdb_id", imdbID], function (err, rows) {
+            console.log("Something happening");
+            if (err) {
+              res.json({Error: 'Get Comments error:- ' + err});
+            } else {
+              res.json(rows);
+            }
+          });
+      }
+      connection.release();
+    });
+  });
+  //Pending
+  router.post("/db/addComment/:imdbID/:userID", function (req, res) {
+    var imdbID = req.params.imdbID;
+    pool.getConnection(function (err, connection) {
+      if (err) {
+        console.log("Error happened :- ", err);
+        res.json(err);
+        //self.connectMysql();
+      } else {
+        connection.query("SELECT * from ?? where ?? = ?",
+          ["movie_comments","m_c_movie_imdb_id", imdbID], function (err, rows) {
+            console.log("Something happening");
+            if (err) {
+              res.json({Error: 'Get Comments error:- ' + err});
+            } else {
+              res.json(rows);
+            }
+          });
+      }
+      connection.release();
+    });
+  });
+  /*End Movie Comments*/
 
 };
 

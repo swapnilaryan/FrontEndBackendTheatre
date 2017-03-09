@@ -190,7 +190,10 @@
               <img src="http://placekitten.com/50/50" />
             </div>
             <div class="commentText">
-              <p class="">Hello this is a test comment.</p> <span class="date sub-text">on March 5th, 2014</span>
+              <p class="">Hello this is a test comment.</p> <span class="date sub-text">on March 5th, 2014</span> &nbsp;
+              <span class="pull-right">
+                <jk-rating-stars id="star_rating" rating="secondRate" read-only="readOnly" ></jk-rating-stars>
+              </span>
             </div>
           </li>
           <li>
@@ -252,8 +255,9 @@
         </ul>
       </div>
       <div class="comments">
-        <h4 class="pull-left">Comment As:- {{UserName}}</h4> <span><button  type="button" class="btn bg-primary pull-right"> Post </button></span>
-        <div><textarea class="pull-left form-control" rows="4" cols="50" name="comment"></textarea></div>
+        <h4 class="pull-left">Comment As:- {{UserName}}</h4>
+        <div class="comment_textarea"><textarea class="form-control" rows="4" cols="50" name="comment"></textarea></div>
+        <div class="star_rating_n_post"><jk-rating-stars rating="firstRate"></jk-rating-stars> <span><button  type="button" class="btn bg-primary"> Post </button></span></div>
       </div>
 
       <!--End Comments-->

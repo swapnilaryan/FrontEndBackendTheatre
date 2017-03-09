@@ -41,10 +41,34 @@
   border-top:1px dotted #bbb;
   padding:10px;
 }
+#star_rating{
+  font-size: 18px;
+}
+.comment_textarea{
+  margin-right: 5px;
+}
+textarea {
+  resize: none;
+  margin-right: 5px !important;
+}
+.jk-rating-stars-container{
 
-
-
-
+}
+.star_rating_n_post >.jk-rating-stars-container{
+  display: inline-table !important;
+  vertical-align: middle !important;
+}
+.star_rating_n_post{
+  margin-top: 5px;
+  margin-right: 5px;
+  float: right;
+}
+.star_rating_n_post > .jk-rating-stars-container .star-button.star-off .material-icons {
+  font-size: 20px !important;
+}
+.star_rating_n_post > .jk-rating-stars-container .button .material-icons{
+  font-size: 20px !important;
+}
 
 
 .mdImage{

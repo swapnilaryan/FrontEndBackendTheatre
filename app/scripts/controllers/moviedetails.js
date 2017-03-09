@@ -9,18 +9,13 @@
  */
 angular.module('backendTheatreApp')
   .controller('MoviedetailsCtrl', function ($sce, localStorageService, $http,$route,$uibModal,$location,apiKey,
-                                            $q,$scope,movieTomatoDetails,movieInfoDetails, movieShowTime) {
+                                            $q,$scope,movieTomatoDetails,movieInfoDetails, movieShowTime, getComments) {
       console.log("---------",movieTomatoDetails);
       console.log("++++++++++++",movieInfoDetails);
       console.log("///////////////////////////",movieShowTime);
       $scope.movieShowTime = movieShowTime;
       $scope.imagePath = apiKey.imagePath();
       console.log(apiKey.imagePath());
-      //var movieTomatoDetails = localStorageService.set();
-      //$http.get('http://cinestar.affpc.com:8080/api/')x
-      //    .then(function(response) {
-      //        console.log(response);
-      //    });
       $scope.displayTomatoData = {};
       $scope.displayTomatoData.imdbID = movieTomatoDetails.mtImdbID;
       $scope.displayTomatoData.movieDescription = movieTomatoDetails.mtMovieDescription;
@@ -157,4 +152,11 @@ angular.module('backendTheatreApp')
       };
       $sce.trustAsResourceUrl($scope.displayTomatoData.trailer);
       /*End Trailers*/
+
+     /*Comment Section*/
+      console.log("Get Comments",getComments);
+      $scope.firstRate = 0;
+      $scope.secondRate = 0;
+      $scope.readOnly = true;
+     /*End Comment Section*/
   });
