@@ -21,8 +21,7 @@ angular
     'ui.bootstrap',
     'ui.router',
     'ngIdle',
-    'LocalStorageModule',
-    'jkAngularRatingStars'
+    'LocalStorageModule'
   ])
   // .run(['Idle', function(Idle) {
   //   Idle.watch();

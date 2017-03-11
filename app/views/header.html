@@ -135,10 +135,20 @@
         first_name: name[0],
         last_name: name[1],
         accessToken:accessToken,
-        id:response.id
+        id:response.id,
+        fb_image:response.picture.data.url
       };
       console.log(data);
-      $.post("http://localhost:8000/api/db/fblogin", data, function (response) {
+      var apiUrl = null;
+      if(window.location.hostname =='localhost')
+      {
+        apiUrl = "http://localhost:8000/api/";
+      }
+      else {
+        // apiUrl = "http://cinestar.affpc.com:8080/api/";
+        apiUrl = "http://www.cinex.press:8080/api/";
+      }
+      $.post(apiUrl+"db/fblogin", data, function (response) {
         console.log("respnse",response,"--*--*");
       })
     });

@@ -9,7 +9,7 @@
  */
 angular.module('backendTheatreApp')
   .controller('MoviedetailsCtrl', function ($sce, localStorageService, $http,$route,$uibModal,$location,apiKey,
-                                            $q,$scope,movieTomatoDetails,movieInfoDetails, movieShowTime, getComments) {
+                                            $q,$scope,movieTomatoDetails,movieInfoDetails, movieShowTime, getComments, movieDetails) {
       console.log("---------",movieTomatoDetails);
       console.log("++++++++++++",movieInfoDetails);
       console.log("///////////////////////////",movieShowTime);
@@ -147,16 +147,62 @@ angular.module('backendTheatreApp')
       //$scope.displayTomatoData.trailer = "https://www.youtube.com/embed?listType=search&amp;list="+$scope.displayTomatoData.movieTitle+"+Trailer";
       $scope.displayTomatoData.trailer = "https://www.youtube.com/results?search_query="+$scope.displayTomatoData.movieTitle+"+trailer";
       $scope.trustSrc = function(src) {
-          console.log(src);
+          // console.log(src);
           return $sce.trustAsResourceUrl("https://www.youtube.com/embed?listType=search&amp;list="+src+"+Trailer");
       };
       $sce.trustAsResourceUrl($scope.displayTomatoData.trailer);
       /*End Trailers*/
 
      /*Comment Section*/
+    $scope.h = false;
       console.log("Get Comments",getComments);
-      $scope.firstRate = 0;
-      $scope.secondRate = 0;
-      $scope.readOnly = true;
+      function getCComments() {
+          movieDetails.getComments().then(function (response) {
+            $scope.h = true;
+            $scope.getCommentss = response;
+          });
+      }
+      getCComments();
+      $scope.postComments = function postComments(){
+        var data = {
+          user_comments: $scope.user_comments,
+          star_rating: $scope.star_rating,
+          current_time: parseInt(moment().format('x'))
+        };
+        movieDetails.postComments(data).then(function(response){
+          $scope.getCommentss = response;
+          // getCComments();
+          $scope.user_comments = null;
+          $scope.star_rating = null;
+        });
+      };
+      // $scope.getComments = getComments;
+      $scope.epoch_to_datetime = function (input) {
+        // input  = 1489093000;
+        input =  parseInt(input);
+        var dd =new Date();
+        // console.log(dd, input, moment().unix());
+        if(angular.isDefined(input))
+          return moment(input).format("MMMM DD, YYYY");
+        else return;
+      };
      /*End Comment Section*/
+
+
+
+
+    $scope.hoveringOver = function(value) {
+      $scope.overStar = value;
+      $scope.percent = 100 * (value / $scope.max);
+    };
+
+    $scope.ratingStates = [
+      {stateOn: 'glyphicon-ok-sign', stateOff: 'glyphicon-ok-circle'},
+      {stateOn: 'glyphicon-star', stateOff: 'glyphicon-star-empty'},
+      {stateOff: 'glyphicon-off'}
+    ];
+
+    // <i class="fa fa-star" aria-hidden="true"></i>
+
+
   });

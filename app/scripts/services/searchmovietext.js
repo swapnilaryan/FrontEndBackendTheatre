@@ -125,6 +125,25 @@ angular.module('backendTheatreApp')
   .factory('movieDetails', function ($q,localStorageService,$http,apiKey,searchMovieText) {
       var id ="";
       return {
+          postComments: function(data){
+            var deferred = $q.defer();
+            //var movieFormat = searchMovieText.get();
+            id = searchMovieText.get();
+            if(id!=""){
+              var storedId = localStorageService.set('storeId',id);
+            }else{
+              id = localStorageService.get('storeId');
+            }
+            $http.post("" + apiKey.apiUrlFn() + "db/addComment/"+id+"/rJ-k_QJjl", data)
+              .success(function (data) {
+                //console.log("------", data);
+                deferred.resolve(data);
+              }).error(function (data) {
+              //console.log("????", data);
+              deferred.reject(data);
+            });
+            return deferred.promise;
+          },
           getComments: function () {
               var deferred = $q.defer();
               //var movieFormat = searchMovieText.get();

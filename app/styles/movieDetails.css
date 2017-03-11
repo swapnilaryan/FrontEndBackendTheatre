@@ -1,9 +1,19 @@
+.glyphicon{
+  font-weight: bold;
 
+}
+.glyphicon-star {
+  color:#ee9a00;
+}
+
+.glyphicon-star-empty{
+ color: #ddd;
+}
 .actionBox .form-group * {
   width:100%;
 }
 .taskDescription {
-  margin-top:10px 0;
+  margin-top:10px;
 }
 .commentList {
   padding:0;
@@ -31,6 +41,7 @@
 }
 .commentText p {
   margin:0;
+  cursor: default;
 }
 .sub-text {
   color:#aaa;

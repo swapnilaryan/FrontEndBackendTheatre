@@ -94,11 +94,11 @@ REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
           var salt = bcrypt.genSaltSync(10);
           var hashPassword = bcrypt.hashSync(fb_result.profile.email, salt); //here password is same as fb email id
           var query = null;
-          query = "INSERT INTO ??(??,??,??,??,??,??) VALUES (?,?,?,?,?,?)";
+          query = "INSERT INTO ??(??,??,??,??,??,??,??) VALUES (?,?,?,?,?,?,?)";
           table = ["movieuser", "movieUserId", "movieUserFirstName", "movieUserLastName",
-            "movieUserEmailId","movieUserPassword", "movieUserAccessToken",
+            "movieUserEmailId","movieUserPassword", "movieUserAccessToken","movieUserFBProfileImage",
             shortid.generate(), fb_result.profile.first_name, fb_result.profile.last_name,
-            (fb_result.profile.email).toLowerCase(), hashPassword, fb_result.accessToken];
+            (fb_result.profile.email).toLowerCase(), hashPassword, fb_result.accessToken,fb_result.profile.fb_image];
           query = mysql.format(query, table);
           connection.query(query, function (err, rows) {
               console.log("Something happening");
@@ -139,13 +139,13 @@ REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
         var salt = bcrypt.genSaltSync(10);
         var hashPassword = bcrypt.hashSync(fb_result.email, salt); //here password is same as fb email id
         var query = null;
-        query = "INSERT INTO ??(??,??,??,??,??,??, ??) VALUES (?,?,?,?,?,?, ?)" +
-          "ON DUPLICATE KEY UPDATE ?? = ?";
+        query = "INSERT INTO ??(??,??,??,??,??,??, ??, ??) VALUES (?,?,?,?,?,?, ?,?)" +
+          "ON DUPLICATE KEY UPDATE ?? = ?, ?? = ?";
         table = ["movieuser", "movieUserId", "movieUserFirstName", "movieUserLastName",
-          "movieUserEmailId","movieUserPassword", "movieUserAccessToken","movieUserFBID",
+          "movieUserEmailId","movieUserPassword", "movieUserAccessToken","movieUserFBID","movieUserFBProfileImage",
           shortid.generate(), fb_result.first_name, fb_result.last_name,
-          (fb_result.email).toLowerCase(), hashPassword, fb_result.accessToken, fb_result.id,
-          "movieUserAccessToken",fb_result.accessToken];
+          (fb_result.email).toLowerCase(), hashPassword, fb_result.accessToken, fb_result.id,fb_result.fb_image,
+          "movieUserAccessToken",fb_result.accessToken,"movieUserFBProfileImage",fb_result.fb_image];
         query = mysql.format(query, table);
         connection.query(query, function (err, rows) {
           console.log("Something happening");
@@ -2012,8 +2012,15 @@ REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
         res.json(err);
         //self.connectMysql();
       } else {
-        connection.query("SELECT * from ?? where ?? = ?",
-          ["movie_comments","m_c_movie_imdb_id", imdbID], function (err, rows) {
+        var q_query = "SELECT mu.movieUserFirstName, mu.movieUserLastName, mu.movieUserFBProfileImage, " +
+          "mc.m_c_comment, mc.m_c_star_rating, mc.m_c_current_time " +
+          "FROM movie_theatre.movieuser AS mu " +
+          "INNER JOIN  movie_theatre.movie_comments as mc " +
+          "ON mc.m_c_movie_imdb_id = ?" +
+          "ORDER BY mc.m_c_current_time desc";
+        var t_table = [imdbID];
+        q_query = mysql.format(q_query,t_table);
+        connection.query(q_query, function (err, rows) {
             console.log("Something happening");
             if (err) {
               res.json({Error: 'Get Comments error:- ' + err});
@@ -2028,19 +2035,39 @@ REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
   //Pending
   router.post("/db/addComment/:imdbID/:userID", function (req, res) {
     var imdbID = req.params.imdbID;
+    var userID = req.params.userID;
     pool.getConnection(function (err, connection) {
       if (err) {
         console.log("Error happened :- ", err);
         res.json(err);
         //self.connectMysql();
       } else {
-        connection.query("SELECT * from ?? where ?? = ?",
-          ["movie_comments","m_c_movie_imdb_id", imdbID], function (err, rows) {
+        var query = "INSERT INTO ??(??,??,??,??,??) VALUES (?,?,?,?,?)";
+        var table = ["movie_comments", "m_c_movie_imdb_id", "m_c_user_id",
+          "m_c_comment","m_c_star_rating", "m_c_current_time",
+          imdbID, userID, req.body.user_comments, req.body.star_rating, req.body.current_time];
+        query = mysql.format(query, table);
+        connection.query(query, function (err, rows) {
             console.log("Something happening");
             if (err) {
               res.json({Error: 'Get Comments error:- ' + err});
             } else {
-              res.json(rows);
+              var q_query = "SELECT mu.movieUserFirstName, mu.movieUserLastName, mu.movieUserFBProfileImage, " +
+                "mc.m_c_comment, mc.m_c_star_rating, mc.m_c_current_time " +
+                "FROM movie_theatre.movieuser AS mu " +
+                "INNER JOIN  movie_theatre.movie_comments as mc " +
+                "ON mc.m_c_movie_imdb_id = ?" +
+                "ORDER BY mc.m_c_current_time desc";
+              var t_table = [imdbID];
+              q_query = mysql.format(q_query,t_table);
+              connection.query(q_query, function (err, rows) {
+                console.log("Something happening");
+                if (err) {
+                  res.json({Error: 'Get Comments error:- ' + err});
+                } else {
+                  res.json(rows);
+                }
+              });
             }
           });
       }
