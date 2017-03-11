@@ -2012,7 +2012,7 @@ REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
         res.json(err);
         //self.connectMysql();
       } else {
-        var q_query = "SELECT mu.movieUserFirstName, mu.movieUserLastName, mu.movieUserFBProfileImage, " +
+        var q_query = "SELECT DISTINCT mu.movieUserFirstName, mu.movieUserLastName, mu.movieUserFBProfileImage, " +
           "mc.m_c_comment, mc.m_c_star_rating, mc.m_c_current_time " +
           "FROM movie_theatre.movieuser AS mu " +
           "INNER JOIN  movie_theatre.movie_comments as mc " +
@@ -2052,7 +2052,7 @@ REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
             if (err) {
               res.json({Error: 'Get Comments error:- ' + err});
             } else {
-              var q_query = "SELECT mu.movieUserFirstName, mu.movieUserLastName, mu.movieUserFBProfileImage, " +
+              var q_query = "SELECT DISTINCT mu.movieUserFirstName, mu.movieUserLastName, mu.movieUserFBProfileImage, " +
                 "mc.m_c_comment, mc.m_c_star_rating, mc.m_c_current_time " +
                 "FROM movie_theatre.movieuser AS mu " +
                 "INNER JOIN  movie_theatre.movie_comments as mc " +
