@@ -130,16 +130,22 @@ angular.module('backendTheatreApp')
             //var movieFormat = searchMovieText.get();
             id = searchMovieText.get();
             if(id!=""){
-              var storedId = localStorageService.set('storeId',id);
+               localStorageService.set('storeId',id);
             }else{
               id = localStorageService.get('storeId');
             }
-            $http.post("" + apiKey.apiUrlFn() + "db/addComment/"+id+"/rJ-k_QJjl", data)
+            var fb_email = null;
+            if(localStorage.getItem("FB_LoggedIn_User_EmailID")){
+              fb_email = localStorage.getItem("FB_LoggedIn_User_EmailID");
+            }else{
+              fb_email = "anonymous@email.com"
+            }
+            $http.post("" + apiKey.apiUrlFn() + "db/addComment/"+id+"/"+fb_email, data)
               .success(function (data) {
                 //console.log("------", data);
                 deferred.resolve(data);
               }).error(function (data) {
-              //console.log("????", data);
+              console.log("????", data);
               deferred.reject(data);
             });
             return deferred.promise;
