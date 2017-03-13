@@ -2021,7 +2021,8 @@ REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
           "mc.m_c_comment, mc.m_c_star_rating, mc.m_c_current_time " +
           "FROM movie_theatre.movieuser AS mu " +
           "INNER JOIN  movie_theatre.movie_comments as mc " +
-          "ON mc.m_c_movie_imdb_id = ?" +
+          "ON mc.m_c_user_fb_email = mu.movieUserEmailId " +
+          "WHERE mc.m_c_movie_imdb_id = ?" +
           "ORDER BY mc.m_c_current_time desc";
         var t_table = [imdbID];
         q_query = mysql.format(q_query,t_table);
