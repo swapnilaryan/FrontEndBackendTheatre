@@ -188,7 +188,6 @@
           <li ng-repeat="comment in getCommentss">
             <div class="commenterImage">
               <img ng-src="{{comment.movieUserFBProfileImage}}">
-              <!--<img src="http://placekitten.com/50/50" />-->
             </div>
             <div class="commentText">
               <p class="">{{::comment.m_c_comment}}</p> <span class="date sub-text">on {{::epoch_to_datetime(comment.m_c_current_time)}}</span>&nbsp;&nbsp;
@@ -197,8 +196,8 @@
           </li>
         </ul>
       </div>
-      <div class="comments">
-        <h4 class="pull-left">Comment As:- {{UserName}}</h4>
+      <div class="comments" id="comment_section">
+        <h4 class="pull-left" id="comment_as">Comment As:- {{UserName}}</h4>
         <div class="comment_textarea"><textarea data-ng-model="user_comments" class="form-control" rows="4" cols="50" name="comment"></textarea></div>
         <div class="star_rating_n_post">
           <span uib-rating ng-model="star_rating" max="5" read-only="false" on-hover="hoveringOver(value)" on-leave="overStar = null" titles="['one','two','three']" aria-labelledby="default-rating"></span>
@@ -272,4 +271,15 @@
     $("#myModal").on('hidden.bs.modal', function (e) {
         $("#myModal iframe").attr("src", $("#myModal iframe").attr("src"));
     });
+    var check_if_loggedin = setInterval(function () {
+      console.log("here");
+      if(localStorage.getItem("FB_LoggedIn_User_EmailID")){
+        document.getElementById('comment_section').style.visibility = 'visible';
+        document.getElementById('comment_as').innerHTML = "Comment as " + localStorage.getItem("FB_LoggedIn_User_FirstName") + " "+ localStorage.getItem("FB_LoggedIn_User_LastName");
+        clearInterval(check_if_loggedin);
+      }else{
+        document.getElementById('comment_section').style.visibility = 'hidden';
+      }
+    },1000);
+
 </script>

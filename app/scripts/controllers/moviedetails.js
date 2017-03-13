@@ -169,12 +169,16 @@ angular.module('backendTheatreApp')
           star_rating: $scope.star_rating,
           current_time: parseInt(moment().format('x'))
         };
-        movieDetails.postComments(data).then(function(response){
-          $scope.getCommentss = response;
-          // getCComments();
-          $scope.user_comments = null;
-          $scope.star_rating = null;
-        });
+        if($scope.user_comments==undefined || $scope.user_comments.trim() == ""){
+          alert("Please write something to Comment..!");
+        }else{
+          movieDetails.postComments(data).then(function(response){
+            $scope.getCommentss = response;
+            // getCComments();
+            $scope.user_comments = null;
+            $scope.star_rating = null;
+          });
+        }
       };
       // $scope.getComments = getComments;
       $scope.epoch_to_datetime = function (input) {
