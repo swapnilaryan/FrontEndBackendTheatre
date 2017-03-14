@@ -34,6 +34,12 @@ angular.module('backendTheatreApp')
       $scope.displayMovieDetails.infoMovieRuntime = ""+hours+" hr."+minutes+" min";
       $scope.displayMovieDetails.infoMoviePosterPath = $scope.displayMovieDetails.infoMoviePosterPath.replace("./app","..");
       //end calculate runtime
+      //Buy button disable/enable
+      if($scope.displayMovieDetails.infoMovieBuyTicketsButton==1){
+        $scope.displayMovieDetails.infoMovieBuyTicketsButton = true;
+      }else{
+        $scope.displayMovieDetails.infoMovieBuyTicketsButton = false;
+      }
       /*Kids In Mind Rating*/
       // get the overall rating
       $scope.kidsinmind = false;

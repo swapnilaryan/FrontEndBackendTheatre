@@ -638,8 +638,8 @@ REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
         res.json(err);
         //self.connectMysql();
       } else {
-        connection.query("SELECT ??, ?? , ??, ?? from ??",
-          ["infoMovieID", "infoImdbID", "infoMovieName", "infoMoviePosterPath", "movieinfo"], function (err, rows) {
+        connection.query("SELECT ??, ?? , ??, ??, ?? from ??",
+          ["infoMovieID", "infoImdbID", "infoMovieName", "infoMoviePosterPath", "infoMovieBuyTicketsButton", "movieinfo"], function (err, rows) {
             console.log("Something happening");
             if (err) {
               res.json({Error: 'Here line 454 An error occured :- ' + err});
@@ -1268,6 +1268,27 @@ REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
       }
     }
   });
+  // 6. Update MovieInfo (Here buy button)
+  router.put("/db/admin/update-movie-info", function (req,res){
+    var query = "UPDATE ?? SET ??=? WHERE ??=?";
+    var table = ["admin_movieinfo", "infoMovieBuyTicketsButton", req.body.buyTicketButtonValue, "infoImdbID", req.body.movieImdbID];
+    query = mysql.format(query, table);
+    pool.getConnection(function (err, connection) {
+      if (err) {
+        console.log("Error happened :- ", err);
+        res.json({"Message": "Error occured", "Status": "Fail"});
+      } else {
+        connection.query(query, function (err, rows) {
+          if (err) {
+            console.log("Here line 114 Error", err);
+          } else {
+            res.json({"Message": "Movie Info updated Successfully", "Status": "Success"});
+          }
+        });
+      }
+      connection.release();
+    });
+  });
   /*Admin Setting :- Movies - Upcoming Movies*/
   // Get quick recommendations
   router.get("/db/admin/recommended-upcoming-movies", function (req, res) {
@@ -1298,9 +1319,11 @@ REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
   router.get("/db/admin/added-upcoming-movies", function (req, res) {
     /*Searching from Database*/
     // for time being using this..
-    var query = "SELECT * FROM ?? WHERE ??=1";
+    var query = "SELECT * FROM ?? WHERE ?? BETWEEN " +
+      "((DATE_SUB( CURDATE() ,INTERVAL -1 DAY))) AND (DATE_SUB( CURDATE() ,INTERVAL -30 DAY)) " +
+      "AND ??=1";
     //var query = "SELECT * FROM ?? WHERE ?? LIKE ? AND ";
-    var table = ["admin_upcomingmovies", "upAddByAdmin"];
+    var table = ["admin_upcomingmovies", "upReleaseDate", "upAddByAdmin"];
     query = mysql.format(query, table);
     pool.getConnection(function (err, connection) {
       if (err) {
