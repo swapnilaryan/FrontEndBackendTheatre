@@ -130,7 +130,6 @@ angular.module('backendTheatreApp')
             //var movieFormat = searchMovieText.get();
             id = searchMovieText.get();
             if(id!=""){
-               localStorageService.set('storeId',id);
             }else{
               id = localStorageService.get('storeId');
             }
@@ -181,6 +180,7 @@ angular.module('backendTheatreApp')
                   id = localStorageService.get('storeId');
               }
               //$http.get("" + apiKey.apiUrlFn() + "db/rottenTomatoes/zootopia")
+            console.log('"" + apiKey.apiUrlFn() + "db/rottenTomatoes/"+id',"" + apiKey.apiUrlFn() + "db/rottenTomatoes/"+id);
               $http.get("" + apiKey.apiUrlFn() + "db/rottenTomatoes/"+id)
                   .success(function (data) {
                       deferred.resolve(data);
