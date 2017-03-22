@@ -76,19 +76,29 @@
 				//   rottenCount: parseInt(/\d+$/.exec($('#all-critics-numbers #scoreStats > div:nth-of-type(4)').text().trim())[0]),
 				//   criticsConsensus: $('#all-critics-numbers .critic_consensus').clone().find('span').remove().end().text().trim()
 				// });
-
-				rc.crawlTomato["allCritics"] = (rc.allCritics = {
-					freshness: $('#all-critics-numbers .meter-tomato').hasClass('fresh') ? 'fresh' : 'rotten',
-					tomatometer: (isNaN(parseInt($('#all-critics-numbers .meter-value span').text()))) ? "N/A" : parseInt($('#all-critics-numbers .meter-value span').text()),
-					averageRating: (($('#all-critics-numbers #scoreStats > div:first-of-type').text().trim().match(ratingRegex)) != null) ? ($('#all-critics-numbers #scoreStats > div:first-of-type').text().trim().match(ratingRegex)[0].trim()) : "N/A",
-					reviewCount: (isNaN(parseInt(/\d+$/.exec($('#all-critics-numbers #scoreStats > div:nth-of-type(2)').text().trim())[0]))) ? "N/A" : parseInt(/\d+$/.exec($('#all-critics-numbers #scoreStats > div:nth-of-type(2)').text().trim())[0]),
-					freshCount: (isNaN(parseInt(/\d+$/.exec($('#all-critics-numbers #scoreStats > div:nth-of-type(3)').text().trim())))) ? "N/A" : (parseInt(/\d+$/.exec($('#all-critics-numbers #scoreStats > div:nth-of-type(3)').text().trim())[0])),
-					rottenCount: (isNaN(parseInt(/\d+$/.exec($('#all-critics-numbers #scoreStats > div:nth-of-type(4)').text().trim())))) ? "N/A" : (parseInt(/\d+$/.exec($('#all-critics-numbers #scoreStats > div:nth-of-type(4)').text().trim())[0])),
-					criticsConsensus: $('#all-critics-numbers .critic_consensus').clone().find('span').remove().end().text().trim()
-				});
-				console.log("No error +++++++++++++++++++++++++++++++", rc.crawlTomato["allCritics"]);
-
-//                 reviewCount: parseInt($('#top-critics-numbers #scoreStats span[itemprop*=reviewCount]').text().trim()),
+				if ($('#top-critics-numbers .meter-value').length) {
+						rc.crawlTomato["allCritics"] = (rc.allCritics = {
+						freshness: $('#all-critics-numbers .meter-tomato').hasClass('fresh') ? 'fresh' : 'rotten',
+						tomatometer: (isNaN(parseInt($('#all-critics-numbers .meter-value span').text()))) ? "N/A" : parseInt($('#all-critics-numbers .meter-value span').text()),
+						averageRating: (($('#all-critics-numbers #scoreStats > div:first-of-type').text().trim().match(ratingRegex)) != null) ? ($('#all-critics-numbers #scoreStats > div:first-of-type').text().trim().match(ratingRegex)[0].trim()) : "N/A",
+						reviewCount: (isNaN(parseInt(/\d+$/.exec($('#all-critics-numbers #scoreStats > div:nth-of-type(2)').text().trim())[0]))) ? "N/A" : parseInt(/\d+$/.exec($('#all-critics-numbers #scoreStats > div:nth-of-type(2)').text().trim())[0]),
+						freshCount: (isNaN(parseInt(/\d+$/.exec($('#all-critics-numbers #scoreStats > div:nth-of-type(3)').text().trim())))) ? "N/A" : (parseInt(/\d+$/.exec($('#all-critics-numbers #scoreStats > div:nth-of-type(3)').text().trim())[0])),
+						rottenCount: (isNaN(parseInt(/\d+$/.exec($('#all-critics-numbers #scoreStats > div:nth-of-type(4)').text().trim())))) ? "N/A" : (parseInt(/\d+$/.exec($('#all-critics-numbers #scoreStats > div:nth-of-type(4)').text().trim())[0])),
+						criticsConsensus: $('#all-critics-numbers .critic_consensus').clone().find('span').remove().end().text().trim()
+					});
+					console.log("No error +++++++++++++++++++++++++++++++", rc.crawlTomato["allCritics"]);
+				}else{
+					rc.crawlTomato["allCritics"] = (rc.allCritics = {
+						freshness: "N/A",
+						tomatometer: "N/A",
+						averageRating: "N/A",
+						reviewCount: "N/A",
+						freshCount: "N/A",
+						rottenCount: "N/A",
+						criticsConsensus: "N/A"
+					});
+				}
+				
 				console.log("$('#top-critics-numbers .meter-value').length", $('#top-critics-numbers .meter-value').length);	
 				if ($('#top-critics-numbers .meter-value').length) {
 					rc.crawlTomato["topCritics"] = (rc.topCritics = {
@@ -128,7 +138,7 @@
 
 				rc.crawlTomato["genre"] = (rc.genre = $('.movie_info .content_body table.info td:contains("Genre")').next('td').text().trim().split(', '));
 
-				rc.crawlTomato["boxOffice"] = (rc.boxOffice = $('.movie_info .content_body table.info td:contains("Box Office")').next('td').text().trim() || "unknown");
+				rc.crawlTomato["boxOffice"] = (rc.boxOffice = ($(".content-meta.info >li div:contains('Box Office') ")).next('div').text().trim() || "unknown");
 			})
 			.then(function () {
 				//console.log(rc.crawlTomato,imdb_id);
