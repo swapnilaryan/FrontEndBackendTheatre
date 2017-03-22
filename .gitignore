@@ -11,3 +11,4 @@ app/main/
 dist/main/
 main/.htaccess
 main/
+.vscode/

@@ -81,7 +81,7 @@
 					freshness: $('#all-critics-numbers .meter-tomato').hasClass('fresh') ? 'fresh' : 'rotten',
 					tomatometer: (isNaN(parseInt($('#all-critics-numbers .meter-value span').text()))) ? "N/A" : parseInt($('#all-critics-numbers .meter-value span').text()),
 					averageRating: (($('#all-critics-numbers #scoreStats > div:first-of-type').text().trim().match(ratingRegex)) != null) ? ($('#all-critics-numbers #scoreStats > div:first-of-type').text().trim().match(ratingRegex)[0].trim()) : "N/A",
-					reviewCount: (isNaN(parseInt($('#all-critics-numbers #scoreStats span[itemprop*=reviewCount]').text().trim()))) ? "N/A" : (parseInt($('#all-critics-numbers #scoreStats span[itemprop*=reviewCount]').text().trim())),
+					reviewCount: (isNaN(parseInt(/\d+$/.exec($('#all-critics-numbers #scoreStats > div:nth-of-type(2)').text().trim())[0]))) ? "N/A" : parseInt(/\d+$/.exec($('#all-critics-numbers #scoreStats > div:nth-of-type(2)').text().trim())[0]),
 					freshCount: (isNaN(parseInt(/\d+$/.exec($('#all-critics-numbers #scoreStats > div:nth-of-type(3)').text().trim())))) ? "N/A" : (parseInt(/\d+$/.exec($('#all-critics-numbers #scoreStats > div:nth-of-type(3)').text().trim())[0])),
 					rottenCount: (isNaN(parseInt(/\d+$/.exec($('#all-critics-numbers #scoreStats > div:nth-of-type(4)').text().trim())))) ? "N/A" : (parseInt(/\d+$/.exec($('#all-critics-numbers #scoreStats > div:nth-of-type(4)').text().trim())[0])),
 					criticsConsensus: $('#all-critics-numbers .critic_consensus').clone().find('span').remove().end().text().trim()
@@ -89,7 +89,7 @@
 				console.log("No error +++++++++++++++++++++++++++++++", rc.crawlTomato["allCritics"]);
 
 //                 reviewCount: parseInt($('#top-critics-numbers #scoreStats span[itemprop*=reviewCount]').text().trim()),
-				console.log("$('#top-critics-numbers .meter-value').length", $('#top-critics-numbers .meter-value').length);
+				console.log("$('#top-critics-numbers .meter-value').length", $('#top-critics-numbers .meter-value').length);	
 				if ($('#top-critics-numbers .meter-value').length) {
 					rc.crawlTomato["topCritics"] = (rc.topCritics = {
 						freshness: $('#top-critics-numbers .meter-tomato').hasClass('fresh') ? 'fresh' : 'rotten',
