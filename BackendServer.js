@@ -10,8 +10,10 @@
 	var session	= require('express-session');
 	var rest = require("./Rest.js");
 	var app  = express();
+	const RedisStore = require('connect-redis')(session)
 	var passport = require('passport') ,
 		FacebookStrategy = require('passport-facebook').Strategy;
+		
 	var server ="";
 	var router = null;
 	var pool = null;
@@ -53,15 +55,26 @@
 
 	REST.prototype.configureExpress = function(connection,pool) {
 		var self = this;
+
 		app.use(bodyParser.urlencoded({ extended: true }));
 		app.use(bodyParser.json());
+		app.use(session({  
+			store: new RedisStore({
+				url: process.env.REDIS_STORE_URI,
+			}),
+			secret:process.env.REDIS_STORE_SECRET || 'swapnil',
+			resave: false,
+			saveUninitialized: false
+		}));
 		app.use(passport.initialize());
 		app.use(passport.session());
+		console.log("---------------------------------",process.env.REDIS_STORE_URI, process.env.REDIS_STORE_SECRET);
+
 		// app.use(session({secret: 'swapnil',saveUninitialized: true,resave: true}));
 		//handle cors issue
 		app.use(function(req, res, next) {
 			res.header("Access-Control-Allow-Origin", "*");
-			res.header("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS");
+			res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS");
 			res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 			next();
 		});
@@ -74,6 +87,7 @@
 			res.json({ message: 'hooray! welcome to our api!' });
 		});
 		app.use('/api', router);
+		require('./authentication').init(router)				
 		var rest_router = new rest(router,connection,pool);
 		self.startServer();
 	};

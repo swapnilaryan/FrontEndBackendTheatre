@@ -66,14 +66,26 @@ var cronJob2 = cron.job("* * * * * *", function () {
 	/*End Deleting*/
 });
 //cronJob2.start();
+const passport = require('passport')  
+const LocalStrategy = require('passport-local').Strategy
 
 REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
-
+	
+	router.get('/profile', passport.authenticationMiddleware(), function(req, res){
+			console.log("I came here ");
+			res.json({username: req.user.username});
+	})
+		router.get('/profilee', passport.authenticationMiddleware(), function(req, res){
+			// console.log(req);
+			res.json({username: req.user.username, sessionID : req.sessionID});
+	})
+	router.post('/login_n', passport.authenticate('local', {
+		successRedirect: 'http://'+configJson.localhost+':'+configJson.sitePort+'/api/profilee',
+		failureRedirect: 'http://'+configJson.localhost+':'+configJson.sitePort+'/api/login_n'
+	}))
 	/*Test Logging Via Facebook */
 	var global_email = null;
 	var global_password = null;
-
-
 	// passport.use(new FacebookStrategy({
 	//     clientID: "126030407918627",
 	//     clientSecret: "b939974333f8a79344c8974767554a12",
@@ -1054,9 +1066,9 @@ REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
 	});
 	//2: Login
 	router.post("/db/userLogin", function (req, res) {
-		console.log(req);
 		var matchPassword;
 		sess = req.session;
+		console.log("Session ",sess);
 		sess.email = req.body.emailId;
 		sess.password = req.body.password;
 		// Fetch the details from the db of given email
@@ -1223,6 +1235,7 @@ REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
 		sess = req.session;
 		sess.email = req.body.adminUserEmail;
 		sess.password = req.body.password;
+		console.log("Admin Session",sess);
 		// Fetch the details from the db of given email
 		var query = 'SELECT * FROM ?? WHERE adminUserEmail = ?';
 		var table = ["admin_user", (req.body.adminUserEmail).toLowerCase()];
