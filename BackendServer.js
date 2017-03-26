@@ -1,23 +1,23 @@
 (function () {
-	"use strict";
+	'use strict';
 	/**
 	 * Created by !!.Swapnil..Aryan.!! on 13-Apr-16.
 	 */
-	var express = require("express");
-	var mysql   = require("mysql");
-	var bodyParser  = require("body-parser");
+	var express = require('express');
+	var mysql   = require('mysql');
+	var bodyParser  = require('body-parser');
 	var fs = require('fs');
 	var session	= require('express-session');
-	var rest = require("./Rest.js");
+	var rest = require('./Rest.js');
 	var app  = express();
 	const RedisStore = require('connect-redis')(session)
 	var passport = require('passport') ,
 		FacebookStrategy = require('passport-facebook').Strategy;
 		
-	var server ="";
+	var server ='';
 	var router = null;
 	var pool = null;
-	var kill = require("killport");
+	var kill = require('killport');
 	function REST(){
 		var self = this;
 		self.connectMysql();
@@ -59,42 +59,45 @@
 		app.use(bodyParser.urlencoded({ extended: true }));
 		app.use(bodyParser.json());
 		app.use(session({  
-			store: new RedisStore({
-				url: process.env.REDIS_STORE_URI,
-			}),
-			secret:process.env.REDIS_STORE_SECRET || 'swapnil',
+			// store: new RedisStore({
+			// 	url: process.env.REDIS_STORE_URI
+			// }),
+			// secret:process.env.REDIS_STORE_SECRET || 'swapnil',
+			secret:'swapnil',
+			cookie: { maxAge : 10000 }, //1 Hour
 			resave: false,
 			saveUninitialized: false
 		}));
 		app.use(passport.initialize());
 		app.use(passport.session());
-		console.log("---------------------------------",process.env.REDIS_STORE_URI, process.env.REDIS_STORE_SECRET);
 
 		// app.use(session({secret: 'swapnil',saveUninitialized: true,resave: true}));
 		//handle cors issue
 		app.use(function(req, res, next) {
-			res.header("Access-Control-Allow-Origin", "*");
-			res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS");
-			res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+			res.header('Access-Control-Allow-Origin', '*');
+			res.setHeader('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
+			res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
 			next();
 		});
 		//res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 		//end handling
 		router = express.Router();           // get an instance of the express Router
-		router.use(session({secret: 'swapnil',saveUninitialized: true,resave: true}));
+		// router.use(passport.initialize());
+		// router.use(session({secret: 'swapnil',saveUninitialized: false,resave: false}));
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 		router.get('/', function(req, res) {
 			res.json({ message: 'hooray! welcome to our api!' });
 		});
 		app.use('/api', router);
-		require('./authentication').init(router)				
+		require('./authentication').init(router);
+		
 		var rest_router = new rest(router,connection,pool);
 		self.startServer();
 	};
 	var port = process.env.PORT || mysqlConfig.sitePort;        // set our port
 	REST.prototype.startServer = function() {
 		server = app.listen(port,function(err){
-			console.log("All right ! I am alive at Port ", port);
+			console.log('All right ! I am alive at Port ', port);
 		}).on('error', function(err) {
 			kill(port).then(function(out){
 				console.log(out);
@@ -103,13 +106,13 @@
 				.catch(function(err){
 					console.log(err);
 				});
-			console.log("Error-", err);
+			console.log('Error-', err);
 			server.close();
 		});
 	};
 
 	REST.prototype.stop = function(err) {
-		console.log("ISSUE WITH MYSQL n" + err);
+		console.log('ISSUE WITH MYSQL n' + err);
 		process.exit(1);
 	};
 	var r = new REST();
