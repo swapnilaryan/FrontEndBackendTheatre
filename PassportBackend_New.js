@@ -66,30 +66,30 @@ var cronJob2 = cron.job('* * * * * *', function () {
 	/*End Deleting*/
 });
 //cronJob2.start();
-const passport = require('passport')  
+const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 
 REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
-	
+
 	router.get('/profile', passport.authenticationMiddleware(), function(req, res){
-			console.log('I came here ');
-			res.json({username: req.user.username});
+		console.log('I came here ');
+		res.json({username: req.user.username});
 	});
-		router.get('/profilee', passport.authenticationMiddleware(), function(req, res){
-			var returnMessage = {};
-			if(req.user.Error > 0){
-				console.log('------------------------------',req.user);
-				returnMessage.Message = req.user.Message;
-				returnMessage.Error = req.user.Error;
-				returnMessage.Status = req.user.Status;
-				// req.session.destroy();
-			}else {
-				returnMessage.message = req.user;
-				returnMessage.error = 0;
-				returnMessage.status = 'Success login';
-				returnMessage.sessionID = req.sessionID;
-			}
-			res.json(returnMessage);
+	router.get('/profilee', passport.authenticationMiddleware(), function(req, res){
+		var returnMessage = {};
+		if(req.user.Error > 0){
+			console.log('------------------------------',req.user);
+			returnMessage.Message = req.user.Message;
+			returnMessage.Error = req.user.Error;
+			returnMessage.Status = req.user.Status;
+			// req.session.destroy();
+		}else {
+			returnMessage.message = req.user;
+			returnMessage.error = 0;
+			returnMessage.status = 'Success login';
+			returnMessage.sessionID = req.sessionID;
+		}
+		res.json(returnMessage);
 	});
 	router.post('/db/admin/login-admin', passport.authenticate('local'), function (req, res) {
 		// user: { Message: 'No User Found', Status: 'Fail', Error: '1' },
