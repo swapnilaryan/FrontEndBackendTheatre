@@ -4,7 +4,8 @@ function authenticationMiddleware () {
     if (req.isAuthenticated()) {
       return next()
     }
-    res.redirect('/login_n')
+    res.redirect('http://localhost:9003');
+    // res.redirect('/login_n')
   }
 }
 

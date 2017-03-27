@@ -70,29 +70,15 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 
 REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
-	
+	router.get('/logout', function(req, res){
+		req.logout();
+		res.redirect('/');
+	});
 	router.get('/profile', passport.authenticationMiddleware(), function(req, res){
 			console.log('I came here ');
 			res.json({username: req.user.username});
 	});
-		router.get('/profilee', passport.authenticationMiddleware(), function(req, res){
-			var returnMessage = {};
-			if(req.user.Error > 0){
-				console.log('------------------------------',req.user);
-				returnMessage.Message = req.user.Message;
-				returnMessage.Error = req.user.Error;
-				returnMessage.Status = req.user.Status;
-				// req.session.destroy();
-			}else {
-				returnMessage.message = req.user;
-				returnMessage.error = 0;
-				returnMessage.status = 'Success login';
-				returnMessage.sessionID = req.sessionID;
-			}
-			res.json(returnMessage);
-	});
-	router.post('/db/admin/login-admin', passport.authenticate('local'), function (req, res) {
-		// user: { Message: 'No User Found', Status: 'Fail', Error: '1' },
+	router.get('/profilee', passport.authenticationMiddleware(), function(req, res){
 		var returnMessage = {};
 		if(req.user.Error > 0){
 			console.log('------------------------------',req.user);
@@ -104,6 +90,24 @@ REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
 			returnMessage.message = req.user;
 			returnMessage.error = 0;
 			returnMessage.status = 'Success login';
+			returnMessage.sessionID = req.sessionID;
+		}
+		res.json(returnMessage);
+	});
+	router.post('/db/admin/login-admin', passport.authenticate('local'), function (req, res) {
+		// user: { Message: 'No User Found', Status: 'Fail', Error: '1' },
+		var returnMessage = {};
+		if(req.user.Error > 0){
+			console.log('------------------------------',req.user);
+			returnMessage.Message = req.user.Message;
+			returnMessage.Error = req.user.Error;
+			returnMessage.Status = req.user.Status;
+			// req.session.destroy();
+		}else {
+			returnMessage.Message = 'Logged in Successfully';
+			returnMessage.error = 0;
+			returnMessage.Details = {email:req.user.adminUserEmail};
+			returnMessage.Status = 'Success';
 			returnMessage.sessionID = req.sessionID;
 		}
 		res.json(returnMessage);
@@ -1260,7 +1264,7 @@ REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
 		});
 	});
 	// 2. Admin Login
-	router.post('/db/admin/login-admin', function (req, res) {
+	router.post('/db/admin/login-admin-old', function (req, res) {
 		var matchPassword;
 		sess = req.session;
 		sess.email = req.body.adminUserEmail;
@@ -1301,7 +1305,7 @@ REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
 							console.log('Success');
 						} else {
 							res.json({
-								'Message': 'No such email ' + req.body.emailId + '. Please SignUp to continue',
+								'Message': 'No such email ' + req.body.adminUserEmail + '. Please SignUp to continue',
 								'Status': 'Fail'
 							});
 						}
