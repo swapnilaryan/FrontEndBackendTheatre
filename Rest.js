@@ -70,7 +70,12 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 
 REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
-	
+	router.get('/users/me',
+		passport.authenticate('local', { session: false }),
+		function(req, res) {
+			console.log(req);
+			res.json({ id: req.user.id, username: req.user.username });
+		});
 	router.get('/profile', passport.authenticationMiddleware(), function(req, res){
 			console.log('I came here ');
 			res.json({username: req.user.username});
@@ -91,8 +96,36 @@ REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
 			}
 			res.json(returnMessage);
 	});
-	router.post('/db/admin/login-admin', passport.authenticate('local'), function (req, res) {
+	router.post('/db/admin/login-admin', function (req, res) {
 		// user: { Message: 'No User Found', Status: 'Fail', Error: '1' },
+		passport.authenticate('local', function (req, res, next) {
+			if (err) {
+				return next(err);
+			}
+			if (!user) {
+				res.json("not loggedin");
+				// return res.redirect('/login');
+			}
+			req.logIn(user, function (err) {
+				if (err) {
+					return next(err);
+				}
+				res.json("logged in")
+				// return res.redirect('/users/' + user.username);
+			});
+		})(req, res, next);
+	});
+
+	router.post('/db/admin/login-admin', function (req, res) {
+		// user: { Message: 'No User Found', Status: 'Fail', Error: '1' },
+		passport.authenticate('local', function (req, res, next) {
+			if (err) { return next(err); }
+			if (!user) { return res.redirect('/login'); }
+			req.logIn(user, function(err) {
+				if (err) { return next(err); }
+				return res.redirect('/users/' + user.username);
+			});
+		})(req, res, next)
 		var returnMessage = {};
 		if(req.user.Error > 0){
 			console.log('------------------------------',req.user);
