@@ -39,11 +39,11 @@ function findUser (username, callback) {
 }
 
 passport.serializeUser(function (user, cb) {
-	console.log("in serialize");
+	console.log("in serialize" , user.adminUserEmail);
   cb(null, user);
 })
 
-passport.deserializeUser(function (adminUserEmail, done) {
+passport.deserializeUser(function (user, done) {
 	console.log("in deserialize");
   // User.findById(id, function(err, user) {
   //   done(err, user);
@@ -59,9 +59,9 @@ passport.deserializeUser(function (adminUserEmail, done) {
   //   cb(err, username);
   // })
 	// var q = 'SELECT * FROM admin_user WHERE adminUserEmail='+adminUserEmail;
-	console.log(adminUserEmail);
+	console.log(user);
 	var query = 'SELECT * FROM ?? WHERE adminUserEmail = ?';
-	var table = ['admin_user', adminUserEmail.adminUserEmail];
+	var table = ['admin_user', user.adminUserEmail];
 	query = mysql.format(query, table);
 	console.log(query);
 	pool.getConnection(function (err, connection) {
@@ -81,7 +81,7 @@ passport.deserializeUser(function (adminUserEmail, done) {
 							return done(null, rows[0]);
 					} else if(rows.length == 0){
 						return done(null, {
-							'Message': 'No User '+adminUserEmail.adminUserEmail+' Found 66',
+							'Message': 'No User '+user.adminUserEmail+' Found 66',
 							'Status': 'Fail',
 							'Error':'1'
 						});
