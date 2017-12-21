@@ -19,6 +19,12 @@
 -- Table structure for table `admin_movieinfo`
 --
 
+DROP DATABASE IF EXISTS `movie_theatre`;
+CREATE DATABASE IF NOT EXISTS  `movie_theatre`;
+
+USE `movie_theatre`;
+
+
 DROP TABLE IF EXISTS `admin_movieinfo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
