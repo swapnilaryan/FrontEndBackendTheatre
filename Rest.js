@@ -696,7 +696,7 @@ REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
 				res.json(err);
 				//self.connectMysql();
 			} else {
-				connection.query('SELECT ??, ?? , ??, ??, ?? from ??', ['infoMovieID', 'infoImdbID', 'infoMovieName', 'infoMoviePosterPath', 'infoMovieBuyTicketsButton', 'movieinfo'], function (err, rows) {
+				connection.query('SELECT ??, ?? , ??, ?? from ??', ['infoMovieID', 'infoImdbID', 'infoMovieName', 'infoMoviePosterPath',  'movieinfo'], function (err, rows) {
 					console.log('Something happening');
 					if (err) {
 						res.json({

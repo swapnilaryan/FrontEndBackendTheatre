@@ -22,7 +22,7 @@ angular.module('backendTheatreApp')
               }
               else {
                   // apiUrl = "http://cinestar.affpc.com:8080/api/";
-                  apiUrl = "http://www.cinex.press:8080/api/";
+                  apiUrl = "http://18.217.132.65/api/";
               }
               return apiUrl;
           },
@@ -32,9 +32,10 @@ angular.module('backendTheatreApp')
               image = "http://127.0.0.5/";
             }
             else {
-              image = "http://cinex.press:8002/";
+              image = "http://18.217.132.65/";
             }
             return image;
           }
       };
   });
+
