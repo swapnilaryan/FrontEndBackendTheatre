@@ -1,12 +1,10 @@
 .idea/
 node_modules/
 bower_components/
-
+dist/
 /config.json
 .DS_Store
 .tmp/
-app/images/
-dist/images/
 app/main/
 dist/main/
 main/.htaccess
