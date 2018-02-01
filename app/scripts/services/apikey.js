@@ -32,7 +32,7 @@ angular.module('backendTheatreApp')
               image = "http://127.0.0.5/";
             }
             else {
-              image = "http://18.217.132.65";
+              image = "http://18.217.132.65/";
             }
             return image;
           }
