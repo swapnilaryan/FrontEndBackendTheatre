@@ -719,8 +719,7 @@ REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
 				res.json(err);
 				//self.connectMysql();
 			} else {
-				connection.query('SELECT * from ?? where ?? != \'/images/upcomingnull\' ' +
-					'AND ?? BETWEEN ((DATE_SUB( CURDATE() ,INTERVAL -1 DAY))) AND (DATE_SUB( CURDATE() ,INTERVAL -20 DAY))  ORDER BY ?? ', ['upcomingmovies', 'upPosterPath', 'upReleaseDate', 'upReleaseDate'],
+				connection.query('SELECT * from ?? where ?? != \'/images/upcomingnull\'  ORDER BY ?? ', ['upcomingmovies', 'upPosterPath', 'upReleaseDate'],
 					function (err, rows) {
 						console.log('Something happening');
 						if (err) {
