@@ -1371,6 +1371,10 @@ REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
 							// 		'Status': 'Fail'
 							// 	});
 							// }
+              res.json({
+                		'Message': rows[0],
+                		'Status': 'Success'
+                	});
 							console.log('Success');
 						} else {
 							res.json({
