@@ -44,7 +44,7 @@
 							.then(function (r) {
 								console.log("lll");
 								rc.movieResponse["movieCredits"].push(JSON.parse(r));
-								return rp("http://www.omdbapi.com/?i=" + imdb_id + "&plot=full&r=json&tomatoes=true")
+								return rp("http://www.omdbapi.com/?i=" + imdb_id + "&plot=full&r=json&tomatoes=true&apikey=38b3b14a")
 									.then(function (r) {
 										rc.movieResponse["omdbData"].push(JSON.parse(r));
 										console.log(rc["movieResponse"], rc["movieCredits"], rc["omdbData"]);
@@ -98,8 +98,8 @@
 						criticsConsensus: "N/A"
 					});
 				}
-				
-				console.log("$('#top-critics-numbers .meter-value').length", $('#top-critics-numbers .meter-value').length);	
+
+				console.log("$('#top-critics-numbers .meter-value').length", $('#top-critics-numbers .meter-value').length);
 				if ($('#top-critics-numbers .meter-value').length) {
 					rc.crawlTomato["topCritics"] = (rc.topCritics = {
 						freshness: $('#top-critics-numbers .meter-tomato').hasClass('fresh') ? 'fresh' : 'rotten',
