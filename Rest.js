@@ -1338,11 +1338,11 @@ REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
 	router.get('/db/admin/get-admin-user/:email_id', function (req, res) {
 		var matchPassword;
 		req.session = sess;
-		req.session = {};
-    req.session.email = req.params.email_id;
+		//req.session = {};
+   // req.session.email = req.params.email_id;
 		// Fetch the details from the db of given email
 		var query = 'SELECT * FROM ?? WHERE adminUserEmail = ?';
-		var table = ['admin_user', (req.session.email).toLowerCase()];
+		var table = ['admin_user', (req.params.email_id).toLowerCase()];
 		query = mysql.format(query, table);
 		pool.getConnection(function (err, connection) {
 			if (err) {
@@ -1357,6 +1357,7 @@ REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
 					if (err) {
 						console.log('Here line 114 Error', err);
 					} else {
+	console.log(JSON.stringify(rows[0]));
 						if (rows.length > 0) {
 							// matchPassword = rows[0].adminUserPassword;
 							// var isMatch = bcrypt.compareSync(sess.password, matchPassword);
