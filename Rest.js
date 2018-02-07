@@ -66,11 +66,11 @@ var cronJob2 = cron.job('* * * * * *', function () {
 	/*End Deleting*/
 });
 //cronJob2.start();
-const passport = require('passport')  
+const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 
 REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
-	
+
 	router.get('/profile', passport.authenticationMiddleware(), function(req, res){
 			console.log('I came here ');
 			res.json({username: req.user.username});
@@ -1335,9 +1335,11 @@ REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
 		}
 	});
 	// 4. Get Admin User Details
-	router.get('/db/admin/get-admin-user', function (req, res) {
+	router.get('/db/admin/get-admin-user/:email_id', function (req, res) {
 		var matchPassword;
 		req.session = sess;
+		req.session = {};
+    req.session.email = req.params.email_id;
 		// Fetch the details from the db of given email
 		var query = 'SELECT * FROM ?? WHERE adminUserEmail = ?';
 		var table = ['admin_user', (req.session.email).toLowerCase()];
@@ -1356,19 +1358,19 @@ REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
 						console.log('Here line 114 Error', err);
 					} else {
 						if (rows.length > 0) {
-							matchPassword = rows[0].adminUserPassword;
-							var isMatch = bcrypt.compareSync(sess.password, matchPassword);
-							if (isMatch) {
-								res.json({
-									'Message': rows[0],
-									'Status': 'Success'
-								});
-							} else {
-								res.json({
-									'Message': 'Passwords do not match. Please login to continue',
-									'Status': 'Fail'
-								});
-							}
+							// matchPassword = rows[0].adminUserPassword;
+							// var isMatch = bcrypt.compareSync(sess.password, matchPassword);
+							// if (isMatch) {
+							// 	res.json({
+							// 		'Message': rows[0],
+							// 		'Status': 'Success'
+							// 	});
+							// } else {
+							// 	res.json({
+							// 		'Message': 'Passwords do not match. Please login to continue',
+							// 		'Status': 'Fail'
+							// 	});
+							// }
 							console.log('Success');
 						} else {
 							res.json({
@@ -1423,6 +1425,7 @@ REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
 								sess = req.session;
 								sess.email = req.body.adminUserEmail;
 								sess.password = req.body.password;
+								localStorage.setItem("session", sess);
 								res.json({
 									'Message': 'User updated Successfully',
 									'Details': rows[0],
