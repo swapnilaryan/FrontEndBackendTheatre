@@ -128,7 +128,7 @@ angular.module('backendTheatreApp')
             upcoming: function () {
                 var req = {
                     method: 'GET',
-                    url: siteConfig.apiUrlFn + "/upcomingMovies"
+                    url: siteConfig.apiUrl + "/upcomingMovies"
                 };
                 return commonHTTPCall($http, req, toastr, false);
             }
@@ -139,7 +139,7 @@ angular.module('backendTheatreApp')
             nowShowingMovies: function () {
                 var req = {
                     method: 'GET',
-                    url: siteConfig.apiUrlFn + "/nowShowingMovies"
+                    url: siteConfig.apiUrl + "/nowShowingMovies"
                 };
                 return commonHTTPCall($http, req, toastr, false);
             }
