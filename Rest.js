@@ -1446,7 +1446,7 @@ REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
       }
     }
   });
-  // 6. Update MovieInfo (Here buy button)
+  // 6. Update MovieInfo (Here buy button) ---- remainign
   router.put('/db/admin/update-movie-info', function (req, res) {
     var query = 'UPDATE ?? SET ??=? WHERE ??=?';
     var table = ['admin_movieinfo', 'infoMovieBuyTicketsButton', req.body.buyTicketButtonValue, 'infoImdbID', req.body.movieImdbID];
@@ -1492,6 +1492,7 @@ REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
       connection.release();
     });
   });
+
   /*Admin Setting :- Movies - Upcoming Movies*/
   // Get quick recommendations
   router.get('/db/admin/recommended-upcoming-movies', function (req, res) {
@@ -1573,6 +1574,9 @@ REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
     /*End searching*/
   });
   // Check the movies which are added by the admin.
+  /**
+   * To be completed
+    */
   router.put('/db/admin/add-upcoming-movies/:movie_id', function (req, res) {
     var query = 'UPDATE ?? SET ?? = ? WHERE ??=?';
     var table = ['admin_upcomingmovies', 'upAddByAdmin', 1, 'upMovieId', req.params.movie_id];

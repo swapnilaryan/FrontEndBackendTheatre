@@ -8,7 +8,7 @@
  */
 angular.module('backendTheatreApp')
   .directive('addToCart', function (apiKey) {
-    var imagePath = apiKey.imagePath();
+    var imagePath = config.imagePath;
     return {
       //template: '<div></div>',
       restrict: 'E',

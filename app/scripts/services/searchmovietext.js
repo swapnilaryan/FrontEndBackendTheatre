@@ -12,7 +12,7 @@ angular.module('backendTheatreApp')
   return {
     registration: function(data){
       var deferred = $q.defer();
-      $http.post(""+apiKey.apiUrlFn()+"db/registerUser", data)
+      $http.post(""+config.apiUrlFn+"db/registerUser", data)
         .success(function(data, status, headers){
           deferred.resolve(data);
         }).error(function(data){
@@ -26,7 +26,7 @@ angular.module('backendTheatreApp')
     return {
       signin: function(data){
         var deferred = $q.defer();
-        $http.post(""+apiKey.apiUrlFn()+"db/userLogin", data)
+        $http.post(""+config.apiUrlFn+"db/userLogin", data)
           .success(function(data, status, headers){
             console.log(data);
             deferred.resolve(data);
@@ -37,7 +37,7 @@ angular.module('backendTheatreApp')
       },
       userLoggedIn: function(){
         var deferred = $q.defer();
-        $http.get(""+apiKey.apiUrlFn()+"db/check")
+        $http.get(""+config.apiUrlFn+"db/check")
           .success(function(data, status, headers){
             console.log(data);
             deferred.resolve(data);
@@ -52,7 +52,7 @@ angular.module('backendTheatreApp')
     return {
       signout: function () {
         var deferred = $q.defer();
-        $http.get("" + apiKey.apiUrlFn() + "db/userLogout")
+        $http.get("" + config.apiUrlFn + "db/userLogout")
           .success(function (data, status, headers) {
             console.log(data);
             deferred.resolve(data);
@@ -98,7 +98,7 @@ angular.module('backendTheatreApp')
     return {
         upcoming: function(){
             var deferred = $q.defer();
-            $http.get(""+apiKey.apiUrlFn() + "db/upcoming")
+            $http.get(""+config.apiUrlFn + "db/upcoming")
                 .success(function (data){
                     deferred.resolve(data);
                 }).error(function (data){
@@ -112,7 +112,7 @@ angular.module('backendTheatreApp')
     return {
       nowShowingMovies: function(){
         var deferred = $q.defer();
-        $http.get(""+apiKey.apiUrlFn() + "db/nowShowing")
+        $http.get(""+config.apiUrlFn + "db/nowShowing")
           .success(function (data){
             deferred.resolve(data);
           }).error(function (data){
@@ -139,7 +139,7 @@ angular.module('backendTheatreApp')
             }else{
               fb_email = "anonymous@email.com"
             }
-            $http.post("" + apiKey.apiUrlFn() + "db/addComment/"+id+"/"+fb_email, data)
+            $http.post("" + config.apiUrlFn + "db/addComment/"+id+"/"+fb_email, data)
               .success(function (data) {
                 //console.log("------", data);
                 deferred.resolve(data);
@@ -158,9 +158,9 @@ angular.module('backendTheatreApp')
               }else{
                 id = localStorageService.get('storeId');
               }
-              //$http.get("" + apiKey.apiUrlFn() + "db/rottenTomatoes/zootopia")
-              console.log("" + apiKey.apiUrlFn() + "db/getComments/"+id);
-              $http.get("" + apiKey.apiUrlFn() + "db/getComments/"+id)
+              //$http.get("" + config.apiUrlFn + "db/rottenTomatoes/zootopia")
+              console.log("" + config.apiUrlFn + "db/getComments/"+id);
+              $http.get("" + config.apiUrlFn + "db/getComments/"+id)
                 .success(function (data) {
                   //console.log("------", data);
                   deferred.resolve(data);
@@ -179,9 +179,9 @@ angular.module('backendTheatreApp')
               }else{
                   id = localStorageService.get('storeId');
               }
-              //$http.get("" + apiKey.apiUrlFn() + "db/rottenTomatoes/zootopia")
-            console.log('"" + apiKey.apiUrlFn() + "db/rottenTomatoes/"+id',"" + apiKey.apiUrlFn() + "db/rottenTomatoes/"+id);
-              $http.get("" + apiKey.apiUrlFn() + "db/rottenTomatoes/"+id)
+              //$http.get("" + config.apiUrlFn + "db/rottenTomatoes/zootopia")
+            console.log('"" + config.apiUrlFn + "db/rottenTomatoes/"+id',"" + config.apiUrlFn + "db/rottenTomatoes/"+id);
+              $http.get("" + config.apiUrlFn + "db/rottenTomatoes/"+id)
                   .success(function (data) {
                       deferred.resolve(data);
                   }).error(function (data) {
@@ -191,8 +191,8 @@ angular.module('backendTheatreApp')
           },
           getMovieInfo: function () {
               var deferred = $q.defer();
-              //$http.get("" + apiKey.apiUrlFn() + "/db/movieinfo/zootopia")
-              $http.get("" + apiKey.apiUrlFn() + "/db/movieinfo/"+id)
+              //$http.get("" + config.apiUrlFn + "/db/movieinfo/zootopia")
+              $http.get("" + config.apiUrlFn + "/db/movieinfo/"+id)
                   .success(function (data) {
                       deferred.resolve(data);
                   }).error(function (data){
@@ -202,8 +202,8 @@ angular.module('backendTheatreApp')
           },
           movieShowTime: function () {
               var deferred = $q.defer();
-              //$http.get("" + apiKey.apiUrlFn() + "/db/movieinfo/zootopia")
-              $http.get("" + apiKey.apiUrlFn() + "/db/admin/get-movie-schedule/"+id)
+              //$http.get("" + config.apiUrlFn + "/db/movieinfo/zootopia")
+              $http.get("" + config.apiUrlFn + "/db/admin/get-movie-schedule/"+id)
                   .success(function (data) {
                     deferred.resolve(data);
                   }).error(function (data){
@@ -221,7 +221,7 @@ angular.module('backendTheatreApp')
           getSearchDetails: function () {
               var deferred = $q.defer();
               //search movies
-              $http.get(""+apiKey.movieApiUrl+"search/movie?api_key="+apiKey.key+"&query="+searchMovieText.get()+"&year=2016")
+              $http.get(""+config.movieApiUrl+"search/movie?api_key="+config.key+"&query="+searchMovieText.get()+"&year=2016")
                   .success(function (data) {
                       movieId = data.results[0].id;
                       movieTitle = data.results[0].title;
@@ -235,7 +235,7 @@ angular.module('backendTheatreApp')
           getMovieById: function (id) {
               var deferred = $q.defer();
               var results = "";
-              $http.get(""+apiKey.movieApiUrl+"movie/"+id+"?api_key="+apiKey.key)
+              $http.get(""+config.movieApiUrl+"movie/"+id+"?api_key="+config.key)
                   .success(function (data) {
                       results = data;
                       deferred.resolve(data);

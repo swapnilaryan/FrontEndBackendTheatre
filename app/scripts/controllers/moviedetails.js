@@ -14,8 +14,8 @@ angular.module('backendTheatreApp')
       console.log("++++++++++++",movieInfoDetails);
       console.log("///////////////////////////",movieShowTime);
       $scope.movieShowTime = movieShowTime;
-      $scope.imagePath = apiKey.imagePath();
-      console.log(apiKey.imagePath());
+      $scope.imagePath = config.imagePath;
+      console.log(config.imagePath);
       $scope.displayTomatoData = {};
       $scope.displayTomatoData.imdbID = movieTomatoDetails.mtImdbID;
       $scope.displayTomatoData.movieDescription = movieTomatoDetails.mtMovieDescription;

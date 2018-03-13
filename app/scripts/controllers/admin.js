@@ -13,10 +13,10 @@ angular.module('backendTheatreApp')
       $scope.upcomingMovies = upcomingMovies;
       $scope.admin_upMovieDelete = function admin_upMovieDelete(upId, index){
           console.log(index);
-          $http.delete(""+apiKey.apiUrlFn() + "db/upcoming/"+upId)
+          $http.delete(""+config.apiUrlFn + "db/upcoming/"+upId)
               .then(function(response){
                   $scope.upcomingMovies.splice(index,1);
-                  //$http.get(""+apiKey.apiUrlFn() + "db/upcoming/")
+                  //$http.get(""+config.apiUrlFn + "db/upcoming/")
                   //    .then(function(response){
                   //        $scope.upcomingMovies = response.data;
                   //    });
