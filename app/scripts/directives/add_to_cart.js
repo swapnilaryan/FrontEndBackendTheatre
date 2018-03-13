@@ -14,7 +14,7 @@ angular.module('backendTheatreApp')
       restrict: 'E',
       template:
                     '<a ng-href=\'#/moviedetails\'>' +
-                        '<img ng-src="'+imagePath+'/images/add_to_cart_button.png" class="align_add_to_cart"  >' +
+                        '<img ng-src="'+siteConfig.localImagePath+'/images/add_to_cart_button.png" class="align_add_to_cart"  >' +
                     '</a>'
 
     };

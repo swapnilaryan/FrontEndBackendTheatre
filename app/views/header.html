@@ -1,163 +1,162 @@
 <div class="header" ng-controller="HeaderCtrl">
-  <div class="navbar" role="navigation">
-    <div class="container">
-      <div class="col-md-12">
-        <div class="row">
-          <div class="col-md-5"  id="top-list">
-            <ul class="list-inline">
-              <li><a href="#">Movies</a></li>
-              <li><a ng-href="#/about">Promotions</a></li>
-              <li><a ng-href="#/moviedetails">Contact</a></li>
-              <li><a ng-href="#/">Location</a></li>
-            </ul>
-          </div>
-          <div class="col-md-2 cinestar_logo">
-            <img ng-src="{{imagePath}}images/Logo.png">
-          </div> <!-- end col-md-2 -->
+    <div class="navbar" role="navigation">
+        <div class="container">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-5" id="top-list">
+                        <ul class="list-inline">
+                            <li><a href="#">Movies</a></li>
+                            <li><a ng-href="#/about">Promotions</a></li>
+                            <li><a ng-href="#/moviedetails">Contact</a></li>
+                            <li><a ng-href="#/">Location</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-2 cinestar_logo">
+                        <img ng-src="{{siteConfig.localImagePath + '/images/newLogo.png'}}" width="100px">
+                    </div> <!-- end col-md-2 -->
 
-          <div class="col-md-5">
-            <ul class="list-inline" id="right-menu">
-              <!--Trigger the modal-->
-              <li><a ng-href="#"><img ng-src="{{imagePath}}images/twitter.png"></a></li>
-              <li><a ng-href="#"><img ng-src="{{imagePath}}images/facebook.png"></a></li>
-              <li><a ng-href="#"><img ng-src="{{imagePath}}images/add_to_cart.png"></a></li>
-              <!--<li><a  ng-show="loginRegister" class="login_register" ng-click="openSignIn('md')">Login / Register</a></li>-->
-              <!--<li ng-show="showUser" >Welcome <a class="login_register" ng-model="userDetails" ng-click="logout()">{{userDetails}}</a></li>-->
-              <li>
-                <fb:login-button id="fbLogin" scope="public_profile,email"  onlogin="checkLoginState();">
-                </fb:login-button>
+                    <div class="col-md-5">
+                        <ul class="list-inline" id="right-menu">
+                            <!--Trigger the modal-->
+                            <li><a ng-href="#"><img ng-src="{{siteConfig.localImagePath + 'images/twitter.png'}}"></a></li>
+                            <li><a ng-href="#"><img ng-src="{{siteConfig.localImagePath + 'images/facebook.png'}}"></a></li>
+                            <li><a ng-href="#"><img ng-src="{{siteConfig.localImagePath + 'images/add_to_cart.png'}}"></a></li>
+                            <!--<li><a  ng-show="loginRegister" class="login_register" ng-click="openSignIn('md')">Login / Register</a></li>-->
+                            <!--<li ng-show="showUser" >Welcome <a class="login_register" ng-model="userDetails" ng-click="logout()">{{userDetails}}</a></li>-->
+                            <li>
+                                <fb:login-button id="fbLogin" scope="public_profile,email" onlogin="checkLoginState();">
+                                </fb:login-button>
 
-                <div id="status">
-                </div>
-              </li>
-              <!--<li><a ng-click="openSignUp('md')">Sign Up</a></li>-->
-            </ul>
-          </div> <!-- end col-md-5 -->
-        </div> <!-- row -->
-      </div> <!-- end md-12-->
-    </div><!-- End Container -->
-  </div>
+                                <div id="status">
+                                </div>
+                            </li>
+                            <!--<li><a ng-click="openSignUp('md')">Sign Up</a></li>-->
+                        </ul>
+                    </div> <!-- end col-md-5 -->
+                </div> <!-- row -->
+            </div> <!-- end md-12-->
+        </div><!-- End Container -->
+    </div>
 </div>
 <script>
-  // This is called with the results from from FB.getLoginStatus().
-  function statusChangeCallback(response) {
-    console.log(response);
-    // The response object is returned with a status field that lets the
-    // app know the current login status of the person.
-    // Full docs on the response object can be found in the documentation
-    // for FB.getLoginStatus().
-    if (response.status === 'connected') {
-      document.getElementById('fbLogin').style.display = "none";
+    // This is called with the results from from FB.getLoginStatus().
+    function statusChangeCallback(response) {
+        console.log(response);
+        // The response object is returned with a status field that lets the
+        // app know the current login status of the person.
+        // Full docs on the response object can be found in the documentation
+        // for FB.getLoginStatus().
+        if (response.status === 'connected') {
+            document.getElementById('fbLogin').style.display = "none";
 
-      // Logged into your app and Facebook.
-      var accessToken = response.authResponse.accessToken;
-      testAPI(accessToken);
-    } else if (response.status === 'not_authorized') {
-      // The person is logged into Facebook, but not your app.
-      document.getElementById('status').innerHTML = 'Please log ' +
-        'into this app.';
-    } else {
-      // The person is not logged into Facebook, so we're not sure if
-      // they are logged into this app or not.
-      document.getElementById('status').innerHTML = 'Please log ' +
-        'into Facebook.';
-    }
-  }
-
-  // This function is called when someone finishes with the Login
-  // Button.  See the onlogin handler attached to it in the sample
-  // code below.
-  function checkLoginState() {
-    FB.getLoginStatus(function(response) {
-      statusChangeCallback( response);
-    });
-  }
-
-  window.fbAsyncInit = function() {
-
-    if(window.location.hostname =='localhost')
-    {
-      FB.init({
-        appId      : '126030407918627',
-        cookie     : true,  // enable cookies to allow the server to access
-                            // the session
-        xfbml      : true,  // parse social plugins on this page
-        version    : 'v2.8' // use graph api version 2.8
-      });
-    }
-    else {
-      FB.init({
-        appId      : '224771877990631',
-        cookie     : true,  // enable cookies to allow the server to access
-                            // the session
-        xfbml      : true,  // parse social plugins on this page
-        version    : 'v2.8' // use graph api version 2.8
-      });
+            // Logged into your app and Facebook.
+            var accessToken = response.authResponse.accessToken;
+            testAPI(accessToken);
+        } else if (response.status === 'not_authorized') {
+            // The person is logged into Facebook, but not your app.
+            document.getElementById('status').innerHTML = 'Please log ' +
+                'into this app.';
+        } else {
+            // The person is not logged into Facebook, so we're not sure if
+            // they are logged into this app or not.
+            document.getElementById('status').innerHTML = 'Please log ' +
+                'into Facebook.';
+        }
     }
 
+    // This function is called when someone finishes with the Login
+    // Button.  See the onlogin handler attached to it in the sample
+    // code below.
+    function checkLoginState() {
+        FB.getLoginStatus(function (response) {
+            statusChangeCallback(response);
+        });
+    }
 
-    // Now that we've initialized the JavaScript SDK, we call
-    // FB.getLoginStatus().  This function gets the state of the
-    // person visiting this page and can return one of three states to
-    // the callback you provide.  They can be:
-    //
-    // 1. Logged into your app ('connected')
-    // 2. Logged into Facebook, but not your app ('not_authorized')
-    // 3. Not logged into Facebook and can't tell if they are logged into
-    //    your app or not.
-    //
-    // These three cases are handled in the callback function.
+    window.fbAsyncInit = function () {
 
-    FB.getLoginStatus(function(response) {
-      statusChangeCallback(response);
-    });
+        if (window.location.hostname === 'localhost') {
+            FB.init({
+                appId: '126030407918627',
+                cookie: true,  // enable cookies to allow the server to access
+                               // the session
+                xfbml: true,  // parse social plugins on this page
+                version: 'v2.8' // use graph api version 2.8
+            });
+        }
+        else {
+            FB.init({
+                appId: '224771877990631',
+                cookie: true,  // enable cookies to allow the server to access
+                               // the session
+                xfbml: true,  // parse social plugins on this page
+                version: 'v2.8' // use graph api version 2.8
+            });
+        }
 
-  };
 
-  // Load the SDK asynchronously
-  (function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "https://connect.facebook.net/en_US/sdk.js";
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
+        // Now that we've initialized the JavaScript SDK, we call
+        // FB.getLoginStatus().  This function gets the state of the
+        // person visiting this page and can return one of three states to
+        // the callback you provide.  They can be:
+        //
+        // 1. Logged into your app ('connected')
+        // 2. Logged into Facebook, but not your app ('not_authorized')
+        // 3. Not logged into Facebook and can't tell if they are logged into
+        //    your app or not.
+        //
+        // These three cases are handled in the callback function.
 
-  // Here we run a very simple test of the Graph API after login is
-  // successful.  See statusChangeCallback() for when this call is made.
-  function testAPI(accessToken) {
-    console.log('Welcome!  Fetching your information.... ');
-    FB.api('/me?fields=name,email,picture,id', function(response) {
-      document.getElementById('status').innerHTML = 'Welcome, ' + response.name + '!';
-      var name = response.name;
-      name = name.split(" ");
-      console.log(name);
-      var data = {
-        email : response.email,
-        first_name: name[0],
-        last_name: name[1],
-        accessToken:accessToken,
-        id:response.id,
-        fb_image:response.picture.data.url
-      };
-      console.log(data);
-      var apiUrl = null;
-      if(window.location.hostname =='localhost')
-      {
-        apiUrl = "http://localhost:8000/api/";
-      }
-      else {
-        // apiUrl = "http://cinestar.affpc.com:8080/api/";
-        apiUrl = "http://18.218.55.255:8000/api/";
-      }
-      $.post(apiUrl+"db/fblogin", data, function (response) {
-        localStorage.setItem("FB_LoggedIn_User_EmailID",response.fb_mail);
-        localStorage.setItem("FB_LoggedIn_User_FirstName",response.fb_first_name);
-        localStorage.setItem("FB_LoggedIn_User_LastName",response.fb_last_name);
-        console.log("respnse",response,"--*--*");
-      })
-    });
-  }
+        FB.getLoginStatus(function (response) {
+            statusChangeCallback(response);
+        });
+
+    };
+
+    // Load the SDK asynchronously
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    // Here we run a very simple test of the Graph API after login is
+    // successful.  See statusChangeCallback() for when this call is made.
+    function testAPI(accessToken) {
+        console.log('Welcome!  Fetching your information.... ');
+        FB.api('/me?fields=name,email,picture,id', function (response) {
+            document.getElementById('status').innerHTML = 'Welcome, ' + response.name + '!';
+            var name = response.name;
+            name = name.split(" ");
+            console.log(name);
+            var data = {
+                email: response.email,
+                first_name: name[0],
+                last_name: name[1],
+                accessToken: accessToken,
+                id: response.id,
+                fb_image: response.picture.data.url
+            };
+            console.log(data);
+            var apiUrl = null;
+            if (window.location.hostname === 'localhost') {
+                apiUrl = config.apiUrl;
+            }
+            else {
+                // apiUrl = "http://cinestar.affpc.com:8080/api/";
+                apiUrl = "http://18.218.55.255:8000/api/";
+            }
+            $.post(apiUrl + "db/fblogin", data, function (response) {
+                localStorage.setItem("FB_LoggedIn_User_EmailID", response.fb_mail);
+                localStorage.setItem("FB_LoggedIn_User_FirstName", response.fb_first_name);
+                localStorage.setItem("FB_LoggedIn_User_LastName", response.fb_last_name);
+                console.log("respnse", response, "--*--*");
+            })
+        });
+    }
 </script>
 
 <!--

@@ -1,26 +1,26 @@
 <div class="footer" ng-controller="FooterCtrl">
-  <div class="container">
-    <div class="col-md-12">
-      <div class="row">
-        <div class="col-md-3 cinestar_logo" >
-          <img ng-src="{{imagePath}}images/Logo.png">
-        </div> <!-- end col-md-2 -->
-        <div class="col-md-6"  id="bottom-list">
-          <ul class="list-inline">
-            <li><a href="#/">Movies</a></li>
-            <li><a ng-href="#/about">Promotions</a></li>
-            <li><a ng-href="#/">Contact</a></li>
-            <li><a ng-href="#/">Location</a></li>
-          </ul>
-          <p>&copy; &nbsp;{{currentYear}}&nbsp;Cinestar Cinema</p>
+    <div class="container">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-2 cinestar_logo">
+                    <img ng-src="{{siteConfig.localImagePath + '/images/newLogo.png'}}" width="100px">
+                </div> <!-- end col-md-2 -->
+                <div class="col-md-7" id="bottom-list">
+                    <ul class="list-inline">
+                        <li><a href="#/">Movies</a></li>
+                        <li><a ng-href="#/about">Promotions</a></li>
+                        <li><a ng-href="#/">Contact</a></li>
+                        <li><a ng-href="#/">Location</a></li>
+                    </ul>
+                    <p>&copy; &nbsp;{{currentYear}}&nbsp;Cinestar Cinema</p>
+                </div>
+                <div class="col-md-3">
+                    <ul class="list-inline" id="right-menu-bottom">
+                        <li><a ng-href="#"><img ng-src="{{siteConfig.localImagePath + 'images/twitter.png'}}"></a></li>
+                        <li><a ng-href="#"><img ng-src="{{siteConfig.localImagePath + 'images/facebook.png'}}"></a></li>
+                    </ul>
+                </div> <!-- end col-md-5 -->
+            </div>
         </div>
-        <div class="col-md-3">
-          <ul class="list-inline" id="right-menu-bottom">
-            <li><a ng-href="#"><img ng-src="{{imagePath}}images/twitter.png"></a></li>
-            <li><a ng-href="#"><img ng-src="{{imagePath}}images/facebook.png"></a></li>
-          </ul>
-        </div> <!-- end col-md-5 -->
-      </div>
     </div>
-  </div>
 </div>
