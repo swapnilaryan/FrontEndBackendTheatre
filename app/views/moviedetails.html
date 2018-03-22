@@ -1,4 +1,15 @@
 <link rel="stylesheet" href=" ">
+<style>
+    .movie-showtime {
+        display: block;
+        padding-left: 15px;
+        max-height: 345px;
+        overflow-y: scroll;
+    }
+    .movie-showtime td, th{
+        text-align: center;
+    }
+</style>
 <div class="row" data-ng-cloak>
     <div class="container">
         <div class="col-md-8" data-ng-model="displayMovieDetails" ng-cloak>
@@ -6,16 +17,21 @@
             <div class="container">
                 <div class="col-md-4">
                     <br>
-                    <img ng-src="{{imagePath}}{{displayMovieDetails.infoMoviePosterPath}}" class="mdImage">
+                    <img
+                        ng-src="{{siteConfig.imagePath + displayMovieDetails.infoMoviePosterPath}}"
+                        class="mdImage">
                 </div>
                 <div class="col-md-8" data-ng-model="displayTomatoData">
-                    <div class="movieTitle"><h1>{{displayTomatoData.movieTitle}} ({{displayMovieDetails.releaseYear}})</h1></div>
+                    <div class="movieTitle"><h1>{{displayTomatoData.movieTitle}}
+                        ({{displayMovieDetails.releaseYear}})</h1></div>
                     <div class="rottenTomatoesInfo col-md-12">
                         <div class="col-md-4 scorePanel" ng-model="tomatoMeter">
                             <h3>TOMATOMETER</h3>
                             <div class="tomatoMeterText">
-                                <img id="tomatoImage" ng-src="{{imagePath}}{{tomatoMeter.tomatoImage}}">
-                                <span class="tomatoMeterPercentage">{{tomatoMeter.tomatometer}}%</span>
+                                <img id="tomatoImage"
+                                     ng-src="{{siteConfig.imagePath + tomatoMeter.tomatoImage}}">
+                                <span class="tomatoMeterPercentage">
+                                    {{tomatoMeter.tomatoMeter}}%</span>
                             </div>
                             <br>
                             <div class="tomatoMeterText">Average Rating:
@@ -34,24 +50,37 @@
                         <div class="col-md-4 scorePanel" id="marginRight">
                             <br>
                             <div class="shiftRight">
-                                <span class="criticsHead"><a class="{{allBoldOrNormal}}" ng-click="click('all')">All Critics</a></span>
+                                <span class="criticsHead"><a
+                                    class="{{allBoldOrNormal}}"
+                                    ng-click="click('all')">All Critics</a></span>
                                 <span class="criticsHead">|</span>
-                                <span class="criticsHead"><a class="{{topBoldOrNormal}}" ng-click="click('top')">Top Critics</a></span>
+                                <span class="criticsHead"><a
+                                    class="{{topBoldOrNormal}}"
+                                    ng-click="click('top')">Top Critics</a></span>
                             </div>
                             <br>
                             <!--Progress Bar-->
                             <div class="progress">
-                                <div class="progress-bar" role="progressbar" style="width:0"></div>
-                                <div class="progress-bar" role="progressbar" aria-valuenow="{{tomatoMeter.tomatometer}}" aria-valuemin="0" aria-valuemax="100" style="width: {{tomatoMeter.tomatometer}}%">
+                                <div class="progress-bar" role="progressbar"
+                                     style="width:0"></div>
+                                <div class="progress-bar" role="progressbar"
+                                     aria-valuenow="{{tomatoMeter.tomatoMeter}}"
+                                     aria-valuemin="0" aria-valuemax="100"
+                                     style="width: {{tomatoMeter.tomatoMeter}}%">
                                 </div>
                             </div>
-                            <p class="criticsConcensus">Critics Consensus:<span class="criticsConcensusInfo">{{tomatoMeter.criticsConsensus}}</span></p>
+                            <p class="criticsConcensus">Critics Consensus:<span
+                                class="criticsConcensusInfo">{{tomatoMeter.criticsConsensus}}</span>
+                            </p>
                         </div>
-                        <div class="col-md-4 scorePanel" ng-model="audienceScore">
+                        <div class="col-md-4 scorePanel"
+                             ng-model="audienceScore">
                             <h3>AUDIENCE SCORE</h3>
                             <div class="audiencePoint">
-                                <img id="audienceImage" ng-src="{{imagePath}}{{audienceScore.audienceImage}}">
-                                <span class="tomatoMeterPercentage">{{audienceScore.tomatometer}}%</span>
+                                <img id="audienceImage"
+                                     ng-src="{{siteConfig.imagePath + audienceScore.audienceImage}}">
+                                <span class="tomatoMeterPercentage">
+                                    {{audienceScore.tomatoMeter}}%</span>
                             </div>
                             <br>
                             <div class="tomatoMeterText">Average Rating:
@@ -63,22 +92,37 @@
                         </div>
                     </div>
                 </div>
+                <small>All data belongs to <a
+                    href="https://www.rottentomatoes.com/">Rotten
+                    Tomaotes</a>. We don't own this data.</small>
             </div>
             <br>
             <div class="container" ng-model="displayMovieDetails">
                 <div class="col-md-4">
                     <p id="showtime">Showtimes</p>
-                    <div class="col-md-4 showtimeRow1">Timing</div>
-                    <div class="col-md-4 showtimeRow1">Adults</div>
-                    <div class="col-md-4 showtimeRow1">Kids</div>
-                    <div ng-repeat="showTime in movieShowTime">
-                      <div class="col-md-4 showtimeRow2">{{showTime.movieStartTime}}</div>
-                      <div class="col-md-4 showtimeRow2">7$</div>
-                      <div class="col-md-4 showtimeRow2">1$</div>
-                    </div>
+                    <table class="table table-responsive movie-showtime">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>View</th>
+                                <th>Screen</th>
+                            </tr>
+                        </thead>
+                        <tbody class="showtime-data">
+                            <tr ng-repeat="showTime in movieShowTime">
+                                <td>{{showTime.movieShowDate}}</td>
+                                <td>{{showTime.movieStartTime}}</td>
+                                <td>{{showTime.movieType}}</td>
+                                <td>{{showTime.movieScreen}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
                 <div class="col-md-8">
-                    <div class="movieDes">{{displayMovieDetails.infoMovieDescription}}</div>
+                    <div class="movieDes">
+                        {{displayMovieDetails.infoMovieDescription}}
+                    </div>
                     <br>
                     <div class="col-md-4 movieTopic">
                         <div>Rating:</div>
@@ -135,79 +179,120 @@
                     <!--</div>-->
                     <!--<div class="col-md-8 movieDetails" ng-if="kidsinmind">-->
                         <!--&lt;!&ndash;<div><b>SEX & NUDITY</b></div>&ndash;&gt;-->
-                        <!--<div><img class="kim_sex_nudity" ng-src="{{imagePath}}{{displayMovieDetails.s_n}}"></div>-->
-                        <!--<div><img class="kim_violence_gore" ng-src="{{imagePath}}{{displayMovieDetails.v_g}}"></div>-->
-                        <!--<div><img class="kim_profanity" ng-src="{{imagePath}}{{displayMovieDetails.prof}}"></div>-->
-                        <!--<div><img class="kim_one2ten" ng-src="{{imagePath}}{{displayMovieDetails.one_ten}}"></div>-->
+                        <!--<div><img class="kim_sex_nudity"-->
+                                  <!--ng-src="{{imagePath}}{{displayMovieDetails.s_n}}">-->
+                        <!--</div>-->
+                        <!--<div><img class="kim_violence_gore"-->
+                                  <!--ng-src="{{imagePath}}{{displayMovieDetails.v_g}}">-->
+                        <!--</div>-->
+                        <!--<div><img class="kim_profanity"-->
+                                  <!--ng-src="{{imagePath}}{{displayMovieDetails.prof}}">-->
+                        <!--</div>-->
+                        <!--<div><img class="kim_one2ten"-->
+                                  <!--ng-src="{{imagePath}}{{displayMovieDetails.one_ten}}">-->
+                        <!--</div>-->
                     <!--</div>-->
 
                     <div class="col-md-8 movieTopic">
                         <div>{{displayMovieDetails.infoMovieProduction}}:
-                            <span><a ng-href={{displayMovieDetails.infoMovieWebsite}} target="_blank">Official Site</a> </span>
+                            <span><a
+                                ng-href={{displayMovieDetails.infoMovieWebsite}}
+                                target="_blank">Official Site</a> </span>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4"></div>
-                <div class="col-md-8"><hr></div>
+                <div class="col-md-8">
+                    <hr>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="col-md-4 rightPage" data-ng-model="theMovieDbId" ng-cloak>
-        <!--Book tickets , Show trailer, Share on social media-->
-        <div class="buttonShadow">
-            <button type="button" class="btn btn-default tickTrailerSocial" ng-show="displayMovieDetails.infoMovieBuyTicketsButton">
-                BUY TICKETS
-            </button>
-        </div>
-        <div class="buttonShadow">
-            <button type="button" class="btn btn-default tickTrailerSocial">
-                SHARE ON
-                <a ng-href="http://www.facebook.com">
-                    <img class="shareSocial" ng-src="{{imagePath}}/images/shareOnFacebook.png">
-                </a>
-                <span>
+        <div class="col-md-4 rightPage" data-ng-model="theMovieDbId" ng-cloak>
+            <!--Book tickets , Show trailer, Share on social media-->
+            <div class="buttonShadow">
+                <button type="button" class="btn btn-default tickTrailerSocial"
+                        ng-show="displayMovieDetails.infoMovieBuyTicketsButton">
+                    BUY TICKETS
+                </button>
+            </div>
+            <div class="buttonShadow">
+                <button type="button" class="btn btn-default tickTrailerSocial">
+                    SHARE ON
+                    <a ng-href="http://www.facebook.com">
+                        <img class="shareSocial"
+                             ng-src="{{siteConfig.localImagePath + '/images/shareOnFacebook.png'}}">
+                    </a>
+                    <span>
                     <a ng-href="http://www.twitter.com">
-                        <img class="shareSocial" ng-src="{{imagePath}}/images/shareOnTwitter.png">
+                        <img class="shareSocial"
+                             ng-src="{{siteConfig.localImagePath+'/images/shareOnTwitter.png'}}">
                     </a>
                 </span>
-            </button>
-        </div>
-        <div class="buttonShadow">
-            <button type="button" class="btn btn-default tickTrailerSocial" data-toggle = "modal" data-target = "#myModal">WATCH TRAILER</button>
-        </div>
-        <div ng-show="kidsinmind">
-          <h4>Parents Rating</h4>
-          <!--<div><b>SEX & NUDITY</b></div>-->
-          <div><img class="kim_sex_nudity" ng-src="{{imagePath}}{{displayMovieDetails.s_n}}"></div>
-          <div><img class="kim_violence_gore" ng-src="{{imagePath}}{{displayMovieDetails.v_g}}"></div>
-          <div><img class="kim_profanity" ng-src="{{imagePath}}{{displayMovieDetails.prof}}"></div>
-          <div><img class="kim_one2ten" ng-src="{{imagePath}}{{displayMovieDetails.one_ten}}"></div>
-        </div>
-      <!--Comments-->
-      <div class="actionBox">
-        <ul class="commentList">
-          <li ng-repeat="comment in getCommentss">
-            <div class="commenterImage">
-              <img ng-src="{{comment.movieUserFBProfileImage}}">
+                </button>
             </div>
-            <div class="commentText">
-              <p class="">{{::comment.m_c_comment}}</p> <span class="date sub-text">on {{::epoch_to_datetime(comment.m_c_current_time)}}</span>&nbsp;&nbsp;
-              <span class="pull-right" uib-rating ng-model="comment.m_c_star_rating" max="5" read-only="true" aria-labelledby="default-rating"></span>
+            <div class="buttonShadow">
+                <button type="button" class="btn btn-default tickTrailerSocial"
+                        data-toggle="modal" data-target="#myModal">WATCH TRAILER
+                </button>
             </div>
-          </li>
-        </ul>
-      </div>
-      <div class="comments" id="comment_section">
-        <h4 class="pull-left" id="comment_as">Comment As:- {{UserName}}</h4>
-        <div class="comment_textarea"><textarea data-ng-model="user_comments" class="form-control" rows="4" cols="50" name="comment"></textarea></div>
-        <div class="star_rating_n_post">
-          <span uib-rating ng-model="star_rating" max="5" read-only="false" on-hover="hoveringOver(value)" on-leave="overStar = null" titles="['one','two','three']" aria-labelledby="default-rating"></span>
-          <span><button  type="button" ng-click="postComments()" class="btn bg-primary"> Post </button></span>
-        </div>
-      </div>
+            <div ng-show="kidsinmind">
+                <h4>Parents Rating</h4>
+                <!--<div><b>SEX & NUDITY</b></div>-->
+                <div><img class="kim_sex_nudity"
+                          ng-src="{{siteConfig.imagePath + displayMovieDetails.s_n}}">
+                </div>
+                <div><img class="kim_violence_gore"
+                          ng-src="{{siteConfig.imagePath+displayMovieDetails.v_g}}">
+                </div>
+                <div><img class="kim_profanity"
+                          ng-src="{{siteConfig.imagePath+displayMovieDetails.prof}}">
+                </div>
+                <div><img class="kim_one2ten"
+                          ng-src="{{siteConfig.imagePath+displayMovieDetails.one_ten}}">
+                </div>
+                <small>All data belongs to <a
+                    href="http://www.kids-in-mind.com/">kids-in-mind</a>.We
+                    don't own this data.
+                </small>
+            </div>
+            <!--Comments-->
+            <div class="actionBox">
+                <ul class="commentList">
+                    <li ng-repeat="comment in getCommentss">
+                        <div class="commenterImage">
+                            <img ng-src="{{comment.movieUserFBProfileImage}}">
+                        </div>
+                        <div class="commentText">
+                            <p class="">{{::comment.m_c_comment}}</p> <span
+                            class="date sub-text">on {{::epoch_to_datetime(comment.m_c_current_time)}}</span>&nbsp;&nbsp;
+                            <span class="pull-right" uib-rating
+                                  ng-model="comment.m_c_star_rating" max="5"
+                                  read-only="true"
+                                  aria-labelledby="default-rating"></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="comments" id="comment_section">
+                <h4 class="pull-left" id="comment_as">Comment As:-
+                    {{UserName}}</h4>
+                <div class="comment_textarea"><textarea
+                    data-ng-model="user_comments" class="form-control" rows="4"
+                    cols="50" name="comment"></textarea></div>
+                <div class="star_rating_n_post">
+                    <span uib-rating ng-model="star_rating" max="5"
+                          read-only="false" on-hover="hoveringOver(value)"
+                          on-leave="overStar = null"
+                          titles="['one','two','three']"
+                          aria-labelledby="default-rating"></span>
+                    <span><button type="button" ng-click="postComments()"
+                                  class="btn bg-primary"> Post </button></span>
+                </div>
+            </div>
 
-      <!--End Comments-->
+            <!--End Comments-->
+        </div>
     </div>
-</div>
     <div class="container">
         <div class="col-md-3">
             <div class="col-md-12"><p id="cast">Cast</p></div>
@@ -217,7 +302,8 @@
             <div class="col-md-12" data-ng-model="casts">
                 <div class="col-md-3 casts" ng-repeat="casts in show6Casts">
                     <div class="col-md-4 castsImage">
-                        <img ng-src="{{imagePath}}{{casts.profile_path}}">
+                        <img
+                            ng-src="{{siteConfig.imagePath+casts.profile_path}}">
                     </div>
                     <div class="col-md-8">
                         <p>{{casts.name}}</p>
@@ -227,59 +313,69 @@
             </div>
             <div class="col-md-5">
                 <h6 class="ngShowAllText">
-                    <a class="cursor4ShowAll" ng-if="ngShowAllText==true" ng-click="showAll(ngShowAllText)" ng-if="ngShowAllText==true">
+                    <a class="cursor4ShowAll" ng-if="ngShowAllText==true"
+                       ng-click="showAll(ngShowAllText)"
+                       ng-if="ngShowAllText==true">
                         Show More Cast
-                        <span class="glyphicon glyphicon-triangle-bottom cursor4ShowAll"></span>
+                        <span
+                            class="glyphicon glyphicon-triangle-bottom cursor4ShowAll"></span>
                     </a>
                 </h6>
                 <h6 class="ngShowAllText">
-                    <a class="cursor4ShowAll" ng-if="ngShowAllText==false" ng-click="showAll(ngShowAllText)" ng-if="ngShowAllText==true">
+                    <a class="cursor4ShowAll" ng-if="ngShowAllText==false"
+                       ng-click="showAll(ngShowAllText)"
+                       ng-if="ngShowAllText==true">
                         Show Less Cast
-                        <span class="glyphicon glyphicon-triangle-top cursor4ShowAll"></span>
+                        <span
+                            class="glyphicon glyphicon-triangle-top cursor4ShowAll"></span>
                     </a>
                 </h6>
             </div>
         </div>
-        </div>
+    </div>
 </div>
 
 
-
 <!--<button class = "btn btn-primary btn-lg" data-toggle = "modal" data-target = "#myModal">-->
-    <!--Launch demo modal-->
+<!--Launch demo modal-->
 <!--</button>-->
 
 <!-- Modal -->
-<div class = "modal fade" id = "myModal" tabindex = "-1" role = "dialog"
-     aria-labelledby = "myModalLabel" aria-hidden = "true" data-ng-model="displayTomatoData">
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true"
+     data-ng-model="displayTomatoData">
 
-    <div class = "modal-dialog">
+    <div class="modal-dialog">
         <div class="moveCrossRight">
-            <span data-dismiss="modal" class="glyphicon glyphicon-remove-circle lightGray"></span>
+            <span data-dismiss="modal"
+                  class="glyphicon glyphicon-remove-circle lightGray"></span>
             <!--<a data-dismiss="modal"><img clss="modalClose" src="../images/modalClose.png"></a>-->
         </div>
-        <div class = "modal-content" id="yt-player">
+        <div class="modal-content" id="yt-player">
             <div class="embed-responsive embed-responsive-16by9">
-                <iframe class="embed-responsive-item" ng-src="{{trustSrc(displayTomatoData.movieTitle)}}" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" scrolling="no"></iframe>
+                <iframe class="embed-responsive-item"
+                        ng-src="{{trustSrc(displayTomatoData.movieTitle)}}"
+                        allowfullscreen="true" webkitallowfullscreen="true"
+                        mozallowfullscreen="true" scrolling="no"></iframe>
                 <!--<iframe width="854" height="480" src="https://www.youtube.com/watch?v=jWM0ct-OLsM" frameborder="0" allowfullscreen></iframe>-->
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 
 </div><!-- /.modal -->
-<script type="text/javascript">
-    $("#myModal").on('hidden.bs.modal', function (e) {
-        $("#myModal iframe").attr("src", $("#myModal iframe").attr("src"));
-    });
-    var check_if_loggedin = setInterval(function () {
-      console.log("here");
-      if(localStorage.getItem("FB_LoggedIn_User_EmailID")){
-        document.getElementById('comment_section').style.visibility = 'visible';
-        document.getElementById('comment_as').innerHTML = "Comment as " + localStorage.getItem("FB_LoggedIn_User_FirstName") + " "+ localStorage.getItem("FB_LoggedIn_User_LastName");
-        clearInterval(check_if_loggedin);
-      }else{
-        document.getElementById('comment_section').style.visibility = 'hidden';
-      }
-    },1000);
+<!--<script type="text/javascript">-->
+<!--$("#myModal").on('hidden.bs.modal', function (e) {-->
+<!--$("#myModal iframe").attr("src", $("#myModal iframe").attr("src"));-->
+<!--});-->
+<!--var check_if_loggedin = setInterval(function () {-->
+<!--console.log("here");-->
+<!--if(localStorage.getItem("FB_LoggedIn_User_EmailID")){-->
+<!--document.getElementById('comment_section').style.visibility = 'visible';-->
+<!--document.getElementById('comment_as').innerHTML = "Comment as " + localStorage.getItem("FB_LoggedIn_User_FirstName") + " "+ localStorage.getItem("FB_LoggedIn_User_LastName");-->
+<!--clearInterval(check_if_loggedin);-->
+<!--}else{-->
+<!--document.getElementById('comment_section').style.visibility = 'hidden';-->
+<!--}-->
+<!--},1000);-->
 
-</script>
+<!--</script>-->

@@ -8,14 +8,13 @@
  */
 angular.module('backendTheatreApp')
   .directive('addToCart', function (apiKey) {
-    var imagePath = config.imagePath;
+    var imagePath = siteConfig.imagePath;
     return {
       //template: '<div></div>',
       restrict: 'E',
-      template:
-                    '<a ng-href=\'#/moviedetails\'>' +
-                        '<img ng-src="'+siteConfig.localImagePath+'/images/add_to_cart_button.png" class="align_add_to_cart"  >' +
-                    '</a>'
+      template: '<a>' +
+                    '<img ng-src="'+siteConfig.localImagePath+'/images/add_to_cart_button.png" class="align_add_to_cart"  >' +
+                '</a>'
 
     };
   })

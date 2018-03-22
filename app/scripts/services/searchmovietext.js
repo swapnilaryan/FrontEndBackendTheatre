@@ -128,7 +128,7 @@ angular.module('backendTheatreApp')
             upcoming: function () {
                 var req = {
                     method: 'GET',
-                    url: siteConfig.apiUrl + "/upcomingMovies"
+                    url: siteConfig.apiUrlFn + "/upcomingMovies"
                 };
                 return commonHTTPCall($http, req, toastr, false);
             }
@@ -139,13 +139,13 @@ angular.module('backendTheatreApp')
             nowShowingMovies: function () {
                 var req = {
                     method: 'GET',
-                    url: siteConfig.apiUrl + "/nowShowingMovies"
+                    url: siteConfig.apiUrlFn + "/nowShowingMovies"
                 };
                 return commonHTTPCall($http, req, toastr, false);
             }
         }
     })
-    .factory('movieDetails', function ($q, localStorageService, $http, apiKey, searchMovieText) {
+    .factory('movieDetails', function ($q, localStorageService, $http, apiKey, searchMovieText, toastr) {
         var id = "";
         return {
             postComments: function (data) {
@@ -193,46 +193,26 @@ angular.module('backendTheatreApp')
                 });
                 return deferred.promise;
             },
-            getTomatoResult: function () {
-                var deferred = $q.defer();
-                //var movieFormat = searchMovieText.get();
-                id = searchMovieText.get();
-                if (id != "") {
-                    var storedId = localStorageService.set('storeId', id);
-                } else {
-                    id = localStorageService.get('storeId');
-                }
-                //$http.get("" + config.apiUrlFn + "db/rottenTomatoes/zootopia")
-                console.log('"" + config.apiUrlFn + "db/rottenTomatoes/"+id', "" + config.apiUrlFn + "db/rottenTomatoes/" + id);
-                $http.get("" + config.apiUrlFn + "db/rottenTomatoes/" + id)
-                    .success(function (data) {
-                        deferred.resolve(data);
-                    }).error(function (data) {
-                    deferred.reject(data);
-                });
-                return deferred.promise;
+            getTomatoResult: function (id) {
+                var req = {
+                    method: 'GET',
+                    url: siteConfig.baseUrl + "/rottenTomatoes/" + id
+                };
+                return commonHTTPCall($http, req, toastr, false);
             },
-            getMovieInfo: function () {
-                var deferred = $q.defer();
-                //$http.get("" + config.apiUrlFn + "/db/movieinfo/zootopia")
-                $http.get("" + config.apiUrlFn + "/db/movieinfo/" + id)
-                    .success(function (data) {
-                        deferred.resolve(data);
-                    }).error(function (data) {
-                    deferred.reject(data);
-                });
-                return deferred.promise;
+            getMovieInfo: function (id) {
+                var req = {
+                    method: 'GET',
+                    url: siteConfig.apiUrlFn + "/movieDetails/" + id
+                };
+                return commonHTTPCall($http, req, toastr, false);
             },
-            movieShowTime: function () {
-                var deferred = $q.defer();
-                //$http.get("" + config.apiUrlFn + "/db/movieinfo/zootopia")
-                $http.get("" + config.apiUrlFn + "/db/admin/get-movie-schedule/" + id)
-                    .success(function (data) {
-                        deferred.resolve(data);
-                    }).error(function (data) {
-                    deferred.reject(data);
-                });
-                return deferred.promise;
+            movieShowTime: function (id) {
+                var req = {
+                    method: 'GET',
+                    url: config.baseUrl + "/admin/movieSchedule/" + id
+                };
+                return commonHTTPCall($http, req, toastr, false);
             }
         };
     })

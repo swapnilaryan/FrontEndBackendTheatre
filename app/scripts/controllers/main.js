@@ -8,7 +8,7 @@
  * Controller of the backendTheatreApp
  */
 angular.module('backendTheatreApp')
-    .controller('MainCtrl', function ($scope, $location, apiKey, searchMovieText, $q, nowShowingService, upcomingMoviesService) {
+    .controller('MainCtrl', function ($scope, $location, apiKey, searchMovieText, $q, nowShowingService, upcomingMoviesService, $state) {
         $scope.imagePath = config.imagePath;
         var upcomingMovies, nowShowing;
         $q.all([upcomingMoviesService.upcoming(), nowShowingService.nowShowingMovies()]).then(function (responses) {
@@ -87,7 +87,7 @@ angular.module('backendTheatreApp')
         $scope.images = '../images/add_to_cart_button.png';
         $scope.moreInfo = function moreInfo(selectedImdbId) {
             searchMovieText.set(selectedImdbId);
-            $location.url('/moviedetails');
+            $state.go('moviedetails', {imdbID: selectedImdbId});
             console.log("----------------------", selectedImdbId);
         };
         $scope.list_show_none = ['1:35 pm', '4:00 pm', '6:35 pm', '9:15 pm'];

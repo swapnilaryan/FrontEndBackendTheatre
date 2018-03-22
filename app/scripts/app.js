@@ -41,7 +41,15 @@ angular
                url: "/",
                templateUrl: "views/main.html",
                controller: 'MainCtrl'
-           });
+           })
+            .state('moviedetails', {
+                url: '/movieInfo/:imdbID',
+                templateUrl: 'views/moviedetails.html',
+                controller: 'MoviedetailsCtrl',
+                params: {
+                    data: null
+                }
+            });
         
         // $routeProvider
         //     .when('/', {
