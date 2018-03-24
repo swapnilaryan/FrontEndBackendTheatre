@@ -210,7 +210,7 @@ angular.module('backendTheatreApp')
             movieShowTime: function (id) {
                 var req = {
                     method: 'GET',
-                    url: config.baseUrl + "/admin/movieSchedule/" + id
+                    url: config.apiUrlFn + "/movieSchedule/" + id
                 };
                 return commonHTTPCall($http, req, toastr, false);
             }
