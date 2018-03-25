@@ -256,37 +256,39 @@
                 </small>
             </div>
             <!--Comments-->
-            <div class="actionBox">
-                <ul class="commentList">
-                    <li ng-repeat="comment in getCommentss">
-                        <div class="commenterImage">
-                            <img ng-src="{{comment.movieUserFBProfileImage}}">
-                        </div>
-                        <div class="commentText">
-                            <p class="">{{::comment.m_c_comment}}</p> <span
-                            class="date sub-text">on {{::epoch_to_datetime(comment.m_c_current_time)}}</span>&nbsp;&nbsp;
-                            <span class="pull-right" uib-rating
-                                  ng-model="comment.m_c_star_rating" max="5"
-                                  read-only="true"
-                                  aria-labelledby="default-rating"></span>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="comments" id="comment_section">
-                <h4 class="pull-left" id="comment_as">Comment As:-
-                    {{UserName}}</h4>
-                <div class="comment_textarea"><textarea
-                    data-ng-model="user_comments" class="form-control" rows="4"
-                    cols="50" name="comment"></textarea></div>
-                <div class="star_rating_n_post">
+            <div class="comments-section" ng-if="false">
+                <div class="actionBox">
+                    <ul class="commentList">
+                        <li ng-repeat="comment in getCommentss">
+                            <div class="commenterImage">
+                                <img ng-src="{{comment.movieUserFBProfileImage}}">
+                            </div>
+                            <div class="commentText">
+                                <p class="">{{::comment.m_c_comment}}</p> <span
+                                class="date sub-text">on {{::epoch_to_datetime(comment.m_c_current_time)}}</span>&nbsp;&nbsp;
+                                <span class="pull-right" uib-rating
+                                      ng-model="comment.m_c_star_rating" max="5"
+                                      read-only="true"
+                                      aria-labelledby="default-rating"></span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="comments" id="comment_section">
+                    <h4 class="pull-left" id="comment_as">Comment As:-
+                        {{UserName}}</h4>
+                    <div class="comment_textarea"><textarea
+                        data-ng-model="user_comments" class="form-control" rows="4"
+                        cols="50" name="comment"></textarea></div>
+                    <div class="star_rating_n_post">
                     <span uib-rating ng-model="star_rating" max="5"
                           read-only="false" on-hover="hoveringOver(value)"
                           on-leave="overStar = null"
                           titles="['one','two','three']"
                           aria-labelledby="default-rating"></span>
-                    <span><button type="button" ng-click="postComments()"
-                                  class="btn bg-primary"> Post </button></span>
+                        <span><button type="button" ng-click="postComments()"
+                                      class="btn bg-primary"> Post </button></span>
+                    </div>
                 </div>
             </div>
 
