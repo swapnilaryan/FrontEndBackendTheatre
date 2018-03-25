@@ -115,6 +115,9 @@ angular.module('backendTheatreApp')
                 //certified
                 $scope.displayTomatoData.topCritics.tomatoImage = "/images/rt_certified.jpg";
             }
+    
+            $scope.displayTomatoData.allCritics.tomatoImage = "/images/rt_"+$scope.displayTomatoData.allCritics.freshness+'.jpg';
+            $scope.displayTomatoData.topCritics.tomatoImage = "/images/rt_"+$scope.displayTomatoData.topCritics.freshness+'.jpg';
             /*end evaluating for freshness*/
             $scope.allBoldOrNormal = "criticsLink";
             $scope.topBoldOrNormal = "criticsLink";
