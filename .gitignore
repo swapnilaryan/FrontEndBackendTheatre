@@ -6,7 +6,8 @@ dist/
 .DS_Store
 .tmp/
 app/main/
-dist/main/
+dist/
 main/.htaccess
 main/
 .vscode/
+app/images
