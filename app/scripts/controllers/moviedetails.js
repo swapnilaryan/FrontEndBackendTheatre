@@ -28,6 +28,7 @@ angular.module('backendTheatreApp')
                 $scope.displayMovieDetails.v_g = "/images/kidsinmind/v&g" + $scope.displayMovieDetails.kimRating[1] + ".jpg";
                 $scope.displayMovieDetails.prof = "/images/kidsinmind/prof" + $scope.displayMovieDetails.kimRating[2] + ".jpg";
                 $scope.displayMovieDetails.one_ten = "/images/kidsinmind/1to10.jpg";
+                $scope.displayMovieDetails.movieKIM_URL = ($scope.displayMovieDetails.movieKIM_URL) ? $scope.displayMovieDetails.movieKIM_URL : 'http://www.kids-in-mind.com/';
                 $scope.kidsinmind = true;
             }
             //   /*End Kids In Mind Rating*/
@@ -80,7 +81,7 @@ angular.module('backendTheatreApp')
             $scope.displayTomatoData.allCritics = (movieTomatoDetails.mtAllCritics) ? JSON.parse(movieTomatoDetails.mtAllCritics) : 'N/A';
             $scope.displayTomatoData.topCritics = (movieTomatoDetails.mtTopCritics) ? JSON.parse(movieTomatoDetails.mtTopCritics) : 'N/A';
             $scope.displayTomatoData.audienceScore = (movieTomatoDetails.mtAudienceScore) ? JSON.parse(movieTomatoDetails.mtAudienceScore) : 'N/A';
-            
+            $scope.displayTomatoData.url = (movieTomatoDetails.mtURL) ? movieTomatoDetails.mtURL : '';
             //   /*Trailers*/
             $scope.displayTomatoData.trailer = "https://www.youtube.com/results?search_query=" + $scope.displayTomatoData.movieTitle + "+trailer";
             $scope.trustSrc = function (src) {

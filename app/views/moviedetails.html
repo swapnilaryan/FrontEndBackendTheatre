@@ -93,7 +93,7 @@
                     </div>
                 </div>
                 <small>All data belongs to <a
-                    href="https://www.rottentomatoes.com/">Rotten
+                    ng-href="{{'https://www.rottentomatoes.com/m/'+displayTomatoData.url}}" target="_blank">Rotten
                     Tomaotes</a>. We don't own this data.</small>
             </div>
             <br>
@@ -250,8 +250,9 @@
                 <div><img class="kim_one2ten"
                           ng-src="{{siteConfig.imagePath+displayMovieDetails.one_ten}}">
                 </div>
-                <small>All data belongs to <a
-                    href="http://www.kids-in-mind.com/">kids-in-mind</a>.We
+                <small>All data belongs to <a target="_blank"
+                    ng-href="{{displayMovieDetails.movieKIM_URL}}">kids-in
+                    -mind</a>.We
                     don't own this data.
                 </small>
             </div>
