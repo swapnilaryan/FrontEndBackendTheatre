@@ -346,3 +346,7 @@ body {
 .blink{
   animation: fadeIn 1s infinite alternate;
 }
+
+.inline-block {
+    display: inline-flex;
+}
