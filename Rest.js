@@ -793,10 +793,10 @@ REST_ROUTER.prototype.handleRoutes = function (router, connection, pool) {
     var one_ten = 'http://www.kids-in-mind.com/images/ratings/1to10.jpg'; // one to ten
     var combine = [];
     combine.push(one_ten);
-    for (var i = 0; i < 10; i++) {
-      combine.push('http://www.kids-in-mind.com/images/ratings/s&n' + (i + 1) + '.jpg');
-      combine.push('http://www.kids-in-mind.com/images/ratings/v&g' + (i + 1) + '.jpg');
-      combine.push('http://www.kids-in-mind.com/images/ratings/prof' + (i + 1) + '.jpg');
+    for (var i = 0; i <= 10; i++) {
+      combine.push('http://www.kids-in-mind.com/images/ratings/s&n' + (i ) + '.jpg');
+      combine.push('http://www.kids-in-mind.com/images/ratings/v&g' + (i ) + '.jpg');
+      combine.push('http://www.kids-in-mind.com/images/ratings/prof' + (i) + '.jpg');
     }
     async.eachSeries(combine, function (url, callback) {
       download(url, '' + configJson.imageLocation + '/images/kidsinmind' + url.replace('http://www.kids-in-mind.com/images/ratings', ''), function () {
