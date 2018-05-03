@@ -49,8 +49,12 @@ angular
                 params: {
                     data: null
                 }
+            }).state('contact', {
+                url: '/contactUs',
+                templateUrl: 'views/contactUs.html',
+                controller: 'contactUsController'
             });
-        
+
         // $routeProvider
         //     .when('/', {
         //         templateUrl: 'views/main.html',

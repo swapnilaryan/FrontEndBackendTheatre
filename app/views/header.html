@@ -1,3 +1,9 @@
+<style>
+    .contact {
+        float: right;
+        padding-top: 30px;
+    }
+</style>
 <div class="header" ng-controller="HeaderCtrl">
     <div class="navbar" role="navigation">
         <div class="container">
@@ -8,17 +14,19 @@
                             <img ui-sref="main" style="cursor: pointer;" class="inline-block" ng-src="{{siteConfig.localImagePath + '/images/newLogo.png'}}" width="100px">
                             <!--<h1 class="inline-block">CINESTAR CINEMA</h1>-->
                         </span>
+                        <span><a ui-sref="contact" class="contact">Contact Us</a></span>
                     </center>
                     <div class="col-md-2 cinestar_logo">
+                        <!--<img ui-sref="main" style="cursor: pointer;" class="inline-block" ng-src="{{siteConfig.localImagePath + '/images/newLogo.png'}}" width="100px">-->
                         <!--<img ng-src="{{siteConfig.localImagePath + '/images/newLogo.png'}}" width="100px">-->
                     </div>
                     <div class="col-md-5" id="top-list">
                         <!--<ul class="list-inline">-->
                             <!--<li><a href="#">Movies</a></li>-->
                             <!--<li><a ng-href="#/about">Promotions</a></li>-->
-                            <!--<li><a ng-href="#/moviedetails">Contact</a></li>-->
+                            <!--<li><a ng-href="#/contact">Contact</a></li>-->
                             <!--<li><a ng-href="#/">Location</a></li>-->
-                        <!--</ul>-->
+                        </ul>
                         <!--<img class="pull-left" ng-src="{{siteConfig.localImagePath + '/images/newLogo.png'}}" width="100px">-->
                     </div>
                     <div class="col-md-2 cinestar_logo">
@@ -124,14 +132,14 @@
     };
 
     // Load the SDK asynchronously
-    (function (d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s);
-        js.id = id;
-        js.src = "https://connect.facebook.net/en_US/sdk.js";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
+//    (function (d, s, id) {
+//        var js, fjs = d.getElementsByTagName(s)[0];
+//        if (d.getElementById(id)) return;
+//        js = d.createElement(s);
+//        js.id = id;
+//        js.src = "https://connect.facebook.net/en_US/sdk.js";
+//        fjs.parentNode.insertBefore(js, fjs);
+//    }(document, 'script', 'facebook-jssdk'));
 
     // Here we run a very simple test of the Graph API after login is
     // successful.  See statusChangeCallback() for when this call is made.

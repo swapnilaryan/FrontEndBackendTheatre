@@ -14,9 +14,9 @@ function commonHTTPCall($http, params, toastr, successMsg, errorMsg) {
     if (errorMsg === undefined) {
         errorMsg = true
     }
-    
+
     params.withCredentials = true;
-    
+
     return $http(params)
         .success(function (response) {
             if (successMsg) {
@@ -99,12 +99,12 @@ angular.module('backendTheatreApp')
             user.emailId = newObj;
             console.log(user);
         };
-        
+
         var getUser = function () {
             console.log(user);
             return user.emailId;
         };
-        
+
         return {
             loginUser: loginUser,
             getUser: getUser
@@ -260,4 +260,29 @@ angular.module('backendTheatreApp')
                 return deferred.promise;
             }
         };
+    })
+    .factory('theatreDetailService', function ($q, $http, toastr) {
+        return {
+            contactUs: function () {
+                var req = {
+                    method: 'GET',
+                    url: siteConfig.apiUrlFn + "/contactUs"
+                };
+                return commonHTTPCall($http, req, toastr, false);
+            },
+            locateUs: function () {
+                var req = {
+                    method: 'GET',
+                    url: siteConfig.apiUrlFn + "/locateUs"
+                };
+                return commonHTTPCall($http, req, toastr, false);
+            },
+            social: function () {
+                var req = {
+                    method: 'GET',
+                    url: siteConfig.apiUrlFn + "/social"
+                };
+                return commonHTTPCall($http, req, toastr, false);
+            }
+        }
     });
