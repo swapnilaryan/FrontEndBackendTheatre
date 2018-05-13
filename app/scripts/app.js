@@ -24,6 +24,19 @@ angular
         'LocalStorageModule',
         'toastr'
     ])
+    .run(function ($rootScope) {
+        $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+            var path = toState.url;
+            for(var i in toParams){
+                path = path.replace(':' + i, toParams[i]);
+            }
+            console.log(toParams);
+
+            window.ga('set', 'page', path);
+            window.ga('send', 'pageview');
+        });
+    })
+
     // .run(['Idle', function(Idle) {
     //   Idle.watch();
     // }])
@@ -37,11 +50,11 @@ angular
         // For any unmatched url, redirect to /
         //$urlRouterProvider.otherwise("/");
         $stateProvider
-           .state('main',{
-               url: "/",
-               templateUrl: "views/main.html",
-               controller: 'MainCtrl'
-           })
+            .state('main', {
+                url: "/",
+                templateUrl: "views/main.html",
+                controller: 'MainCtrl'
+            })
             .state('moviedetails', {
                 url: '/movieInfo/:imdbID',
                 templateUrl: 'views/moviedetails.html',
@@ -50,10 +63,10 @@ angular
                     data: null
                 }
             }).state('contact', {
-                url: '/contactUs',
-                templateUrl: 'views/contactUs.html',
-                controller: 'contactUsController'
-            });
+            url: '/contactUs',
+            templateUrl: 'views/contactUs.html',
+            controller: 'contactUsController'
+        });
 
         // $routeProvider
         //     .when('/', {
