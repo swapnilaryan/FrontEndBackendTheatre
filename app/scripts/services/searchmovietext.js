@@ -200,6 +200,14 @@ angular.module('backendTheatreApp')
                 };
                 return commonHTTPCall($http, req, toastr, false);
             },
+            updateTomatoResult: function (data) {
+                var req = {
+                    method: 'POST',
+                    url: siteConfig.baseUrl + "/rottenTomatoes/rating",
+                    data: data
+                };
+                return commonHTTPCall($http, req, toastr, false);
+            },
             getMovieInfo: function (id) {
                 var req = {
                     method: 'GET',

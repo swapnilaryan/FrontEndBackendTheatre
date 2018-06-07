@@ -12,11 +12,12 @@ angular.module('backendTheatreApp')
                                               $q, $scope, movieDetails) {
         $scope.displayMovieDetails = null;
         $scope.kidsinmind = false;
-        
+
         function initializeMovieDetails(data) {
             $scope.displayMovieDetails = data;
             $scope.displayMovieDetails.releaseYear = $scope.displayMovieDetails.infoMovieInTheatres.substr($scope.displayMovieDetails.infoMovieInTheatres.length - 4);
             $scope.displayMovieDetails.infoMoviePosterPath = $scope.displayMovieDetails.infoMoviePosterPath.replace("/images/nowShowing", siteConfig.imagePath + siteConfig.imageSize);
+            $scope.displayMovieDetails.infoMovieBackdropPath = siteConfig.backdropPath + $scope.displayMovieDetails.infoMovieBackdropPath;
             //   /*Kids In Mind Rating*/
             //   // get the overall rating
             if (!$scope.displayMovieDetails.movieKIM_Rating) {
@@ -32,15 +33,16 @@ angular.module('backendTheatreApp')
                 $scope.kidsinmind = true;
             }
             //   /*End Kids In Mind Rating*/
+            $scope.displayMovieDetails.infoMovieGenre = $scope.displayMovieDetails.infoMovieGenre.split(",");
         }
-        
+
         $scope.show6CastsFunction = function show6CastsFunction() {
             $scope.show6Casts = {};
             for (var k = 0; k < 8; k++) {
                 $scope.show6Casts[k] = $scope.totalCasts[k];
             }
         };
-        
+
         //   /*Show All Casts*/
         $scope.ngShowAllText = true;
         $scope.show6CastsText = true;
@@ -52,7 +54,7 @@ angular.module('backendTheatreApp')
             }
         };
         //   /*End Displaying casts*/
-        
+
         function initializeCasts(data) {
             $scope.totalCasts = data;
             //   /*Display Casts*/
@@ -64,15 +66,15 @@ angular.module('backendTheatreApp')
                     $scope.totalCasts[i].profile_path = siteConfig.imagePath + siteConfig.imageSize + $scope.totalCasts[i].profile_path;
                 }
             }
-            
+
             $scope.show6Casts = {};
             for (var k = 0; k < 8; k++) {
                 $scope.show6Casts[k] = $scope.totalCasts[k];
             }
             $scope.show6CastsFunction();
-            
+
         }
-        
+
         function initializeRottenTomatoData(movieTomatoDetails) {
             $scope.displayTomatoData = {};
             $scope.displayTomatoData.imdbID = movieTomatoDetails.mtImdbID || 'N/A';
@@ -89,8 +91,8 @@ angular.module('backendTheatreApp')
             };
             $sce.trustAsResourceUrl($scope.displayTomatoData.trailer);
             /*End Trailers*/
-            
-            
+
+
             /*Evaluating if the image should be fresh, rotten or certified*/
             // first for All Critics
             var tomatometerAC = $scope.displayTomatoData.allCritics.tomatoMeter;
@@ -116,7 +118,7 @@ angular.module('backendTheatreApp')
                 //certified
                 $scope.displayTomatoData.topCritics.tomatoImage = "/images/rt_certified.jpg";
             }
-    
+
             $scope.displayTomatoData.allCritics.tomatoImage = "/images/rt_"+$scope.displayTomatoData.allCritics.freshness+'.jpg';
             $scope.displayTomatoData.topCritics.tomatoImage = "/images/rt_"+$scope.displayTomatoData.topCritics.freshness+'.jpg';
             /*end evaluating for freshness*/
@@ -147,7 +149,7 @@ angular.module('backendTheatreApp')
             $scope.audienceScore.ratingCount = $scope.audienceScore.ratingCount.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
             /*End Audience Score*/
         }
-        
+
         function initializeMovieShowtime(movieShowtime) {
             $scope.movieShowTime = movieShowtime;
         }
@@ -156,8 +158,11 @@ angular.module('backendTheatreApp')
             initializeCasts(JSON.parse(responses[0].data.data.infoMovieCasts));
             initializeRottenTomatoData(responses[1].data.data);
             initializeMovieShowtime(responses[2].data.data);
+            // After everythgin is fetched call rotten tomatoes to update the values :-
+
+            // movieDetails.updateTomatoResult()
         });
-        
+
         //
         //  /*Comment Section*/
         // $scope.h = false;
@@ -197,19 +202,19 @@ angular.module('backendTheatreApp')
         //     else return;
         // };
         //  /*End Comment Section*/
-        
+
         $scope.hoveringOver = function (value) {
             $scope.overStar = value;
             $scope.percent = 100 * (value / $scope.max);
         };
-        
+
         $scope.ratingStates = [
             {stateOn: 'glyphicon-ok-sign', stateOff: 'glyphicon-ok-circle'},
             {stateOn: 'glyphicon-star', stateOff: 'glyphicon-star-empty'},
             {stateOff: 'glyphicon-off'}
         ];
-        
+
         // <i class="fa fa-star" aria-hidden="true"></i>
-        
-        
+
+
     });
