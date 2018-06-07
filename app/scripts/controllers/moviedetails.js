@@ -151,8 +151,41 @@ angular.module('backendTheatreApp')
             /*End Audience Score*/
         }
 
+        $scope.onDateSelect = function onDateSelect(idx) {
+            $scope.selectedShowtimeDate = $scope.movieShowTime[idx];
+            $scope.movieShowTime.forEach(function (item) {
+                item.active = false;
+            });
+            $scope.movieShowTime[idx].active = true;
+        };
+
         function initializeMovieShowtime(movieShowtime) {
             $scope.movieShowTime = movieShowtime;
+            var temp = [];
+            $scope.movieShowTime.forEach(function (item) {
+                var obj = {
+                    date: moment(new Date(item.epochTime)).format('MMM DD'),
+                    data: [{
+                        movieShowDate: item.movieShowDate,
+                        movieStartTime: item.movieStartTime,
+                        movieScreen: item.movieScreen,
+                        movieType: item.movieType
+                    }],
+                    active: false
+                };
+                var tt = temp.find(function (val, index) {
+                    return val.date === obj.date;
+                });
+                console.log(tt)
+                if (tt) {
+                    tt.data.push(obj.data[0]);
+                } else {
+                    temp.push(obj);
+                }
+            });
+            $scope.movieShowTime = temp;
+            $scope.onDateSelect(0);
+            console.log($scope.movieShowTime);
         }
 
         $q.all([movieDetails.getMovieInfo($stateParams.imdbID), movieDetails.getTomatoResult($stateParams.imdbID), movieDetails.movieShowTime($stateParams.imdbID)]).then(function (responses) {

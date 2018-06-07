@@ -1,16 +1,18 @@
 <style>
-    .movie-showtime {
+    .movie-showtime_old {
         display: block;
         padding-left: 15px;
         max-height: 345px;
         overflow-y: scroll;
     }
-    .movie-showtime td, th{
+
+    .movie-showtime td, th {
         text-align: center;
     }
+
     .rating {
-        height: 30px;
-        width: 30px;
+        height: auto;
+        width: 55px;
         display: table-cell;
         text-align: center;
         vertical-align: middle;
@@ -23,6 +25,7 @@
         list-style-type: none;
         padding: 0;
     }
+
     .genre li {
         border: 1px solid black;
         padding: 5px 10px;
@@ -32,31 +35,83 @@
         display: inline-block;
         margin: 10px;
     }
+
     .duration {
         margin-left: 10px;
     }
+
     .movie-description {
         margin-top: 10px;
     }
+
     .movie-cast {
         overflow: scroll;
         margin-left: 20px;
         margin-right: 20px;
         display: flex;
     }
+
     .cast-arrow-left .fa-angle-left, .cast-arrow-right .fa-angle-right {
         color: lightgray;
     }
+
     .cast-arrow-left, .cast-arrow-right {
         position: absolute;
         top: 25%;
         cursor: pointer;
     }
+
     .cast-arrow-right {
         right: 0;
     }
+
     .movie-cast-scroll {
         position: relative;
+    }
+
+    .play-trailer {
+        cursor: pointer;
+        display: table-cell;
+        margin-left: 10px;
+    }
+
+    .rating-trailer {
+        margin-top: 10px;
+    }
+    .showtime-date li {
+        margin-right: 10px;
+        min-width: 50px;
+        cursor: pointer;
+    }
+
+    .showtime-date li>a:checked {
+        color: black;
+    }
+
+    .showtime-date {
+        list-style-type: none;
+        display: inline-flex;
+        padding: 0;
+        float: left;
+    }
+
+    .showtime-date-block{
+        border: 1px solid lightgrey;
+        float: left;
+        background-color: lightgrey;
+        border-radius: 10px;
+        margin-right: 10px;
+    }
+
+    .movie-showtime-scroll{
+        overflow: scroll;
+    }
+    .active > a {
+        color: black;
+        text-decoration: underline;
+        text-decoration-color: green;
+        font-weight: bold;
+
     }
 </style>
 
@@ -68,19 +123,20 @@
                      class="mdImage">
 
                 <div class="basic-details">
-                    <p class="rating">{{displayMovieDetails.infoMovieRated}}</p>
+                    <p class="play-trailer" data-toggle="modal" data-target="#myModal">
+                        <i class="fa fa-4x fa-play-circle" uib-tooltip="Play Trailer"></i></p>
                     <ul class="genre">
                         <li ng-repeat="genre in displayMovieDetails.infoMovieGenre">{{genre}}</li>
                     </ul>
                     <p>
-                            <span class="release-date">
-                                <i class="fa fa-calendar" aria-hidden="true"></i>
-                                {{displayMovieDetails.infoMovieInTheatres}}
-                            </span>
+                        <span class="release-date">
+                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                            {{displayMovieDetails.infoMovieInTheatres}}
+                        </span>
                         <span class="duration">
-                                <i class="fa fa-clock-o" aria-hidden="true"></i>
-                                {{displayMovieDetails.infoMovieRuntime + ' min'}}
-                            </span>
+                            <i class="fa fa-clock-o" aria-hidden="true"></i>
+                            {{displayMovieDetails.infoMovieRuntime + ' min'}}
+                        </span>
                     </p>
                 </div>
                 <div ng-show="kidsinmind">
@@ -110,7 +166,7 @@
             <div class="container">
                 <div class="row" data-ng-model="displayTomatoData">
                     <div class="movieTitle"><h1>{{displayTomatoData.movieTitle}}
-                        ({{displayMovieDetails.releaseYear}})</h1></div>
+                        ({{displayMovieDetails.releaseYear}}) [{{displayMovieDetails.infoMovieRated}}]</h1></div>
                     <div class="rottenTomatoesInfo col-md-12">
                         <div class="col-md-4 scorePanel">
                             <h3>TOMATOMETER</h3>
@@ -181,7 +237,8 @@
                 </div>
                 <small>All data belongs to <a
                     ng-href="{{'https://www.rottentomatoes.com/m/'+displayTomatoData.url}}" target="_blank">Rotten
-                    Tomaotes</a>. We don't own this data.</small>
+                    Tomaotes</a>. We don't own this data.
+                </small>
                 <div class="row movie-description">
                     <div class="movieDes">
                         {{displayMovieDetails.infoMovieDescription}}
@@ -209,13 +266,14 @@
                     <div class="col-md-8 movieTopic">
                         <div>{{displayMovieDetails.infoMovieProduction}}:
                             <span><a ng-href={{displayMovieDetails.infoMovieWebsite}}
-                                target="_blank">Official Site</a> </span>
+                                     target="_blank">Official Site</a> </span>
                         </div>
                     </div>
                 </div>
                 <div class="row movie-cast-scroll">
                     <h4 class="text-left">Casts</h4>
-                    <div class="cast-arrow-left"  ng-click="scroll('cast','left')"><i class="fa fa-4x fa-angle-left"></i></div>
+                    <div class="cast-arrow-left" ng-click="scroll('cast','left')"><i class="fa fa-4x fa-angle-left"></i>
+                    </div>
                     <div class="movie-cast">
                         <div class="casts" ng-repeat="casts in show6Casts">
                             <div class="castsImage">
@@ -227,167 +285,28 @@
                             </div>
                         </div>
                     </div>
-                    <div class="cast-arrow-right" ng-click="scroll('cast','right')"><i class="fa fa-4x fa-angle-right"></i></div>
+                    <div class="cast-arrow-right" ng-click="scroll('cast','right')"><i
+                        class="fa fa-4x fa-angle-right"></i></div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="container">
-
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row" data-ng-cloak>
-    <div class="container">
-        <div class="col-md-8" data-ng-model="displayMovieDetails" ng-cloak>
-            <!--<p>Hello {{movieTomato}}</p>-->
-            <br>
-            <div class="container" ng-model="displayMovieDetails">
-                <div class="col-md-4">
-                    <p id="showtime">Showtimes</p>
-                    <table class="table table-responsive movie-showtime">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Time</th>
-                                <th>View</th>
-                                <th>Screen</th>
-                            </tr>
-                        </thead>
-                        <tbody class="showtime-data">
-                            <tr ng-repeat="showTime in movieShowTime">
-                                <td>{{showTime.movieShowDate}}</td>
-                                <td>{{showTime.movieStartTime}}</td>
-                                <td>{{showTime.movieType}}</td>
-                                <td>{{showTime.movieScreen}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="col-md-4"></div>
-                <div class="col-md-8">
-                    <hr>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 rightPage" data-ng-model="theMovieDbId" ng-cloak>
-            <!--Book tickets , Show trailer, Share on social media-->
-            <div class="buttonShadow">
-                <button type="button" class="btn btn-default tickTrailerSocial"
-                        ng-show="displayMovieDetails.infoMovieBuyTicketsButton">
-                    BUY TICKETS
-                </button>
-            </div>
-            <div class="buttonShadow">
-                <button type="button" class="btn btn-default tickTrailerSocial">
-                    SHARE ON
-                    <a ng-href="http://www.facebook.com">
-                        <img class="shareSocial"
-                             ng-src="{{siteConfig.localImagePath + '/images/shareOnFacebook.png'}}">
-                    </a>
-                    <span>
-                    <a ng-href="http://www.twitter.com">
-                        <img class="shareSocial"
-                             ng-src="{{siteConfig.localImagePath+'/images/shareOnTwitter.png'}}">
-                    </a>
-                </span>
-                </button>
-            </div>
-            <div class="buttonShadow">
-                <button type="button" class="btn btn-default tickTrailerSocial"
-                        data-toggle="modal" data-target="#myModal">WATCH TRAILER
-                </button>
-            </div>
-            <!--Comments-->
-            <div class="comments-section" ng-if="false">
-                <div class="actionBox">
-                    <ul class="commentList">
-                        <li ng-repeat="comment in getCommentss">
-                            <div class="commenterImage">
-                                <img ng-src="{{comment.movieUserFBProfileImage}}">
-                            </div>
-                            <div class="commentText">
-                                <p class="">{{::comment.m_c_comment}}</p> <span
-                                class="date sub-text">on {{::epoch_to_datetime(comment.m_c_current_time)}}</span>&nbsp;&nbsp;
-                                <span class="pull-right" uib-rating
-                                      ng-model="comment.m_c_star_rating" max="5"
-                                      read-only="true"
-                                      aria-labelledby="default-rating"></span>
-                            </div>
-                        </li>
+        <div class="col-md-4">
+            <h2 class="pull-left">Showtimes</h2>
+            <hr style="clear: both">
+            <div class="container movie-showtime">
+                <div class="movie-showtime-scroll">
+                    <ul class="showtime-date">
+                        <li ng-repeat="val in movieShowTime" ng-class="{'active': val.active}" ng-click="onDateSelect($index)"><a>{{val.date}}</a></li>
                     </ul>
                 </div>
-                <div class="comments" id="comment_section">
-                    <h4 class="pull-left" id="comment_as">Comment As:-
-                        {{UserName}}</h4>
-                    <div class="comment_textarea"><textarea
-                        data-ng-model="user_comments" class="form-control" rows="4"
-                        cols="50" name="comment"></textarea></div>
-                    <div class="star_rating_n_post">
-                    <span uib-rating ng-model="star_rating" max="5"
-                          read-only="false" on-hover="hoveringOver(value)"
-                          on-leave="overStar = null"
-                          titles="['one','two','three']"
-                          aria-labelledby="default-rating"></span>
-                        <span><button type="button" ng-click="postComments()"
-                                      class="btn bg-primary"> Post </button></span>
-                    </div>
+                <div class="showtime-date-block" ng-repeat="showtimeDate in selectedShowtimeDate.data">
+                    <p>{{showtimeDate.movieStartTime}}</p>
+                    <p>Screen {{showtimeDate.movieScreen}} &nbsp;&nbsp; {{showtimeDate.movieType}}</p>
                 </div>
-            </div>
-
-            <!--End Comments-->
-        </div>
-    </div>
-    <div class="container">
-        <div class="col-md-3">
-            <div class="col-md-12"><p id="cast">Cast</p></div>
-        </div>
-        <br>
-        <div class="col-md-12">
-            <div class="col-md-12" data-ng-model="casts">
-                <div class="col-md-3 casts" ng-repeat="casts in show6Casts">
-                    <div class="col-md-4 castsImage">
-                        <img
-                            ng-src="{{siteConfig.imagePath+casts.profile_path}}">
-                    </div>
-                    <div class="col-md-8">
-                        <p>{{casts.name}}</p>
-                        <p class="castCharacter">as {{casts.character}}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-5">
-                <h6 class="ngShowAllText">
-                    <a class="cursor4ShowAll" ng-if="ngShowAllText==true"
-                       ng-click="showAll(ngShowAllText)"
-                       ng-if="ngShowAllText==true">
-                        Show More Cast
-                        <span
-                            class="glyphicon glyphicon-triangle-bottom cursor4ShowAll"></span>
-                    </a>
-                </h6>
-                <h6 class="ngShowAllText">
-                    <a class="cursor4ShowAll" ng-if="ngShowAllText==false"
-                       ng-click="showAll(ngShowAllText)"
-                       ng-if="ngShowAllText==true">
-                        Show Less Cast
-                        <span
-                            class="glyphicon glyphicon-triangle-top cursor4ShowAll"></span>
-                    </a>
-                </h6>
             </div>
         </div>
     </div>
 </div>
-<!--<div class="parent">-->
-
-    <!--<div class="container">-->
-        <!--<img class="e" width="640" height="220" ng-src="{{displayMovieDetails.infoMovieBackdropPath}}">-->
-    <!--</div>-->
-<!--</div>-->
-
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
      aria-labelledby="myModalLabel" aria-hidden="true"
