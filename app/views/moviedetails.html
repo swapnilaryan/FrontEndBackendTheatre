@@ -40,7 +40,23 @@
     }
     .movie-cast {
         overflow: scroll;
+        margin-left: 20px;
+        margin-right: 20px;
         display: flex;
+    }
+    .cast-arrow-left .fa-angle-left, .cast-arrow-right .fa-angle-right {
+        color: lightgray;
+    }
+    .cast-arrow-left, .cast-arrow-right {
+        position: absolute;
+        top: 25%;
+        cursor: pointer;
+    }
+    .cast-arrow-right {
+        right: 0;
+    }
+    .movie-cast-scroll {
+        position: relative;
     }
 </style>
 
@@ -197,17 +213,21 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row movie-cast-scroll">
                     <h4 class="text-left">Casts</h4>
+                    <div class="cast-arrow-left"  ng-click="scroll('cast','left')"><i class="fa fa-4x fa-angle-left"></i></div>
                     <div class="movie-cast">
                         <div class="casts" ng-repeat="casts in show6Casts">
                             <div class="castsImage">
                                 <img ng-src="{{siteConfig.imagePath+casts.profile_path}}">
-                                <!--<p>{{casts.name}}</p>-->
-                                <!--<p class="castCharacter">as {{casts.character}}</p>-->
+                            </div>
+                            <div class="cast-info">
+                                <p>{{casts.name}}</p>
+                                <p class="castCharacter">as {{casts.character}}</p>
                             </div>
                         </div>
                     </div>
+                    <div class="cast-arrow-right" ng-click="scroll('cast','right')"><i class="fa fa-4x fa-angle-right"></i></div>
                 </div>
             </div>
         </div>

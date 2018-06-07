@@ -53,6 +53,7 @@ angular.module('backendTheatreApp')
                 $scope.show6CastsFunction();
             }
         };
+
         //   /*End Displaying casts*/
 
         function initializeCasts(data) {
@@ -119,8 +120,8 @@ angular.module('backendTheatreApp')
                 $scope.displayTomatoData.topCritics.tomatoImage = "/images/rt_certified.jpg";
             }
 
-            $scope.displayTomatoData.allCritics.tomatoImage = "/images/rt_"+$scope.displayTomatoData.allCritics.freshness+'.jpg';
-            $scope.displayTomatoData.topCritics.tomatoImage = "/images/rt_"+$scope.displayTomatoData.topCritics.freshness+'.jpg';
+            $scope.displayTomatoData.allCritics.tomatoImage = "/images/rt_" + $scope.displayTomatoData.allCritics.freshness + '.jpg';
+            $scope.displayTomatoData.topCritics.tomatoImage = "/images/rt_" + $scope.displayTomatoData.topCritics.freshness + '.jpg';
             /*end evaluating for freshness*/
             $scope.allBoldOrNormal = "criticsLink";
             $scope.topBoldOrNormal = "criticsLink";
@@ -153,6 +154,7 @@ angular.module('backendTheatreApp')
         function initializeMovieShowtime(movieShowtime) {
             $scope.movieShowTime = movieShowtime;
         }
+
         $q.all([movieDetails.getMovieInfo($stateParams.imdbID), movieDetails.getTomatoResult($stateParams.imdbID), movieDetails.movieShowTime($stateParams.imdbID)]).then(function (responses) {
             initializeMovieDetails(responses[0].data.data);
             initializeCasts(JSON.parse(responses[0].data.data.infoMovieCasts));
@@ -214,7 +216,16 @@ angular.module('backendTheatreApp')
             {stateOff: 'glyphicon-off'}
         ];
 
-        // <i class="fa fa-star" aria-hidden="true"></i>
-
+        $scope.scroll = function scroll(type, to) {
+            if (type === 'cast') {
+                var view = document.getElementsByClassName("movie-cast")[0];
+                var width = document.getElementsByClassName("casts")[0].scrollWidth;
+                if (to === 'left') {
+                    view.scrollLeft -= width;
+                } else if (to === 'right') {
+                    view.scrollLeft += width;
+                }
+            }
+        };
 
     });
