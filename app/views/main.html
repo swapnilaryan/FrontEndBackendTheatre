@@ -18,6 +18,8 @@
             <div class="container" id="show_list">
                 <div class="col-md-3 container list_now_showing" ng-repeat="mvs in movieNowShowing">
                     <div class="wrap_all">
+                        <span class="star"><i class="fa fa-star fa-2x"></i></span>
+                        <span class="star-imdb-rate">{{mvs.infoMovieImdbRating}}</span>
                         <img class="images" ng-src="{{siteConfig.imagePath + mvs.infoMoviePosterPath}}" >
                         <div class="all_timings">
                             <div class="list-show-none">

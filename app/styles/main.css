@@ -126,7 +126,32 @@ body {
 
 .wrap_all:hover > .show-cart{
     display: block;
+    z-index: 50000;
+
 }
+
+.wrap_all:hover > .star, .wrap_all:hover > .star-imdb-rate {
+    display: block;
+    z-index: 50000;
+}
+
+
+.wrap_all:after {
+    content:'\A';
+    position:absolute;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+    background:rgba(0,0,0,0.6);
+    opacity:0;
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+}
+.wrap_all:hover:after {
+    opacity:1;
+}
+
 
 .all_timings{
     background-color: rgba(34, 34, 34, 0.8);
@@ -349,4 +374,18 @@ body {
 
 .inline-block {
     display: inline-flex;
+}
+
+.star, .star-imdb-rate {
+    position: absolute;
+    margin-top: 5%;
+    margin-left: 45%;
+    color: #2199cc;
+    display: none;
+}
+
+
+.star-imdb-rate {
+    margin-top: 20%;
+    font-size: 20px;
 }

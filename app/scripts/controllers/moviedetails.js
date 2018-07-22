@@ -152,11 +152,13 @@ angular.module('backendTheatreApp')
         }
 
         $scope.onDateSelect = function onDateSelect(idx) {
-            $scope.selectedShowtimeDate = $scope.movieShowTime[idx];
-            $scope.movieShowTime.forEach(function (item) {
-                item.active = false;
-            });
-            $scope.movieShowTime[idx].active = true;
+            if ($scope.movieShowTime.length > 0) {
+                $scope.selectedShowtimeDate = $scope.movieShowTime[idx];
+                $scope.movieShowTime.forEach(function (item) {
+                    item.active = false;
+                });
+                $scope.movieShowTime[idx].active = true;
+            }
         };
 
         function initializeMovieShowtime(movieShowtime) {
