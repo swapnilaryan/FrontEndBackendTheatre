@@ -166,7 +166,7 @@ angular.module('backendTheatreApp')
             var temp = [];
             $scope.movieShowTime.forEach(function (item) {
                 var obj = {
-                    date: moment(new Date(item.epochTime)).format('MMM DD'),
+                    date: moment(new Date(item.epochTime)).format('MMM ddd DD'),
                     data: [{
                         movieShowDate: item.movieShowDate,
                         movieStartTime: item.movieStartTime,
