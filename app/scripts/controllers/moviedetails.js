@@ -20,10 +20,11 @@ angular.module('backendTheatreApp')
             $scope.displayMovieDetails.infoMovieBackdropPath = siteConfig.backdropPath + $scope.displayMovieDetails.infoMovieBackdropPath;
             //   /*Kids In Mind Rating*/
             //   // get the overall rating
-            if (!$scope.displayMovieDetails.movieKIM_Rating) {
+            var getRating = $scope.displayMovieDetails.movieKIM_Rating.match(/\d{1}.\d{1}.\d{1,2}/);
+            if (!$scope.displayMovieDetails.movieKIM_Rating && !getRating) {
                 $scope.kidsinmind = false;
             } else {
-                $scope.displayMovieDetails.kimRating = ($scope.displayMovieDetails.movieKIM_Rating.match(/\d{1}.\d{1}.\d{1,2}/)[0]);
+                $scope.displayMovieDetails.kimRating = (getRating[0]);
                 $scope.displayMovieDetails.kimRating = $scope.displayMovieDetails.kimRating.split(".");
                 $scope.displayMovieDetails.s_n = "/images/kidsinmind/s&n" + $scope.displayMovieDetails.kimRating[0] + ".jpg";
                 $scope.displayMovieDetails.v_g = "/images/kidsinmind/v&g" + $scope.displayMovieDetails.kimRating[1] + ".jpg";
