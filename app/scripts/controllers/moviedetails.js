@@ -20,18 +20,23 @@ angular.module('backendTheatreApp')
             $scope.displayMovieDetails.infoMovieBackdropPath = siteConfig.backdropPath + $scope.displayMovieDetails.infoMovieBackdropPath;
             //   /*Kids In Mind Rating*/
             //   // get the overall rating
-            var getRating = $scope.displayMovieDetails.movieKIM_Rating.match(/\d{1}.\d{1}.\d{1,2}/);
-            if (!getRating) {
+            if (!$scope.displayMovieDetails.movieKIM_Rating) {
                 $scope.kidsinmind = false;
             } else {
-                $scope.displayMovieDetails.kimRating = (getRating[0]);
-                $scope.displayMovieDetails.kimRating = $scope.displayMovieDetails.kimRating.split(".");
-                $scope.displayMovieDetails.s_n = "/images/kidsinmind/s&n" + $scope.displayMovieDetails.kimRating[0] + ".jpg";
-                $scope.displayMovieDetails.v_g = "/images/kidsinmind/v&g" + $scope.displayMovieDetails.kimRating[1] + ".jpg";
-                $scope.displayMovieDetails.prof = "/images/kidsinmind/prof" + $scope.displayMovieDetails.kimRating[2] + ".jpg";
-                $scope.displayMovieDetails.one_ten = "/images/kidsinmind/1to10.jpg";
-                $scope.displayMovieDetails.movieKIM_URL = ($scope.displayMovieDetails.movieKIM_URL) ? $scope.displayMovieDetails.movieKIM_URL : 'http://www.kids-in-mind.com/';
-                $scope.kidsinmind = true;
+                var getRating = $scope.displayMovieDetails.movieKIM_Rating.match(/\d{1}.\d{1}.\d{1,2}/);
+                if (!getRating) {
+                    $scope.kidsinmind = false;
+                } else {
+                    $scope.displayMovieDetails.kimRating = (getRating[0]);
+                    $scope.displayMovieDetails.kimRating = $scope.displayMovieDetails.kimRating.split(".");
+                    $scope.displayMovieDetails.s_n = "/images/kidsinmind/s&n" + $scope.displayMovieDetails.kimRating[0] + ".jpg";
+                    $scope.displayMovieDetails.v_g = "/images/kidsinmind/v&g" + $scope.displayMovieDetails.kimRating[1] + ".jpg";
+                    $scope.displayMovieDetails.prof = "/images/kidsinmind/prof" + $scope.displayMovieDetails.kimRating[2] + ".jpg";
+                    $scope.displayMovieDetails.one_ten = "/images/kidsinmind/1to10.jpg";
+                    $scope.displayMovieDetails.movieKIM_URL = ($scope.displayMovieDetails.movieKIM_URL) ? $scope.displayMovieDetails.movieKIM_URL : 'http://www.kids-in-mind.com/';
+                    $scope.kidsinmind = true;
+                }
+                
             }
             //   /*End Kids In Mind Rating*/
             $scope.displayMovieDetails.infoMovieGenre = $scope.displayMovieDetails.infoMovieGenre.split(",");
