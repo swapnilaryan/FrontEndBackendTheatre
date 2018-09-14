@@ -21,7 +21,7 @@ angular.module('backendTheatreApp')
             //   /*Kids In Mind Rating*/
             //   // get the overall rating
             var getRating = $scope.displayMovieDetails.movieKIM_Rating.match(/\d{1}.\d{1}.\d{1,2}/);
-            if (!$scope.displayMovieDetails.movieKIM_Rating && !getRating) {
+            if (!getRating) {
                 $scope.kidsinmind = false;
             } else {
                 $scope.displayMovieDetails.kimRating = (getRating[0]);
